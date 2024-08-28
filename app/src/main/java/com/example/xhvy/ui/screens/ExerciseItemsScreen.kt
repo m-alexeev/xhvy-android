@@ -25,16 +25,25 @@ fun ExerciseItemScreen(modifier: Modifier = Modifier) {
     var search by rememberSaveable {
         mutableStateOf("")
     }
-    Column(modifier) {
-        Searchbar(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 12.dp),
-            search = search,
-            onSearchChange = { newSearchValue -> search = newSearchValue })
-        TitledSection(
-            title = R.string.exercise_list_title,
-            content = { ExerciseItemsList(exercises = exercises, filter = search, Modifier.fillMaxHeight()) }
-        )
+    XhvyTheme {
+
+        Column(modifier) {
+            Searchbar(modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 12.dp),
+                search = search,
+                onSearchChange = { newSearchValue -> search = newSearchValue })
+            TitledSection(
+                title = R.string.exercise_list_title,
+                content = {
+                    ExerciseItemsList(
+                        exercises = exercises,
+                        filter = search,
+                        Modifier.fillMaxHeight()
+                    )
+                }
+            )
+        }
     }
 }
 
