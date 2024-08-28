@@ -59,10 +59,13 @@ val exercises = listOf(
 )
 
 @Composable
-fun ExerciseItemsList(exercises: List<Exercise>, modifier: Modifier = Modifier) {
+fun ExerciseItemsList(exercises: List<Exercise>, filter: String, modifier: Modifier = Modifier) {
+
     LazyColumn(modifier) {
         items(exercises) { exercise ->
-            ExerciseRowItem(exercise = exercise)
+            if (filter.length == 0 ||  exercise.name.contains(filter)) {
+                ExerciseRowItem(exercise = exercise)
+            }
         }
     }
 }
@@ -90,7 +93,7 @@ fun TitledSection(
 @Composable
 fun ExerciseItemsListPreview() {
     XhvyTheme {
-        ExerciseItemsList(exercises)
+        ExerciseItemsList(exercises, filter = "")
     }
 }
 

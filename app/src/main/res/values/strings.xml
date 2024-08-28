@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">xhvy</string>
+    <string name="search_placeholder">Search...</string>
     <string name="exercise_list_title">Exercises</string>
 </resources>
