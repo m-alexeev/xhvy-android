@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.xhvy.R
@@ -63,7 +64,14 @@ fun ExerciseItemsList(exercises: List<Exercise>, filter: String, modifier: Modif
 
     LazyColumn(modifier) {
         items(exercises) { exercise ->
-            if (filter.length == 0 ||  exercise.name.contains(filter)) {
+            if (filter.isEmpty() || exercise.name.lowercase(Locale.getDefault())
+                    .contains(filter.lowercase(Locale.getDefault())) || exercise.category.name.lowercase(
+                    Locale.getDefault()
+                )
+                    .contains(
+                        filter.lowercase(Locale.getDefault())
+                    )
+            ) {
                 ExerciseRowItem(exercise = exercise)
             }
         }
