@@ -21,7 +21,7 @@ import java.util.Locale
 
 
 @Composable
-fun ExerciseItemsList(exercises: List<Exercise>, filter: String, modifier: Modifier = Modifier) {
+fun ExerciseItemsList(exercises: List<Exercise>, modifier: Modifier = Modifier) {
 
     LazyColumn(modifier) {
         items(exercises) { exercise ->
@@ -53,7 +53,7 @@ fun TitledSection(
 @Composable
 fun ExerciseItemsListPreview() {
     XhvyTheme {
-        ExerciseItemsList(getExercises, filter = "")
+        ExerciseItemsList(getExercises)
     }
 }
 
