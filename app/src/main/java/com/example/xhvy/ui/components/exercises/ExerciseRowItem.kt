@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.example.xhvy.R
 import com.example.xhvy.data.models.Exercise
 import com.example.xhvy.ui.theme.XhvyTheme
+import com.example.xhvy.ui.view_models.getExercises
 
 @Composable
 fun ExerciseRowItem(exercise: Exercise, modifier: Modifier = Modifier) {
@@ -61,6 +62,6 @@ fun ExerciseRowItem(exercise: Exercise, modifier: Modifier = Modifier) {
 @Composable
 fun ExerciseRowPreview() {
     XhvyTheme {
-        ExerciseRowItem(exercises[0])
+        ExerciseRowItem(getExercises[0])
     }
 }

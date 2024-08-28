@@ -16,29 +16,30 @@ import androidx.compose.ui.unit.dp
 import com.example.xhvy.R
 import com.example.xhvy.ui.components.exercises.ExerciseItemsList
 import com.example.xhvy.ui.components.exercises.TitledSection
-import com.example.xhvy.ui.components.exercises.exercises
 import com.example.xhvy.ui.components.general.Searchbar
 import com.example.xhvy.ui.theme.XhvyTheme
+import com.example.xhvy.ui.view_models.ExercisesViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 
 @Composable
-fun ExerciseItemScreen(modifier: Modifier = Modifier) {
-    var search by rememberSaveable {
-        mutableStateOf("")
-    }
+fun ExerciseItemScreen(
+    modifier: Modifier = Modifier,
+    exercisesViewModel: ExercisesViewModel = viewModel()
+) {
     XhvyTheme {
-
         Column(modifier) {
             Searchbar(modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 12.dp, vertical = 12.dp),
-                search = search,
-                onSearchChange = { newSearchValue -> search = newSearchValue })
+                search = exercisesViewModel.search,
+                onSearchChange = { newSearchValue -> exercisesViewModel.updateSearch(newSearchValue) })
             TitledSection(
                 title = R.string.exercise_list_title,
                 content = {
                     ExerciseItemsList(
-                        exercises = exercises,
-                        filter = search,
+                        exercises = exercisesViewModel.exercises,
+                        filter = exercisesViewModel.search,
                         Modifier.fillMaxHeight()
                     )
                 }
