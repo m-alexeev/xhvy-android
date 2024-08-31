@@ -24,7 +24,7 @@ import java.util.Locale
 fun ExerciseItemsList(exercises: List<Exercise>, modifier: Modifier = Modifier) {
 
     LazyColumn(modifier) {
-        items(exercises) { exercise ->
+        items(items = exercises, key = {it.id}) { exercise ->
             ExerciseRowItem(exercise = exercise)
         }
     }
