@@ -17,7 +17,7 @@ fun FaIcon(
     iconPainterId: Int,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
-    tint: Color = MaterialTheme.colorScheme.surfaceTint,
+    tint: Color = MaterialTheme.colorScheme.onSurface,
 ) {
     Icon(
         painter = painterResource(id = iconPainterId),
@@ -32,7 +32,7 @@ fun FaIconButton(
     iconPainterId: Int,
     modifier: Modifier = Modifier,
     contentDescription: String?,
-    tint: Color = MaterialTheme.colorScheme.surfaceTint,
+    tint: Color = MaterialTheme.colorScheme.onSurface,
     onClick: () -> Unit
 ) {
     IconButton(onClick = onClick) {
