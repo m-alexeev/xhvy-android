@@ -1,8 +1,5 @@
 package com.example.xhvy.navigation
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -76,45 +73,15 @@ fun MainNavigation(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(innerPadding),
             startDestination = MainStack.DashboardRoute
         ) {
-            composable<MainStack.DashboardRoute>(enterTransition = {
-                return@composable slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.End, tween(700)
-                )
-            }, exitTransition = {
-                return@composable slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
-                )
-            }, popEnterTransition = {
-                return@composable fadeIn(tween(1000))
-            }) {
+            composable<MainStack.DashboardRoute> {
                 Dashboard(modifier = Modifier)
             }
-            composable<MainStack.WorkoutRoute>(enterTransition = {
-                return@composable slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.End, tween(700)
-                )
-            }, exitTransition = {
-                return@composable slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
-                )
-            }, popEnterTransition = {
-                return@composable fadeIn(tween(1000))
-            }) {
+            composable<MainStack.WorkoutRoute> {
                 Column {
                     Text(text = "Workouts")
                 }
             }
-            composable<MainStack.ExercisesRoute>(enterTransition = {
-                return@composable slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
-                )
-            }, exitTransition = {
-                return@composable slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.End, tween(700)
-                )
-            }, popEnterTransition = {
-                return@composable fadeIn(tween(1000))
-            }) {
+            composable<MainStack.ExercisesRoute> {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     ExerciseItemScreen(
                         modifier = Modifier.padding(innerPadding)
