@@ -29,11 +29,13 @@ import com.example.xhvy.ui.theme.XhvyTheme
 @Composable
 fun BottomNavBar(modifier: Modifier = Modifier, content: @Composable() (RowScope.() -> Unit)) {
     Surface(
-        modifier = modifier.padding(bottom = 12.dp)
+        modifier = modifier,
+        shadowElevation = 8.dp
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(bottom = 16.dp)
                 .height(60.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround,
@@ -51,14 +53,13 @@ fun BottomNavBarItem(
     modifier: Modifier = Modifier,
     label: @Composable() ((color: Color) -> Unit)? = null,
     selectedColor: Color = MaterialTheme.colorScheme.primary,
-    unSelectedColor: Color = MaterialTheme.colorScheme.onSurface,
+    unSelectedColor: Color = MaterialTheme.colorScheme.secondary,
 ) {
     val color: Color = if (selected) selectedColor else unSelectedColor;
 
     Box(
         modifier = modifier
             .wrapContentHeight(unbounded = true)
-            .size(96.dp, 96.dp)
             .clickable(
                 onClick = {
                     onClick()

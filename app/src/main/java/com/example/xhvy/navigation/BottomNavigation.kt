@@ -19,17 +19,9 @@ import com.example.xhvy.R
 import com.example.xhvy.ui.components.general.FaIcon
 import com.example.xhvy.ui.screens.Dashboard
 import com.example.xhvy.ui.screens.ExerciseItemScreen
+import com.example.xhvy.ui.screens.HistoryScreen
+import com.example.xhvy.ui.screens.MeasureScreen
 
-
-enum class BottomNavigation(val label: String, val iconResId: Int, val route: MainStack) {
-    DASHBOARD(
-        "Dashboard",
-        R.drawable.ic_dashboard,
-        MainStack.DashboardRoute
-    ),
-    WORKOUTS("Workouts", R.drawable.ic_plus, MainStack.WorkoutRoute),
-    EXERCISES("Exercises", R.drawable.ic_dumbbell, MainStack.ExercisesRoute),
-}
 
 @Composable
 fun MainNavigation(modifier: Modifier = Modifier) {
@@ -76,6 +68,9 @@ fun MainNavigation(modifier: Modifier = Modifier) {
             composable<MainStack.DashboardRoute> {
                 Dashboard(modifier = Modifier)
             }
+            composable<MainStack.HistoryRoute>{
+                HistoryScreen()
+            }
             composable<MainStack.WorkoutRoute> {
                 Column {
                     Text(text = "Workouts")
@@ -88,7 +83,9 @@ fun MainNavigation(modifier: Modifier = Modifier) {
                     )
                 }
             }
-
+            composable<MainStack.MeasurementsRoute> {
+                MeasureScreen()
+            }
         }
     }
 
