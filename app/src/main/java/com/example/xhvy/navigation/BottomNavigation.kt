@@ -1,6 +1,5 @@
 package com.example.xhvy.navigation
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -14,13 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import com.example.xhvy.R
 import com.example.xhvy.ui.components.general.FaIcon
-import com.example.xhvy.ui.screens.Dashboard
+import com.example.xhvy.ui.screens.DashboardScreen
 import com.example.xhvy.ui.screens.ExerciseItemScreen
 import com.example.xhvy.ui.screens.HistoryScreen
 import com.example.xhvy.ui.screens.MeasureScreen
+import com.example.xhvy.ui.screens.NewWorkoutScreen
+import com.example.xhvy.ui.screens.WorkoutScreen
 
 
 @Composable
@@ -66,14 +67,18 @@ fun MainNavigation(modifier: Modifier = Modifier) {
             startDestination = MainStack.DashboardRoute
         ) {
             composable<MainStack.DashboardRoute> {
-                Dashboard(modifier = Modifier)
+                DashboardScreen(modifier = Modifier)
             }
-            composable<MainStack.HistoryRoute>{
+            composable<MainStack.HistoryRoute> {
                 HistoryScreen()
             }
-            composable<MainStack.WorkoutRoute> {
-                Column {
-                    Text(text = "Workouts")
+
+            navigation<MainStack.WorkoutRoute>(startDestination = WorkoutStack.AllWorkouts) {
+                composable<WorkoutStack.AllWorkouts> {
+                    WorkoutScreen(navController)
+                }
+                composable<WorkoutStack.NewWorkout> {
+                    NewWorkoutScreen()
                 }
             }
             composable<MainStack.ExercisesRoute> {

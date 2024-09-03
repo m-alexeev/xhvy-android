@@ -21,6 +21,13 @@ sealed class MainStack() {
     data object MeasurementsRoute : MainStack()
 }
 
+sealed class WorkoutStack(){
+    @Serializable
+    data object AllWorkouts: WorkoutStack()
+
+    @Serializable
+    data object NewWorkout: WorkoutStack()
+}
 
 enum class BottomNavigation(val label: String, val iconResId: Int, val route: MainStack) {
     DASHBOARD(
@@ -33,3 +40,5 @@ enum class BottomNavigation(val label: String, val iconResId: Int, val route: Ma
     EXERCISES("Exercises", R.drawable.ic_dumbbell, MainStack.ExercisesRoute),
     MEASURE("Measure", R.drawable.ic_ruler, MainStack.MeasurementsRoute)
 }
+
+

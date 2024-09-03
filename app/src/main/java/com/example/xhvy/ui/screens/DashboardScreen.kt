@@ -24,7 +24,7 @@ import com.example.xhvy.ui.components.dashboard.ProfileHeading
 import com.example.xhvy.ui.theme.XhvyTheme
 
 @Composable
-fun Dashboard(modifier: Modifier = Modifier) {
+fun DashboardScreen(modifier: Modifier = Modifier) {
     Scaffold(topBar = {
         Row(
             modifier = Modifier
@@ -60,6 +60,6 @@ fun Dashboard(modifier: Modifier = Modifier) {
 @Composable
 fun DashboardPreview() {
     XhvyTheme {
-        Dashboard()
+        DashboardScreen()
     }
 }

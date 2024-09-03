@@ -16,8 +16,6 @@ class Workout: Saveable{
         exercises.remove(exercise)
     }
 
-
-
     override fun save() {
         TODO("Not yet implemented")
     }
