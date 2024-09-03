@@ -6,15 +6,15 @@ class WorkoutExercise(
     category: ExerciseCategory,
     bodyType: ExerciseBodyType
 ) : Exercise(id, name, category, bodyType) {
-    private var completed: Boolean = false;
+    private var completed: Boolean = false
     private var exerciseSets: MutableList<ExerciseSet> = mutableListOf()
 
     fun isCompleted(): Boolean {
-        return completed;
+        return completed
     }
 
     private fun completeExercise() {
-        completed = true;
+        completed = true
     }
 
     fun getSets(): List<ExerciseSet> {
@@ -29,9 +29,9 @@ class WorkoutExercise(
     fun addSet() {
         // Create new set based on previous set or initialize to 0
         // Completion is false by default
-        val newSet: ExerciseSet = ExerciseSet(exerciseSets.size, 0, 0.0f)
+        val newSet = ExerciseSet(exerciseSets.size, 0, 0.0f)
         if (exerciseSets.size > 0) {
-            val lastSet: ExerciseSet = exerciseSets.get(exerciseSets.lastIndex)
+            val lastSet: ExerciseSet = exerciseSets[exerciseSets.lastIndex]
             newSet.weight = lastSet.weight
             newSet.repetitions = lastSet.repetitions
         }
@@ -62,6 +62,7 @@ class WorkoutExercise(
                 break
             }
         }
+        this.completed = exerciseComplete
     }
 
 }
