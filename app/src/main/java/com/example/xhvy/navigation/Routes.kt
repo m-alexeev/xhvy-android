@@ -1,6 +1,7 @@
 package com.example.xhvy.navigation
 
 import com.example.xhvy.R
+import com.example.xhvy.data.models.Exercise
 import kotlinx.serialization.Serializable
 
 
@@ -27,6 +28,17 @@ sealed class WorkoutStack(){
 
     @Serializable
     data object NewWorkout: WorkoutStack()
+}
+
+sealed class ExerciseStack(){
+    @Serializable
+    data object AllExercises: ExerciseStack()
+
+    @Serializable
+    data object NewExercise: ExerciseStack()
+
+    @Serializable
+    data object EditExercise: ExerciseStack()
 }
 
 enum class BottomNavigation(val label: String, val iconResId: Int, val route: MainStack) {

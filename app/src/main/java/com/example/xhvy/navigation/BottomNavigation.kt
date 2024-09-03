@@ -72,7 +72,6 @@ fun MainNavigation(modifier: Modifier = Modifier) {
             composable<MainStack.HistoryRoute> {
                 HistoryScreen()
             }
-
             navigation<MainStack.WorkoutRoute>(startDestination = WorkoutStack.AllWorkouts) {
                 composable<WorkoutStack.AllWorkouts> {
                     WorkoutScreen(navController)
@@ -81,11 +80,19 @@ fun MainNavigation(modifier: Modifier = Modifier) {
                     NewWorkoutScreen()
                 }
             }
-            composable<MainStack.ExercisesRoute> {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ExerciseItemScreen(
-                        modifier = Modifier.padding(innerPadding)
-                    )
+            navigation<MainStack.ExercisesRoute>(startDestination = ExerciseStack.AllExercises) {
+                composable<ExerciseStack.AllExercises> {
+                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                        ExerciseItemScreen(
+                            modifier = Modifier.padding(innerPadding)
+                        )
+                    }
+                }
+                composable<ExerciseStack.NewExercise> {
+                    Text(text = "New Exercise")
+                }
+                composable<ExerciseStack.EditExercise> {
+                    Text(text = "Edit Exercise")
                 }
             }
             composable<MainStack.MeasurementsRoute> {
