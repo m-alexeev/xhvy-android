@@ -9,8 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
@@ -29,13 +28,12 @@ import com.example.xhvy.ui.theme.XhvyTheme
 @Composable
 fun BottomNavBar(modifier: Modifier = Modifier, content: @Composable() (RowScope.() -> Unit)) {
     Surface(
-        modifier = modifier,
+        modifier = modifier.systemBarsPadding(),
         shadowElevation = 8.dp
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 16.dp)
                 .height(60.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround,
@@ -55,7 +53,7 @@ fun BottomNavBarItem(
     selectedColor: Color = MaterialTheme.colorScheme.primary,
     unSelectedColor: Color = MaterialTheme.colorScheme.secondary,
 ) {
-    val color: Color = if (selected) selectedColor else unSelectedColor;
+    val color: Color = if (selected) selectedColor else unSelectedColor
 
     Box(
         modifier = modifier
