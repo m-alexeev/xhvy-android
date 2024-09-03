@@ -1,6 +1,8 @@
-package com.example.xhvy.data.models
+package com.example.xhvy.data.repositories
 
-class ExerciseList(exercisesList: List<Exercise>) {
+import com.example.xhvy.data.models.Exercise
+
+class ExerciseRepository(exercisesList: List<Exercise>) {
     private val exercises: LinkedHashMap<Int, Exercise> = LinkedHashMap()
     init{
         // insert existing exercises into

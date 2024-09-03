@@ -27,7 +27,7 @@ enum class ExerciseBodyType{
 }
 
 
-class Exercise(
+open class Exercise(
     val id: Int,
     val name: String,
     val category: ExerciseCategory,
@@ -58,3 +58,4 @@ class Exercise(
         return result
     }
 }
+
