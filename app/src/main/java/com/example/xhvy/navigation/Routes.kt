@@ -1,7 +1,6 @@
 package com.example.xhvy.navigation
 
 import com.example.xhvy.R
-import com.example.xhvy.data.models.Exercise
 import kotlinx.serialization.Serializable
 
 
@@ -22,23 +21,23 @@ sealed class MainStack() {
     data object MeasurementsRoute : MainStack()
 }
 
-sealed class WorkoutStack(){
+sealed class WorkoutStack() {
     @Serializable
-    data object AllWorkouts: WorkoutStack()
+    data object WorkoutRoute : WorkoutStack()
 
     @Serializable
-    data object NewWorkout: WorkoutStack()
+    data object NewWorkout : WorkoutStack()
 }
 
-sealed class ExerciseStack(){
+sealed class ExerciseStack() {
     @Serializable
-    data object AllExercises: ExerciseStack()
+    data object ExercisesRoute : ExerciseStack()
 
     @Serializable
-    data object NewExercise: ExerciseStack()
+    data object NewExercise : ExerciseStack()
 
     @Serializable
-    data object EditExercise: ExerciseStack()
+    data object EditExercise : ExerciseStack()
 }
 
 enum class BottomNavigation(val label: String, val iconResId: Int, val route: MainStack) {
@@ -53,4 +52,9 @@ enum class BottomNavigation(val label: String, val iconResId: Int, val route: Ma
     MEASURE("Measure", R.drawable.ic_ruler, MainStack.MeasurementsRoute)
 }
 
-
+fun showBottomNavBar(currentRoute: String?): Boolean {
+    if (currentRoute == null) {
+        return false
+    }
+    return BottomNavigation.entries.find { it.route::class.simpleName == currentRoute } != null
+}

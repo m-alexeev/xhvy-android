@@ -4,7 +4,7 @@ class WorkoutExercise(
     id: Int,
     name: String,
     category: ExerciseCategory,
-    bodyType: ExerciseBodyType
+    bodyType: ExerciseBodyPart
 ) : Exercise(id, name, category, bodyType) {
     private var completed: Boolean = false
     private var exerciseSets: MutableList<ExerciseSet> = mutableListOf()

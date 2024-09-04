@@ -12,7 +12,7 @@ enum class ExerciseCategory {
 }
 
 
-enum class ExerciseBodyType{
+enum class ExerciseBodyPart{
     NONE,
     CORE,
     ARMS,
@@ -31,7 +31,7 @@ open class Exercise(
     val id: Int,
     val name: String,
     val category: ExerciseCategory,
-    val bodyType: ExerciseBodyType,
+    val bodyPart: ExerciseBodyPart,
 ){
 
 
@@ -54,7 +54,7 @@ open class Exercise(
         var result = id
         result = 31 * result + name.hashCode()
         result = 31 * result + category.hashCode()
-        result = 31 * result + bodyType.hashCode()
+        result = 31 * result + bodyPart.hashCode()
         return result
     }
 }

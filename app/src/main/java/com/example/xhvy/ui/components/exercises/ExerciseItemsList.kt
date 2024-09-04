@@ -22,7 +22,6 @@ import java.util.Locale
 
 @Composable
 fun ExerciseItemsList(exercises: List<Exercise>, modifier: Modifier = Modifier) {
-
     LazyColumn(modifier) {
         items(items = exercises, key = {it.id}) { exercise ->
             ExerciseRowItem(exercise = exercise)
@@ -41,7 +40,6 @@ fun TitledSection(
             stringResource(id = title).uppercase(Locale.getDefault()),
             style = MaterialTheme.typography.titleSmall,
             modifier = Modifier
-                .paddingFromBaseline(top = 40.dp, bottom = 8.dp)
                 .padding(horizontal = 12.dp)
         )
         content()

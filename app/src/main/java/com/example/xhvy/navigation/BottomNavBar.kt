@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,14 +29,16 @@ import com.example.xhvy.ui.theme.XhvyTheme
 
 @Composable
 fun BottomNavBar(modifier: Modifier = Modifier, content: @Composable() (RowScope.() -> Unit)) {
+    val windowInsets: WindowInsets = NavigationBarDefaults.windowInsets
     Surface(
-        modifier = modifier.systemBarsPadding(),
-        shadowElevation = 8.dp
+        modifier = Modifier.windowInsetsPadding(WindowInsets(0.dp)),
+        shadowElevation = 12.dp,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp),
+                .windowInsetsPadding(windowInsets)
+                .defaultMinSize(minHeight = 60.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround,
             content = content
