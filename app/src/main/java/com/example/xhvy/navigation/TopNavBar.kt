@@ -31,7 +31,7 @@ fun TopNavBar(
     rightMenu: @Composable() (() -> Unit)? = null
 ) {
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .height(72.dp)
             .fillMaxWidth(),
         shadowElevation = 12.dp,
@@ -57,7 +57,7 @@ fun TopNavBar(
 @Composable
 fun TopNavBarPreview() {
     XhvyTheme {
-        var scrollState = rememberScrollState()
+        val scrollState = rememberScrollState()
 
         // Define the initial height and the minimum height
         val initialHeight = 200.dp

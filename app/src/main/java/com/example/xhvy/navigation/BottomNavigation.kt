@@ -36,6 +36,7 @@ fun MainNavigation(modifier: Modifier = Modifier) {
 
 
     Scaffold(
+        modifier = modifier,
         bottomBar = {
             if (showBottomNavBar(currentRoute)) {
                 BottomNavBar {

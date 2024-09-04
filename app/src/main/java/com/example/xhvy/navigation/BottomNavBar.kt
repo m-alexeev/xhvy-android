@@ -31,7 +31,7 @@ import com.example.xhvy.ui.theme.XhvyTheme
 fun BottomNavBar(modifier: Modifier = Modifier, content: @Composable() (RowScope.() -> Unit)) {
     val windowInsets: WindowInsets = NavigationBarDefaults.windowInsets
     Surface(
-        modifier = Modifier.windowInsetsPadding(WindowInsets(0.dp)),
+        modifier = modifier.windowInsetsPadding(WindowInsets(0.dp)),
         shadowElevation = 12.dp,
     ) {
         Row(

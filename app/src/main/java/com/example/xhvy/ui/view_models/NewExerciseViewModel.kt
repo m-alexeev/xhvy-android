@@ -9,8 +9,8 @@ import com.example.xhvy.data.models.ExerciseCategory
 
 class NewExerciseViewModel : ViewModel() {
     private var _name by mutableStateOf("")
-    private var _category by mutableStateOf<ExerciseCategory?>(null);
-    private var _bodyPart by mutableStateOf<ExerciseBodyPart?>(null);
+    private var _category by mutableStateOf<ExerciseCategory?>(null)
+    private var _bodyPart by mutableStateOf<ExerciseBodyPart?>(null)
 
 
     val name: String
