@@ -34,5 +34,4 @@ class NewExerciseViewModel : ViewModel() {
         _bodyPart = bodyPart
     }
 
-
 }

@@ -15,15 +15,24 @@ import androidx.compose.ui.unit.dp
 import com.example.xhvy.R
 import com.example.xhvy.data.models.Exercise
 import com.example.xhvy.ui.theme.XhvyTheme
+import com.example.xhvy.ui.view_models.ExercisesViewModel
 import com.example.xhvy.ui.view_models.getExercises
 import java.util.Locale
 
 
 @Composable
-fun ExerciseItemsList(exercises: List<Exercise>, modifier: Modifier = Modifier) {
+fun ExerciseItemsList(
+    exercises: List<Exercise>,
+    exercisesViewModel: ExercisesViewModel?,
+    modifier: Modifier = Modifier,
+) {
     LazyColumn(modifier) {
-        items(items = exercises, key = {it.id}) { exercise ->
-            ExerciseRowItem(exercise = exercise)
+        items(items = exercises, key = { it.id }) { exercise ->
+            ExerciseRowItem(
+                exercise = exercise,
+                onDelete = {
+                    exercisesViewModel?.deleteExercise(exercise)
+                })
         }
     }
 }
@@ -50,7 +59,10 @@ fun TitledSection(
 @Composable
 fun ExerciseItemsListPreview() {
     XhvyTheme {
-        ExerciseItemsList(getExercises)
+        ExerciseItemsList(
+            getExercises,
+            null
+        )
     }
 }
 

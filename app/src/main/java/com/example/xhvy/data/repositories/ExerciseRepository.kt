@@ -9,6 +9,10 @@ class ExerciseRepository(private val exerciseDAO: ExerciseDAO) {
         exerciseDAO.insertExercise(exercise)
     }
 
+    fun deleteExercise(exercise: Exercise) {
+        exerciseDAO.delete(exercise)
+    }
+
     fun getAllExercises(): Flow<List<Exercise>> {
         return exerciseDAO.getExercises()
     }

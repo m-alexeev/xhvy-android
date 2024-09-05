@@ -9,13 +9,13 @@ import com.example.xhvy.data.models.Exercise
 import com.example.xhvy.data.models.ExerciseBodyPart
 import com.example.xhvy.data.models.ExerciseCategory
 import com.example.xhvy.data.repositories.ExerciseRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ExercisesViewModel(private val exerciseRepository: ExerciseRepository) : ViewModel() {
-//    private val _exercises = getExercises.toMutableStateList()
     private var _search by mutableStateOf("")
     private val _exercises = MutableStateFlow<List<Exercise>>(emptyList())
     val exercises: StateFlow<List<Exercise>> = _exercises.asStateFlow()
@@ -24,7 +24,7 @@ class ExercisesViewModel(private val exerciseRepository: ExerciseRepository) : V
         // Collect changes from the database
         viewModelScope.launch {
             exerciseRepository.getAllExercises().collect { exerciseList ->
-                _exercises.value = exerciseList
+                _exercises.value = exerciseList.sortedBy { e -> e.name }
             }
         }
     }
@@ -55,16 +55,19 @@ class ExercisesViewModel(private val exerciseRepository: ExerciseRepository) : V
     }
 
     fun addExercise(exercise: Exercise) {
-//        _exercises.add(exercise)
         viewModelScope.launch {
             exerciseRepository.insertExercise(exercise)
         }
     }
-//
-//    fun removeExercise(exercise: Exercise) {
-//        _exercises.remove(exercise)
-//    }
-//
+
+    fun deleteExercise(exercise: Exercise) {
+        assert(exercise.deletable)
+        viewModelScope.launch(Dispatchers.IO) {
+            exerciseRepository.deleteExercise(exercise)
+        }
+    }
+
+
 //    fun updateExercise(exercise: Exercise) {
 //        val index = _exercises.indexOf(exercise)
 //        _exercises[index] = exercise
@@ -73,15 +76,16 @@ class ExercisesViewModel(private val exerciseRepository: ExerciseRepository) : V
 }
 
 val getExercises = listOf(
-
     Exercise(1, "Bench Press", ExerciseCategory.BARBELL, ExerciseBodyPart.CHEST),
     Exercise(2, "Squat", ExerciseCategory.BARBELL, ExerciseBodyPart.LEGS),
     Exercise(3, "Deadlift", ExerciseCategory.BARBELL, ExerciseBodyPart.BACK),
     Exercise(4, "Overhead Press", ExerciseCategory.BARBELL, ExerciseBodyPart.SHOULDERS),
     Exercise(5, "Barbell Row", ExerciseCategory.BARBELL, ExerciseBodyPart.BACK),
 
-    Exercise(6,
-        "Dumbbell Curl", ExerciseCategory.DUMBBELL, ExerciseBodyPart.ARMS),
+    Exercise(
+        6,
+        "Dumbbell Curl", ExerciseCategory.DUMBBELL, ExerciseBodyPart.ARMS
+    ),
     Exercise(7, "Dumbbell Fly", ExerciseCategory.DUMBBELL, ExerciseBodyPart.CHEST),
     Exercise(
         8,

@@ -47,8 +47,6 @@ fun NewExerciseScreen(
         mutableStateOf(false)
     }
 
-
-
     Scaffold(topBar = { TopNavBar(label = "New Exercise") }) { innerPadding ->
         Box(
             Modifier
@@ -126,7 +124,8 @@ fun NewExerciseScreen(
                                 val exercise = Exercise(
                                     name = newExerciseViewModel.name,
                                     category = newExerciseViewModel.category!!,
-                                    bodyPart = newExerciseViewModel.bodyPart!!
+                                    bodyPart = newExerciseViewModel.bodyPart!!,
+                                    deletable = true
                                 )
                                 exercisesViewModel.addExercise(exercise)
                                 navHostController.popBackStack()

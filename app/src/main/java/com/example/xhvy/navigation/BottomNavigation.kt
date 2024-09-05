@@ -105,18 +105,16 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
             }
             navigation<MainStack.ExercisesRoute>(startDestination = ExerciseStack.ExercisesRoute) {
 
-                composable<ExerciseStack.ExercisesRoute> { entry ->
-//                    val viewModel = entry.sharedViewModel<ExercisesViewModel>(navController)
+                composable<ExerciseStack.ExercisesRoute> {
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                        ExerciseItemScreen(
+                    ExerciseItemScreen(
                             navController = navController,
                             exercisesViewModel = exerciseViewModel,
                             modifier = Modifier.padding(innerPadding)
                         )
                     }
                 }
-                composable<ExerciseStack.NewExercise> { entry ->
-//                    val viewModel = entry.sharedViewModel<ExercisesViewModel>(navController)
+                composable<ExerciseStack.NewExercise> {
                     NewExerciseScreen(
                         exercisesViewModel = exerciseViewModel,
                         navHostController = navController,

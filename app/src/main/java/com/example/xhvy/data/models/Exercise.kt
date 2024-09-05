@@ -1,11 +1,12 @@
 package com.example.xhvy.data.models
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlin.enums.EnumEntries
 import kotlin.enums.enumEntries
 
-enum class ExerciseCategory(val displayName: String) {
+enum class ExerciseCategory(private val displayName: String) {
     BARBELL("Barbell"),
     DUMBBELL("Dumbbell"),
     MACHINE("Machine"),
@@ -23,7 +24,7 @@ enum class ExerciseCategory(val displayName: String) {
 @OptIn(ExperimentalStdlibApi::class)
 val exerciseCategories: EnumEntries<ExerciseCategory> = enumEntries<ExerciseCategory>()
 
-enum class ExerciseBodyPart(val displayName: String) {
+enum class ExerciseBodyPart(private val displayName: String) {
     CORE("Core"),
     ARMS("Arms"),
     BACK("Back"),
@@ -50,6 +51,10 @@ open class Exercise(
     val name: String,
     val category: ExerciseCategory,
     val bodyPart: ExerciseBodyPart,
+    @ColumnInfo(
+        typeAffinity = ColumnInfo.INTEGER,
+        defaultValue = "0"
+    ) val deletable: Boolean = false,
 ) {
 
 
