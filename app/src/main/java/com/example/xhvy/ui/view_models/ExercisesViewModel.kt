@@ -3,31 +3,49 @@ package com.example.xhvy.ui.view_models
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.xhvy.data.models.Exercise
 import com.example.xhvy.data.models.ExerciseBodyPart
 import com.example.xhvy.data.models.ExerciseCategory
+import com.example.xhvy.data.repositories.ExerciseRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
-class ExercisesViewModel : ViewModel() {
-    private val _exercises = getExercises.toMutableStateList()
+class ExercisesViewModel(private val exerciseRepository: ExerciseRepository) : ViewModel() {
+//    private val _exercises = getExercises.toMutableStateList()
     private var _search by mutableStateOf("")
+    private val _exercises = MutableStateFlow<List<Exercise>>(emptyList())
+    val exercises: StateFlow<List<Exercise>> = _exercises.asStateFlow()
 
-    val exercises: List<Exercise>
-        get() = if (_search.isEmpty()) {
-            _exercises
-        } else {
-            _exercises.filter { exercise ->
-                exercise.name.contains(
-                    _search,
-                    ignoreCase = true
-                ) || exercise.category.name.contains(
-                    _search,
-                    ignoreCase = true
-                )
+    init {
+        // Collect changes from the database
+        viewModelScope.launch {
+            exerciseRepository.getAllExercises().collect { exerciseList ->
+                _exercises.value = exerciseList
             }
         }
-    
+    }
+
+
+//
+//    val exercises: List<Exercise>
+//        get() = if (_search.isEmpty()) {
+//            _exercises.sortedBy { e -> e.name }
+//        } else {
+//            _exercises.filter { exercise ->
+//                exercise.name.contains(
+//                    _search,
+//                    ignoreCase = true
+//                ) || exercise.category.name.contains(
+//                    _search,
+//                    ignoreCase = true
+//                )
+//            }
+//        }
+
     val search: String
         get() = _search
 
@@ -36,17 +54,34 @@ class ExercisesViewModel : ViewModel() {
         _search = newSearch
     }
 
+    fun addExercise(exercise: Exercise) {
+//        _exercises.add(exercise)
+        viewModelScope.launch {
+            exerciseRepository.insertExercise(exercise)
+        }
+    }
+//
+//    fun removeExercise(exercise: Exercise) {
+//        _exercises.remove(exercise)
+//    }
+//
+//    fun updateExercise(exercise: Exercise) {
+//        val index = _exercises.indexOf(exercise)
+//        _exercises[index] = exercise
+//    }
+
 }
 
-
 val getExercises = listOf(
+
     Exercise(1, "Bench Press", ExerciseCategory.BARBELL, ExerciseBodyPart.CHEST),
     Exercise(2, "Squat", ExerciseCategory.BARBELL, ExerciseBodyPart.LEGS),
     Exercise(3, "Deadlift", ExerciseCategory.BARBELL, ExerciseBodyPart.BACK),
     Exercise(4, "Overhead Press", ExerciseCategory.BARBELL, ExerciseBodyPart.SHOULDERS),
     Exercise(5, "Barbell Row", ExerciseCategory.BARBELL, ExerciseBodyPart.BACK),
 
-    Exercise(6, "Dumbbell Curl", ExerciseCategory.DUMBBELL, ExerciseBodyPart.ARMS),
+    Exercise(6,
+        "Dumbbell Curl", ExerciseCategory.DUMBBELL, ExerciseBodyPart.ARMS),
     Exercise(7, "Dumbbell Fly", ExerciseCategory.DUMBBELL, ExerciseBodyPart.CHEST),
     Exercise(
         8,

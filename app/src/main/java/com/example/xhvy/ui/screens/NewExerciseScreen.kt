@@ -26,23 +26,29 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.xhvy.data.models.Exercise
 import com.example.xhvy.data.models.exerciseBodyParts
 import com.example.xhvy.data.models.exerciseCategories
 import com.example.xhvy.navigation.TopNavBar
 import com.example.xhvy.ui.components.general.DialogWithList
 import com.example.xhvy.ui.theme.XhvyTheme
+import com.example.xhvy.ui.view_models.ExercisesViewModel
 import com.example.xhvy.ui.view_models.NewExerciseViewModel
 
 @Composable
 fun NewExerciseScreen(
     navHostController: NavHostController,
     modifier: Modifier = Modifier,
+    exercisesViewModel: ExercisesViewModel = viewModel(),
     newExerciseViewModel: NewExerciseViewModel = viewModel()
 ) {
     var openCategory by remember { mutableStateOf(false) }
     var openBodyPart by remember {
         mutableStateOf(false)
     }
+
+
+
     Scaffold(topBar = { TopNavBar(label = "New Exercise") }) { innerPadding ->
         Box(
             Modifier
@@ -52,10 +58,8 @@ fun NewExerciseScreen(
                 .fillMaxWidth()
         ) {
             Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-                TextField(
-                    label = { Text(text = "Name") },
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                TextField(label = { Text(text = "Name") },
+                    modifier = Modifier.fillMaxWidth(),
                     placeholder = { Text(text = "Exercise Name") },
                     value = newExerciseViewModel.name,
                     onValueChange = { newExerciseViewModel.updateName(it) })
@@ -83,10 +87,7 @@ fun NewExerciseScreen(
                         text = if (newExerciseViewModel.bodyPart != null) newExerciseViewModel.bodyPart.toString() else "None",
                         modifier = Modifier.clickable { openBodyPart = true },
                         color = if (newExerciseViewModel.bodyPart != null) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.surfaceDim
-
                     )
-
-
                 }
             }
             if (openCategory) {
@@ -119,7 +120,18 @@ fun NewExerciseScreen(
                         Text(text = "Cancel")
                     }
                     Button(
-                        onClick = {},
+                        enabled = newExerciseViewModel.name.isNotEmpty() && newExerciseViewModel.bodyPart != null && newExerciseViewModel.category != null,
+                        onClick = {
+                            if (newExerciseViewModel.name.isNotEmpty() && newExerciseViewModel.bodyPart != null && newExerciseViewModel.category != null) {
+                                val exercise = Exercise(
+                                    name = newExerciseViewModel.name,
+                                    category = newExerciseViewModel.category!!,
+                                    bodyPart = newExerciseViewModel.bodyPart!!
+                                )
+                                exercisesViewModel.addExercise(exercise)
+                                navHostController.popBackStack()
+                            }
+                        },
                     ) {
                         Text(text = "Create")
                     }

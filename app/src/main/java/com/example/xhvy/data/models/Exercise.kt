@@ -1,5 +1,7 @@
 package com.example.xhvy.data.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlin.enums.EnumEntries
 import kotlin.enums.enumEntries
 
@@ -42,9 +44,9 @@ enum class ExerciseBodyPart(val displayName: String) {
 @OptIn(ExperimentalStdlibApi::class)
 val exerciseBodyParts: EnumEntries<ExerciseBodyPart> = enumEntries<ExerciseBodyPart>()
 
-
+@Entity(tableName = "exercises")
 open class Exercise(
-    val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val category: ExerciseCategory,
     val bodyPart: ExerciseBodyPart,

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,6 +27,9 @@ fun ExerciseItemScreen(
     navController: NavHostController,
     exercisesViewModel: ExercisesViewModel = viewModel()
 ) {
+
+    val exercises = exercisesViewModel.exercises.collectAsState().value
+
     Scaffold(topBar = {
         TopNavBar(
             label = "Exercises",
@@ -33,7 +37,7 @@ fun ExerciseItemScreen(
     }) { innerPadding ->
         Column(modifier.padding(innerPadding)) {
             ExerciseItemsList(
-                exercises = exercisesViewModel.exercises,
+                exercises = exercises,
             )
         }
     }

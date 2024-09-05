@@ -1,6 +1,7 @@
 package com.example.xhvy.ui.components.general
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,9 +22,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.xhvy.R
 import com.example.xhvy.data.models.exerciseCategories
 import com.example.xhvy.ui.theme.XhvyTheme
 
@@ -74,18 +77,28 @@ fun <T> DialogWithList(
                         }
                     }
                 }
-                Text(
-                    text = "OK",
-                    modifier = Modifier
-                        .clickable {
-                            onSelect(selected)
-                            onDismissRequest()
-                        }
-                        .align(Alignment.BottomEnd),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                Row(
+                    Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.action_cancel),
+                        modifier = Modifier.clickable { onDismissRequest() })
+                    Text(
+                        text = stringResource(id = R.string.action_confirm),
+                        modifier = Modifier
+                            .clickable {
+                                onSelect(selected)
+                                onDismissRequest()
+                            },
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary,
 
-                    )
+                        )
+                }
+
             }
         }
     }

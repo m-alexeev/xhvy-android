@@ -11,11 +11,18 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Room.databaseBuilder
+import com.example.xhvy.data.repositories.AppDatabase
+import com.example.xhvy.data.repositories.ExerciseRepository
 import com.example.xhvy.ui.components.general.FaIcon
 import com.example.xhvy.ui.screens.DashboardScreen
 import com.example.xhvy.ui.screens.ExerciseItemScreen
@@ -24,15 +31,21 @@ import com.example.xhvy.ui.screens.MeasureScreen
 import com.example.xhvy.ui.screens.NewExerciseScreen
 import com.example.xhvy.ui.screens.NewWorkoutScreen
 import com.example.xhvy.ui.screens.WorkoutScreen
+import com.example.xhvy.ui.view_models.ExercisesViewModel
 
 
 @Composable
-fun MainNavigation(modifier: Modifier = Modifier) {
+fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
     val navController = rememberNavController()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRouteSplit = navBackStackEntry?.destination?.route?.split(".")
     val currentRoute = currentRouteSplit?.get(currentRouteSplit.lastIndex)
+
+
+    val exerciseRepository = ExerciseRepository(database.exerciseDao())
+
+    val exerciseViewModel = ExercisesViewModel(exerciseRepository)
 
 
     Scaffold(
@@ -91,16 +104,23 @@ fun MainNavigation(modifier: Modifier = Modifier) {
                 }
             }
             navigation<MainStack.ExercisesRoute>(startDestination = ExerciseStack.ExercisesRoute) {
-                composable<ExerciseStack.ExercisesRoute> {
+
+                composable<ExerciseStack.ExercisesRoute> { entry ->
+//                    val viewModel = entry.sharedViewModel<ExercisesViewModel>(navController)
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                         ExerciseItemScreen(
                             navController = navController,
+                            exercisesViewModel = exerciseViewModel,
                             modifier = Modifier.padding(innerPadding)
                         )
                     }
                 }
-                composable<ExerciseStack.NewExercise> {
-                    NewExerciseScreen(navHostController = navController)
+                composable<ExerciseStack.NewExercise> { entry ->
+//                    val viewModel = entry.sharedViewModel<ExercisesViewModel>(navController)
+                    NewExerciseScreen(
+                        exercisesViewModel = exerciseViewModel,
+                        navHostController = navController,
+                    )
                 }
                 composable<ExerciseStack.EditExercise> {
                     Text(text = "Edit Exercise")
@@ -111,5 +131,15 @@ fun MainNavigation(modifier: Modifier = Modifier) {
             }
         }
     }
+}
 
+@Composable
+inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
+    navController: NavHostController,
+): T {
+    val navGraphRoute = destination.parent?.route ?: return viewModel()
+    val parentEntry = remember(this) {
+        navController.getBackStackEntry(navGraphRoute)
+    }
+    return viewModel(parentEntry)
 }
