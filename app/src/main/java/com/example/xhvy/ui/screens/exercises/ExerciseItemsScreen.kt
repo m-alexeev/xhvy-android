@@ -1,4 +1,4 @@
-package com.example.xhvy.ui.screens
+package com.example.xhvy.ui.screens.exercises
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column

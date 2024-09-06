@@ -1,4 +1,4 @@
-package com.example.xhvy.ui.screens
+package com.example.xhvy.ui.screens.exercises
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

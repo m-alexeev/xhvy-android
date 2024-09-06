@@ -20,17 +20,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import androidx.room.Room.databaseBuilder
 import com.example.xhvy.data.repositories.AppDatabase
 import com.example.xhvy.data.repositories.ExerciseRepository
 import com.example.xhvy.ui.components.general.FaIcon
 import com.example.xhvy.ui.screens.DashboardScreen
-import com.example.xhvy.ui.screens.ExerciseItemScreen
+import com.example.xhvy.ui.screens.exercises.ExerciseItemScreen
 import com.example.xhvy.ui.screens.HistoryScreen
 import com.example.xhvy.ui.screens.MeasureScreen
-import com.example.xhvy.ui.screens.NewExerciseScreen
-import com.example.xhvy.ui.screens.NewWorkoutScreen
-import com.example.xhvy.ui.screens.WorkoutScreen
+import com.example.xhvy.ui.screens.exercises.NewExerciseScreen
+import com.example.xhvy.ui.screens.workouts.NewWorkoutScreen
+import com.example.xhvy.ui.screens.workouts.WorkoutScreen
 import com.example.xhvy.ui.view_models.ExercisesViewModel
 
 

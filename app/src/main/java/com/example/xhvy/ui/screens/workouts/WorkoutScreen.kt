@@ -1,4 +1,4 @@
-package com.example.xhvy.ui.screens
+package com.example.xhvy.ui.screens.workouts
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight

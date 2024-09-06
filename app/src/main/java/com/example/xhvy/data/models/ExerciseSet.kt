@@ -1,30 +1,21 @@
 package com.example.xhvy.data.models
 
-class ExerciseSet(val id: Int, private var setReps: Int, private var setWeight: Float, private var setCompleted: Boolean = false) {
-    var repetitions: Int
-        get() = this.setReps;
-        set(value) {
-            if (value < 0) {
-                throw IllegalArgumentException("Repetitions cannot be less than 0")
-            } else {
-                setReps = value
-            }
-        }
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 
-    var weight: Float
-        get() = this.setWeight
-        set(value) {
-            if (value < 0) {
-                throw IllegalArgumentException("Weight cannot be less than 0")
-            } else {
-                setWeight = value
-            }
-        }
-
-    var completed: Boolean
-        get() = this.setCompleted
-        set(value){
-            this.setCompleted = value
-        }
-
-}
+@Entity(
+    tableName = "exercise-sets", foreignKeys = [ForeignKey(
+        entity = WorkoutExercise::class,
+        parentColumns = ["id"],
+        childColumns = ["workoutExerciseId"],
+        onDelete = ForeignKey.CASCADE,
+    )]
+)
+data class ExerciseSet(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val reps: Int = 0,
+    val weight: Float = 0.0f,
+    val completed: Boolean = false,
+    val workoutExerciseId: Int,
+)
