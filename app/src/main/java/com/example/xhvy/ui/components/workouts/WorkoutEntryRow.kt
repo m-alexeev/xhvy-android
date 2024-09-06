@@ -43,9 +43,9 @@ class TableColumn(
 fun WorkoutEntryRow(modifier: Modifier = Modifier) {
     val columnWeights = listOf(
         TableColumn("SET", 0.1f),
-        TableColumn("PREVIOUS", .266f),
-        TableColumn("LBS", 0.266f),
-        TableColumn("REPS", 0.266f),
+        TableColumn("PREVIOUS", .3f),
+        TableColumn("LBS", 0.2f),
+        TableColumn("REPS", 0.2f),
         TableColumn("C", 0.1f)
     )
 
@@ -69,69 +69,27 @@ fun WorkoutEntryRow(modifier: Modifier = Modifier) {
             )
         }
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
-
             // Header
             item {
-                Row(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     columnWeights.forEachIndexed { index, item ->
                         TableHeaderColumn(
-                            text = item.title,
+                            text = if (index != columnWeights.lastIndex) item.title else null,
                             weight = item.weight,
-                            columnIndex = index
+                            icon = if (index == columnWeights.lastIndex) R.drawable.ic_check else null
                         )
                     }
                 }
             }
-            // Rows
+            // Data Rows
             items(sampleData) {
                 var checked by remember {
                     mutableStateOf(false)
                 }
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(32.dp)
-                        .background(if (checked) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface)
-                        .padding(vertical = 2.dp),
-
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(text = "$it", Modifier.weight(0.1f), textAlign = TextAlign.Left)
-                    Text(
-                        text = "180 lbs x 8",
-                        Modifier.weight(0.266f),
-                        textAlign = TextAlign.Center
-                    )
-                    StyledInput(
-                        value = "",
-                        onValueChange = {},
-                        modifier = Modifier
-                            .weight(0.266f)
-                    )
-                    StyledInput(
-                        value = "", onValueChange = {},
-                        modifier = Modifier
-                            .weight(0.266f)
-                            .padding(horizontal = 2.dp)
-                    )
-                    Box(
-                        modifier = Modifier
-                            .weight(0.1f)
-                            .fillParentMaxHeight()
-                    ) {
-                        FaIcon(
-                            modifier = Modifier
-                                .size(24.dp)
-                                .align(Alignment.Center)
-                                .clip(RoundedCornerShape(4.dp))
-                                .background(if (checked) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceDim)
-                                .clickable { checked = !checked },
-                            tint = if (checked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,
-                            iconPainterId = R.drawable.ic_check,
-                            contentDescription = null,
-                        )
-                    }
-                }
+                TableRow(it, checked = checked, onChecked = { checked = !checked })
             }
         }
     }
@@ -140,31 +98,92 @@ fun WorkoutEntryRow(modifier: Modifier = Modifier) {
 
 @Composable
 fun RowScope.TableHeaderColumn(
-    columnIndex: Int,
-    text: String?,
+    text: String? = null,
+    icon: Int? = null,
     weight: Float,
 ) {
-    val headerText = text ?: ""
-    Text(
-        text = headerText,
-        modifier = Modifier
-            .weight(weight)
-            .padding(vertical = 8.dp),
-        textAlign = if (columnIndex > 0) TextAlign.Center else TextAlign.Left,
-        color = MaterialTheme.colorScheme.secondary,
-        fontSize = MaterialTheme.typography.labelSmall.fontSize,
-        fontWeight = FontWeight(400)
-    )
+    if (text != null) {
+        Text(
+            text = text,
+            modifier = Modifier
+                .weight(weight)
+                .padding(vertical = 8.dp),
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.secondary,
+            fontSize = MaterialTheme.typography.labelSmall.fontSize,
+            fontWeight = FontWeight(400)
+        )
+    }
+    if (icon != null) {
+        FaIcon(
+            iconPainterId = icon,
+            contentDescription = null,
+            modifier = Modifier
+                .weight(weight)
+                .size(18.dp),
+
+            tint = MaterialTheme.colorScheme.secondary,
+        )
+    }
 }
 
+
 @Composable
-fun RowScope.TableDataColumn(
-    columnIndex: Int,
-    weight: Float,
-    content: @Composable() () -> Unit,
-) {
-    Box(modifier = Modifier.weight(weight)) {
-        content()
+fun TableRow(it: Int, checked: Boolean, onChecked: () -> Unit) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .height(32.dp)
+            .background(if (checked) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface)
+            .padding(vertical = 2.dp),
+
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = "$it",
+            Modifier.weight(0.1f),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.outline
+        )
+        Text(
+            text = "180 lbs x 8",
+            Modifier.weight(0.3f),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.outline
+        )
+        StyledInput(
+            value = "",
+            onValueChange = {},
+            modifier = Modifier
+                .weight(0.2f),
+            backgroundColor = if (checked) MaterialTheme.colorScheme.primaryContainer else null
+
+        )
+        StyledInput(
+            value = "", onValueChange = {},
+            modifier = Modifier
+                .weight(0.2f)
+                .padding(horizontal = 4.dp),
+            backgroundColor = if (checked) MaterialTheme.colorScheme.primaryContainer else null
+        )
+        Box(
+            modifier = Modifier
+                .weight(0.1f)
+        ) {
+            FaIcon(
+                modifier = Modifier
+                    .size(24.dp)
+                    .align(Alignment.Center)
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(if (checked) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceDim)
+                    .clickable { onChecked() },
+                tint = if (checked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,
+                iconPainterId = R.drawable.ic_check,
+                contentDescription = null,
+            )
+        }
     }
 }
 
