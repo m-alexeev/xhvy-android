@@ -20,21 +20,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.xhvy.R
-import com.example.xhvy.data.models.WorkoutExercise
 import com.example.xhvy.domain.utils.calcTimeDifference
+import com.example.xhvy.navigation.WorkoutStack
 import com.example.xhvy.ui.components.general.FaIconButton
 import com.example.xhvy.ui.components.general.StyledButton
 import com.example.xhvy.ui.components.workouts.WorkoutEntryRow
 import com.example.xhvy.ui.theme.XhvyTheme
 import com.example.xhvy.ui.view_models.NewWorkoutViewModel
-import com.example.xhvy.ui.view_models.getExercises
 import java.time.Instant
 import java.util.Date
 
 
 @Composable
-fun NewWorkoutScreen(newWorkoutViewModel: NewWorkoutViewModel = viewModel()) {
+fun NewWorkoutScreen(
+    navHostController: NavHostController,
+    newWorkoutViewModel: NewWorkoutViewModel = viewModel()
+) {
     Column(
         Modifier
             .fillMaxWidth()
@@ -103,14 +107,15 @@ fun NewWorkoutScreen(newWorkoutViewModel: NewWorkoutViewModel = viewModel()) {
                 ) {
                     StyledButton(
                         onClick = {
-                            val exercise = getExercises[0]
-                            val workoutExercise: WorkoutExercise = WorkoutExercise(
-                                id = 0,
-                                exercise = exercise,
-                                completed = false,
-                                mutableListOf()
-                            )
-                            newWorkoutViewModel.addWorkoutExercise(workoutExercise)
+                            navHostController.navigate(WorkoutStack.ExerciseList)
+//                            val exercise = getExercises[0]
+//                            val workoutExercise: WorkoutExercise = WorkoutExercise(
+//                                id = 0,
+//                                exercise = exercise,
+//                                completed = false,
+//                                mutableListOf()
+//                            )
+//                            newWorkoutViewModel.addWorkoutExercise(workoutExercise)
                         },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(6.dp),
@@ -142,6 +147,6 @@ fun NewWorkoutScreen(newWorkoutViewModel: NewWorkoutViewModel = viewModel()) {
 @Composable
 fun NewWorkoutScreenPreview() {
     XhvyTheme {
-        NewWorkoutScreen()
+        NewWorkoutScreen(navHostController = rememberNavController())
     }
 }

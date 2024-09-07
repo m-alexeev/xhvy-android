@@ -1,6 +1,7 @@
 package com.example.xhvy.navigation
 
 import com.example.xhvy.R
+import com.example.xhvy.data.models.WorkoutExercise
 import kotlinx.serialization.Serializable
 
 
@@ -27,6 +28,9 @@ sealed class WorkoutStack() {
 
     @Serializable
     data object NewWorkout : WorkoutStack()
+
+    @Serializable
+    data object ExerciseList: WorkoutStack()
 }
 
 sealed class ExerciseStack() {

@@ -18,15 +18,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.xhvy.data.repositories.AppDatabase
 import com.example.xhvy.data.repositories.ExerciseRepository
 import com.example.xhvy.ui.components.general.FaIcon
 import com.example.xhvy.ui.screens.DashboardScreen
-import com.example.xhvy.ui.screens.exercises.ExerciseItemScreen
 import com.example.xhvy.ui.screens.HistoryScreen
 import com.example.xhvy.ui.screens.MeasureScreen
+import com.example.xhvy.ui.screens.exercises.ExerciseItemScreen
 import com.example.xhvy.ui.screens.exercises.NewExerciseScreen
 import com.example.xhvy.ui.screens.workouts.NewWorkoutScreen
 import com.example.xhvy.ui.screens.workouts.WorkoutScreen
@@ -99,14 +100,19 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
                     WorkoutScreen(navController)
                 }
                 composable<WorkoutStack.NewWorkout> {
-                    NewWorkoutScreen()
+                    NewWorkoutScreen(navController)
+                }
+                dialog<WorkoutStack.ExerciseList> {
+                    ExerciseItemScreen(
+                        navController = navController,
+                        exercisesViewModel = exerciseViewModel
+                    )
                 }
             }
             navigation<MainStack.ExercisesRoute>(startDestination = ExerciseStack.ExercisesRoute) {
-
                 composable<ExerciseStack.ExercisesRoute> {
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ExerciseItemScreen(
+                        ExerciseItemScreen(
                             navController = navController,
                             exercisesViewModel = exerciseViewModel,
                             modifier = Modifier.padding(innerPadding)
