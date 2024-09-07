@@ -5,20 +5,21 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.xhvy.data.entities.ExerciseEntity
 import com.example.xhvy.data.models.Exercise
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExerciseDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertExercise(exercise: Exercise)
+    suspend fun insertExercise(exercise: ExerciseEntity)
 
     @Query("SELECT * FROM exercises")
-    fun getExercises(): Flow<List<Exercise>>
+    fun getExercises(): Flow<List<ExerciseEntity>>
 
     @Delete
-    fun delete(exercise: Exercise)
+    fun delete(exercise: ExerciseEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(listOf: List<Exercise>)
+    fun insertAll(listOf: List<ExerciseEntity>)
 }

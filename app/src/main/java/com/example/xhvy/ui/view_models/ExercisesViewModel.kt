@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.xhvy.data.entities.ExerciseEntity
 import com.example.xhvy.data.models.Exercise
 import com.example.xhvy.data.models.ExerciseBodyPart
 import com.example.xhvy.data.models.ExerciseCategory
@@ -23,28 +24,12 @@ class ExercisesViewModel(private val exerciseRepository: ExerciseRepository) : V
     init {
         // Collect changes from the database
         viewModelScope.launch {
-            exerciseRepository.getAllExercises().collect { exerciseList ->
+            exerciseRepository.getAllExercises().collect { exerciseEntityList ->
+                val exerciseList: List<Exercise> = exerciseEntityList.map { it.toExercise() }
                 _exercises.value = exerciseList.sortedBy { e -> e.name }
             }
         }
     }
-
-
-//
-//    val exercises: List<Exercise>
-//        get() = if (_search.isEmpty()) {
-//            _exercises.sortedBy { e -> e.name }
-//        } else {
-//            _exercises.filter { exercise ->
-//                exercise.name.contains(
-//                    _search,
-//                    ignoreCase = true
-//                ) || exercise.category.name.contains(
-//                    _search,
-//                    ignoreCase = true
-//                )
-//            }
-//        }
 
     val search: String
         get() = _search
@@ -56,14 +41,14 @@ class ExercisesViewModel(private val exerciseRepository: ExerciseRepository) : V
 
     fun addExercise(exercise: Exercise) {
         viewModelScope.launch {
-            exerciseRepository.insertExercise(exercise)
+            exerciseRepository.insertExercise(ExerciseEntity.from(exercise))
         }
     }
 
     fun deleteExercise(exercise: Exercise) {
         assert(exercise.deletable)
         viewModelScope.launch(Dispatchers.IO) {
-            exerciseRepository.deleteExercise(exercise)
+            exerciseRepository.deleteExercise(ExerciseEntity.from(exercise))
         }
     }
 

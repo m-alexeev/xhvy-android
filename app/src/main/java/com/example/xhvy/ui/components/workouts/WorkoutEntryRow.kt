@@ -5,14 +5,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,10 +27,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.xhvy.R
 import com.example.xhvy.ui.components.general.FaIcon
+import com.example.xhvy.ui.components.general.StyledButton
 import com.example.xhvy.ui.components.general.StyledInput
 import com.example.xhvy.ui.theme.XhvyTheme
+import com.example.xhvy.ui.view_models.NewWorkoutViewModel
 
 class TableColumn(
     val title: String?,
@@ -40,7 +42,7 @@ class TableColumn(
 
 
 @Composable
-fun WorkoutEntryRow(modifier: Modifier = Modifier) {
+fun WorkoutEntryRow(modifier: Modifier = Modifier, workoutViewModel: NewWorkoutViewModel) {
     val columnWeights = listOf(
         TableColumn("SET", 0.1f),
         TableColumn("PREVIOUS", .3f),
@@ -68,29 +70,48 @@ fun WorkoutEntryRow(modifier: Modifier = Modifier) {
                 tint = MaterialTheme.colorScheme.primary
             )
         }
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.fillMaxWidth()) {
             // Header
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    columnWeights.forEachIndexed { index, item ->
-                        TableHeaderColumn(
-                            text = if (index != columnWeights.lastIndex) item.title else null,
-                            weight = item.weight,
-                            icon = if (index == columnWeights.lastIndex) R.drawable.ic_check else null
-                        )
-                    }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                columnWeights.forEachIndexed { index, item ->
+                    TableHeaderColumn(
+                        text = if (index != columnWeights.lastIndex) item.title else null,
+                        weight = item.weight,
+                        icon = if (index == columnWeights.lastIndex) R.drawable.ic_check else null
+                    )
                 }
             }
             // Data Rows
-            items(sampleData) {
+            sampleData.forEach {
                 var checked by remember {
                     mutableStateOf(false)
                 }
                 TableRow(it, checked = checked, onChecked = { checked = !checked })
             }
+
+        }
+        StyledButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp),
+            onClick = { /*TODO*/ },
+            contentPadding = PaddingValues(vertical = 2.dp),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            FaIcon(
+                modifier = Modifier.size(18.dp),
+                iconPainterId = R.drawable.ic_plus,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+            )
+            Text(
+                text = "Add Row",
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary,
+            )
         }
     }
 }
@@ -191,6 +212,6 @@ fun TableRow(it: Int, checked: Boolean, onChecked: () -> Unit) {
 @Composable
 fun WorkoutEntryRowPreview() {
     XhvyTheme {
-        WorkoutEntryRow()
+        WorkoutEntryRow(workoutViewModel = viewModel())
     }
 }

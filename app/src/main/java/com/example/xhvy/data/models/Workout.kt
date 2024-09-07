@@ -1,24 +1,14 @@
 package com.example.xhvy.data.models
 
-import com.example.xhvy.domain.interfaces.Saveable
+import java.time.Instant
+import java.util.Date
 
-class Workout: Saveable{
-    private var exercises: MutableList<Exercise> = mutableListOf()
-        get() = field
-
-    fun addExercise(exercise: Exercise){
-        assert(!exercises.contains(exercise))
-        exercises.add(exercise)
-    }
-
-    fun removeExercises(exercise: Exercise){
-        assert(exercises.contains(exercise))
-        exercises.remove(exercise)
-    }
-
-    override fun save() {
-        TODO("Not yet implemented")
-    }
-
+data class Workout(
+    val id: Int = 0,
+    val name: String,
+    val startTime: Date = Date.from(Instant.now()),
+    val endTime: Date? = null,
+    val workoutExercises: MutableList<WorkoutExercise> = mutableListOf()
+) {
 
 }

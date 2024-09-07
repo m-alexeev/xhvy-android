@@ -7,12 +7,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.xhvy.data.entities.ExerciseEntity
 import com.example.xhvy.data.models.Exercise
 import com.example.xhvy.domain.daos.ExerciseDAO
 import kotlin.concurrent.Volatile
 
 
-@Database(entities = [Exercise::class], version = 2)
+@Database(entities = [ExerciseEntity::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDAO
 
