@@ -4,7 +4,7 @@ package com.example.xhvy.data.models
 data class WorkoutExercise(
     val id: Int,
     val exercise: Exercise,
-    var completed: Boolean,
+    var completed: Boolean = false,
     var exerciseSets: MutableList<ExerciseSet> = mutableListOf()
 ) {
     fun getSets(): List<ExerciseSet> {

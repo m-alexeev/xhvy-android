@@ -57,6 +57,7 @@ fun ExerciseItemListSelect(
     }
 
     Column(modifier = modifier.padding(horizontal = 8.dp, vertical = 8.dp)) {
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(bottom = 12.dp)
