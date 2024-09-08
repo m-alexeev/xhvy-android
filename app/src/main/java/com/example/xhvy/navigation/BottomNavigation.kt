@@ -29,6 +29,7 @@ import com.example.xhvy.ui.screens.HistoryScreen
 import com.example.xhvy.ui.screens.MeasureScreen
 import com.example.xhvy.ui.screens.exercises.ExerciseItemScreen
 import com.example.xhvy.ui.screens.exercises.NewExerciseScreen
+import com.example.xhvy.ui.screens.exercises.SelectExerciseModal
 import com.example.xhvy.ui.screens.workouts.NewWorkoutScreen
 import com.example.xhvy.ui.screens.workouts.WorkoutScreen
 import com.example.xhvy.ui.view_models.ExercisesViewModel
@@ -87,7 +88,7 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
             modifier = Modifier
                 .consumeWindowInsets(innerPadding)
                 .padding(innerPadding),
-            startDestination = MainStack.DashboardRoute
+            startDestination = MainStack.WorkoutRoute
         ) {
             composable<MainStack.DashboardRoute> {
                 DashboardScreen(modifier = Modifier)
@@ -95,7 +96,7 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
             composable<MainStack.HistoryRoute> {
                 HistoryScreen()
             }
-            navigation<MainStack.WorkoutRoute>(startDestination = WorkoutStack.WorkoutRoute) {
+            navigation<MainStack.WorkoutRoute>(startDestination = WorkoutStack.NewWorkout) {
                 composable<WorkoutStack.WorkoutRoute> {
                     WorkoutScreen(navController)
                 }
@@ -103,7 +104,7 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
                     NewWorkoutScreen(navController)
                 }
                 dialog<WorkoutStack.ExerciseList> {
-                    ExerciseItemScreen(
+                    SelectExerciseModal(
                         navController = navController,
                         exercisesViewModel = exerciseViewModel
                     )

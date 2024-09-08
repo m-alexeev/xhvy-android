@@ -108,14 +108,6 @@ fun NewWorkoutScreen(
                     StyledButton(
                         onClick = {
                             navHostController.navigate(WorkoutStack.ExerciseList)
-//                            val exercise = getExercises[0]
-//                            val workoutExercise: WorkoutExercise = WorkoutExercise(
-//                                id = 0,
-//                                exercise = exercise,
-//                                completed = false,
-//                                mutableListOf()
-//                            )
-//                            newWorkoutViewModel.addWorkoutExercise(workoutExercise)
                         },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(6.dp),

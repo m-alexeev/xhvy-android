@@ -18,15 +18,18 @@ import kotlinx.coroutines.launch
 
 class ExercisesViewModel(private val exerciseRepository: ExerciseRepository) : ViewModel() {
     private var _search by mutableStateOf("")
-    private val _exercises = MutableStateFlow<List<Exercise>>(emptyList())
-    val exercises: StateFlow<List<Exercise>> = _exercises.asStateFlow()
+    private val _allExercises = MutableStateFlow<List<Exercise>>(emptyList()) // Keeps all exercises
+    private val _filteredExercises =
+        MutableStateFlow<List<Exercise>>(emptyList()) // Keeps filtered exercises
+    val exercises: StateFlow<List<Exercise>> = _filteredExercises.asStateFlow()
 
     init {
         // Collect changes from the database
         viewModelScope.launch {
             exerciseRepository.getAllExercises().collect { exerciseEntityList ->
                 val exerciseList: List<Exercise> = exerciseEntityList.map { it.toExercise() }
-                _exercises.value = exerciseList.sortedBy { e -> e.name }
+                _allExercises.value = exerciseList.sortedBy { e -> e.name }
+                filterExercises() // Initial filtering based on the default search
             }
         }
     }
@@ -37,6 +40,7 @@ class ExercisesViewModel(private val exerciseRepository: ExerciseRepository) : V
     // Function to update the search query
     fun updateSearch(newSearch: String) {
         _search = newSearch
+        filterExercises()
     }
 
     fun addExercise(exercise: Exercise) {
@@ -52,7 +56,15 @@ class ExercisesViewModel(private val exerciseRepository: ExerciseRepository) : V
         }
     }
 
-
+    // Function to filter exercises based on the search query
+    private fun filterExercises() {
+        val query = _search.lowercase().trim()
+        _filteredExercises.value = if (query.isEmpty()) {
+            _allExercises.value // Show all if search query is empty
+        } else {
+            _allExercises.value.filter { it.name.lowercase().contains(query) }
+        }
+    }
 //    fun updateExercise(exercise: Exercise) {
 //        val index = _exercises.indexOf(exercise)
 //        _exercises[index] = exercise

@@ -6,4 +6,6 @@
     <string name="exercise_list_title">Exercises</string>
     <string name="workout_add_exercise">Add Exercise</string>
     <string name="workout_cancel_workout">Cancel Workout</string>
+    <string name="exercise_new">New</string>
+    <string name="exercise_add">Add</string>
 </resources>
