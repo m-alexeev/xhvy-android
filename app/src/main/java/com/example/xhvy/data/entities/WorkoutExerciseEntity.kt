@@ -33,7 +33,12 @@ data class WorkoutExerciseEntity(
     ) {
     companion object {
         fun from(workoutExercise: WorkoutExercise): WorkoutExerciseEntity {
-            return WorkoutExerciseEntity(workoutExercise.id, workoutExercise.completed, 0, 0)
+            return WorkoutExerciseEntity(
+                id = workoutExercise.id,
+                completed = workoutExercise.completed,
+                exerciseId = 0,
+                workoutId = 0
+            )
         }
     }
 

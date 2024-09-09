@@ -1,5 +1,6 @@
 package com.example.xhvy.ui.components.workouts
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,31 +28,43 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.xhvy.R
+import com.example.xhvy.data.models.Exercise
+import com.example.xhvy.data.models.ExerciseBodyPart
+import com.example.xhvy.data.models.ExerciseCategory
+import com.example.xhvy.data.models.ExerciseSet
+import com.example.xhvy.data.models.SetAction
+import com.example.xhvy.data.models.WorkoutExercise
 import com.example.xhvy.ui.components.general.FaIcon
+import com.example.xhvy.ui.components.general.FaIconButton
 import com.example.xhvy.ui.components.general.StyledButton
 import com.example.xhvy.ui.components.general.StyledInput
 import com.example.xhvy.ui.theme.XhvyTheme
-import com.example.xhvy.ui.view_models.NewWorkoutViewModel
 
 class TableColumn(
-    val title: String?,
+    val title: String? = null,
     val weight: Float,
+    val icon: Int? = null,
 )
 
 
 @Composable
-fun WorkoutEntryRow(modifier: Modifier = Modifier, workoutViewModel: NewWorkoutViewModel) {
+fun WorkoutEntryRow(
+    modifier: Modifier = Modifier,
+    workoutExercise: WorkoutExercise,
+    onSetAction: (action: SetAction) -> Unit,
+) {
     val columnWeights = listOf(
         TableColumn("SET", 0.1f),
         TableColumn("PREVIOUS", .3f),
         TableColumn("LBS", 0.2f),
         TableColumn("REPS", 0.2f),
-        TableColumn("C", 0.1f)
+        TableColumn(icon = R.drawable.ic_check, weight = 0.1f)
     )
+    var expanded by remember {
+        mutableStateOf(false)
+    }
 
-    val sampleData = (1..3).mapIndexed { index, item -> item }
 
     Column(modifier.fillMaxWidth()) {
         Row(
@@ -60,15 +73,18 @@ fun WorkoutEntryRow(modifier: Modifier = Modifier, workoutViewModel: NewWorkoutV
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Bench Press",
+                text = workoutExercise.exercise.name,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary
             )
-            FaIcon(
-                iconPainterId = R.drawable.ic_ellipsis_vertical,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
-            )
+            Box(modifier = Modifier) {
+                FaIconButton(
+                    iconPainterId = R.drawable.ic_ellipsis_vertical,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    onClick = { expanded = true }
+                )
+            }
         }
         Column(modifier = Modifier.fillMaxWidth()) {
             // Header
@@ -76,20 +92,24 @@ fun WorkoutEntryRow(modifier: Modifier = Modifier, workoutViewModel: NewWorkoutV
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                columnWeights.forEachIndexed { index, item ->
+                columnWeights.forEach { item ->
                     TableHeaderColumn(
-                        text = if (index != columnWeights.lastIndex) item.title else null,
+                        text = item.title,
                         weight = item.weight,
-                        icon = if (index == columnWeights.lastIndex) R.drawable.ic_check else null
+                        icon = item.icon
                     )
                 }
             }
             // Data Rows
-            sampleData.forEach {
-                var checked by remember {
-                    mutableStateOf(false)
-                }
-                TableRow(it, checked = checked, onChecked = { checked = !checked })
+            workoutExercise.exerciseSets.forEachIndexed { index, item ->
+                TableRow(
+                    index,
+                    item,
+                    checked = false,
+                    onSetAction = {
+                        onSetAction(it)
+                    },
+                )
             }
 
         }
@@ -97,7 +117,7 @@ fun WorkoutEntryRow(modifier: Modifier = Modifier, workoutViewModel: NewWorkoutV
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 12.dp),
-            onClick = { /*TODO*/ },
+            onClick = { onSetAction(SetAction.AddSet) },
             contentPadding = PaddingValues(vertical = 2.dp),
             shape = RoundedCornerShape(8.dp)
         ) {
@@ -150,7 +170,13 @@ fun RowScope.TableHeaderColumn(
 
 
 @Composable
-fun TableRow(it: Int, checked: Boolean, onChecked: () -> Unit) {
+fun TableRow(
+    index: Int,
+    set: ExerciseSet,
+    checked: Boolean,
+    onSetAction: (action: SetAction) -> Unit,
+) {
+    Log.d("WKT", set.id.toString())
     Row(
         Modifier
             .fillMaxWidth()
@@ -161,7 +187,7 @@ fun TableRow(it: Int, checked: Boolean, onChecked: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "$it",
+            text = (index + 1).toString(),
             Modifier.weight(0.1f),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleSmall,
@@ -199,7 +225,7 @@ fun TableRow(it: Int, checked: Boolean, onChecked: () -> Unit) {
                     .align(Alignment.Center)
                     .clip(RoundedCornerShape(4.dp))
                     .background(if (checked) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceDim)
-                    .clickable { onChecked() },
+                    .clickable { onSetAction(SetAction.RemoveSet(-1, index)) },
                 tint = if (checked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,
                 iconPainterId = R.drawable.ic_check,
                 contentDescription = null,
@@ -212,6 +238,12 @@ fun TableRow(it: Int, checked: Boolean, onChecked: () -> Unit) {
 @Composable
 fun WorkoutEntryRowPreview() {
     XhvyTheme {
-        WorkoutEntryRow(workoutViewModel = viewModel())
+        WorkoutEntryRow(
+            workoutExercise = WorkoutExercise(
+                0,
+                Exercise(0, "Test", ExerciseCategory.CARDIO, ExerciseBodyPart.CARDIO)
+            ),
+            onSetAction = {}
+        )
     }
 }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.xhvy.data.models.ExerciseSet
 import com.example.xhvy.data.models.Workout
 import com.example.xhvy.data.models.WorkoutExercise
 import java.util.Date
@@ -15,7 +16,7 @@ class NewWorkoutViewModel : ViewModel() {
             name = "New Afternoon Workout"
         )
     )
-    private var _workoutExercise = mutableStateListOf<WorkoutExercise>()
+    private var _workoutExercises = mutableStateListOf<WorkoutExercise>()
 
     val workoutName: String
         get() = _workout.name
@@ -24,19 +25,23 @@ class NewWorkoutViewModel : ViewModel() {
         get() = _workout.startTime
 
     val workoutExercises: List<WorkoutExercise>
-        get() = _workoutExercise
+        get() = _workoutExercises
 
 
     fun addWorkoutExercise(workoutExercise: WorkoutExercise) {
-//        if (!workoutExercises.contains(workoutExercise)) {
-            _workoutExercise.add(workoutExercise)
-//        }
+        if (!workoutExercises.contains(workoutExercise)) {
+            _workoutExercises.add(workoutExercise)
+        }
     }
 
-    fun getWorkoutExercise(id: Int): WorkoutExercise? {
-        val workoutExercise = workoutExercises.find { item -> item.id == id }
-        return workoutExercise
+    fun addSet(index: Int) {
+        val workoutExercise = _workoutExercises[index]
+        workoutExercise.exerciseSets.add(ExerciseSet(workoutExercise.getSets().size, 0, 0f))
     }
 
+    fun removeSet(exerciseIndex: Int, setIndex: Int) {
+        val workoutExercise = _workoutExercises[exerciseIndex]
+        workoutExercise.exerciseSets.removeAt(setIndex)
 
+    }
 }

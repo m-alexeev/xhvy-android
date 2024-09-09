@@ -23,6 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.xhvy.R
+import com.example.xhvy.data.models.SetAction
 import com.example.xhvy.domain.utils.calcTimeDifference
 import com.example.xhvy.navigation.WorkoutStack
 import com.example.xhvy.ui.components.general.FaIconButton
@@ -37,7 +38,7 @@ import java.util.Date
 @Composable
 fun NewWorkoutScreen(
     navHostController: NavHostController,
-    newWorkoutViewModel: NewWorkoutViewModel = viewModel()
+    newWorkoutViewModel: NewWorkoutViewModel = viewModel(),
 ) {
     Column(
         Modifier
@@ -93,8 +94,25 @@ fun NewWorkoutScreen(
                     )
                 }
             } else {
-                items(newWorkoutViewModel.workoutExercises) {
-                    WorkoutEntryRow(workoutViewModel = newWorkoutViewModel)
+                items(newWorkoutViewModel.workoutExercises) { workoutExercise ->
+                    val index = newWorkoutViewModel.workoutExercises.indexOf(workoutExercise)
+                    WorkoutEntryRow(
+                        workoutExercise = workoutExercise,
+                        onSetAction = { action: SetAction ->
+                            when (action) {
+                                is SetAction.AddSet -> {
+                                    newWorkoutViewModel.addSet(index)
+                                }
+
+                                is SetAction.RemoveSet -> {
+                                    newWorkoutViewModel.removeSet(index, action.setIndex)
+                                }
+
+                                is SetAction.ToggleComplete -> TODO()
+                                is SetAction.UpdateSet -> TODO()
+                            }
+                        },
+                    )
                 }
             }
             item {

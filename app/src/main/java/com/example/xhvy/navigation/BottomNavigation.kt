@@ -33,6 +33,7 @@ import com.example.xhvy.ui.screens.exercises.SelectExerciseModal
 import com.example.xhvy.ui.screens.workouts.NewWorkoutScreen
 import com.example.xhvy.ui.screens.workouts.WorkoutScreen
 import com.example.xhvy.ui.view_models.ExercisesViewModel
+import com.example.xhvy.ui.view_models.NewWorkoutViewModel
 
 
 @Composable
@@ -100,13 +101,19 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
                 composable<WorkoutStack.WorkoutRoute> {
                     WorkoutScreen(navController)
                 }
-                composable<WorkoutStack.NewWorkout> {
-                    NewWorkoutScreen(navController)
+                composable<WorkoutStack.NewWorkout> { entry ->
+                    val viewModel =
+                        entry.sharedViewModel<NewWorkoutViewModel>(navController = navController)
+
+                    NewWorkoutScreen(navController, newWorkoutViewModel = viewModel)
                 }
-                dialog<WorkoutStack.ExerciseList> {
+                dialog<WorkoutStack.ExerciseList> { entry ->
+                    val workoutViewModel =
+                        entry.sharedViewModel<NewWorkoutViewModel>(navController = navController)
                     SelectExerciseModal(
                         navController = navController,
-                        exercisesViewModel = exerciseViewModel
+                        exercisesViewModel = exerciseViewModel,
+                        newWorkoutViewModel = workoutViewModel,
                     )
                 }
             }
