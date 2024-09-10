@@ -8,6 +8,7 @@ import com.example.xhvy.data.models.Workout
 import java.time.Instant
 import java.util.Date
 
+
 @Entity(tableName = "workouts")
 data class WorkoutEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
@@ -17,7 +18,11 @@ data class WorkoutEntity(
 ) {
     companion object {
         fun from(workout: Workout): WorkoutEntity {
-            return WorkoutEntity(workout.id, workout.name, workout.startTime, workout.endTime)
+            return WorkoutEntity(
+                name = workout.name,
+                startTime = workout.startTime,
+                endTime = workout.endTime
+            )
         }
     }
 }
@@ -25,7 +30,7 @@ data class WorkoutEntity(
 
 data class FullWorkout(
     @Embedded
-    val workout: Workout,
+    val workout: WorkoutEntity,
 
     @Relation(
         parentColumn = "id",

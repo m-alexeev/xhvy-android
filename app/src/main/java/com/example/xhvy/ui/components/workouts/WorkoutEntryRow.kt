@@ -178,12 +178,11 @@ fun TableRow(
     set: ExerciseSet,
     onSetAction: (action: SetAction) -> Unit,
 ) {
-    Log.d("WKT", set.id.toString())
     Row(
         Modifier
             .fillMaxWidth()
             .height(32.dp)
-            .background(if (set.completed) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface)
+            .background(if (set.completed) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.8f) else MaterialTheme.colorScheme.surface)
             .padding(vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

@@ -8,7 +8,7 @@ data class Workout(
     val name: String,
     val startTime: Date = Date.from(Instant.now()),
     val endTime: Date? = null,
-    val workoutExercises: MutableList<WorkoutExercise> = mutableListOf()
+    var workoutExercises: MutableList<WorkoutExercise> = mutableListOf()
 ) {
 
 }

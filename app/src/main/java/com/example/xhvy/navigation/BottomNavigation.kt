@@ -23,6 +23,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.xhvy.data.repositories.AppDatabase
 import com.example.xhvy.data.repositories.ExerciseRepository
+import com.example.xhvy.data.repositories.WorkoutRepository
 import com.example.xhvy.ui.components.general.FaIcon
 import com.example.xhvy.ui.screens.DashboardScreen
 import com.example.xhvy.ui.screens.HistoryScreen
@@ -46,7 +47,7 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
 
 
     val exerciseRepository = ExerciseRepository(database.exerciseDao())
-
+    val workoutRepository = WorkoutRepository(database.workoutDao())
     val exerciseViewModel = ExercisesViewModel(exerciseRepository)
 
 
@@ -105,7 +106,11 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
                     val viewModel =
                         entry.sharedViewModel<NewWorkoutViewModel>(navController = navController)
 
-                    NewWorkoutScreen(navController, newWorkoutViewModel = viewModel)
+                    NewWorkoutScreen(
+                        navController,
+                        newWorkoutViewModel = viewModel,
+                        workoutRepository = workoutRepository
+                    )
                 }
                 dialog<WorkoutStack.ExerciseList> { entry ->
                     val workoutViewModel =

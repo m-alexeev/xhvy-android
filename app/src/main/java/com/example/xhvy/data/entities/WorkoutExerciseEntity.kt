@@ -12,13 +12,13 @@ import com.example.xhvy.data.models.WorkoutExercise
 @Entity(
     tableName = "workout-exercises", foreignKeys = [
         ForeignKey(
-            entity = Exercise::class,
+            entity = ExerciseEntity::class,
             parentColumns = ["id"],
             childColumns = ["exerciseId"],
             onDelete = ForeignKey.CASCADE,
         ),
         ForeignKey(
-            entity = Workout::class,
+            entity = WorkoutEntity::class,
             parentColumns = ["id"],
             childColumns = ["workoutId"],
             onDelete = ForeignKey.CASCADE,
@@ -28,15 +28,14 @@ data class WorkoutExerciseEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val completed: Boolean = false,
     val exerciseId: Int,
-    val workoutId: Int,
+    var workoutId: Int,
 
     ) {
     companion object {
         fun from(workoutExercise: WorkoutExercise): WorkoutExerciseEntity {
             return WorkoutExerciseEntity(
-                id = workoutExercise.id,
                 completed = workoutExercise.completed,
-                exerciseId = 0,
+                exerciseId = workoutExercise.exercise.id,
                 workoutId = 0
             )
         }
@@ -62,7 +61,7 @@ data class WorkoutExerciseFull(
         parentColumn = "exerciseId",
         entityColumn = "id",
     )
-    val exercise: Exercise,
+    val exercise: ExerciseEntity,
 
     @Relation(
         parentColumn = "id",

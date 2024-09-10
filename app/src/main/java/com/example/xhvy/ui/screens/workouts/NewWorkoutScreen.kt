@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +25,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.xhvy.R
 import com.example.xhvy.data.models.SetAction
+import com.example.xhvy.data.repositories.AppDatabase
+import com.example.xhvy.data.repositories.WorkoutRepository
 import com.example.xhvy.domain.utils.calcTimeDifference
 import com.example.xhvy.navigation.WorkoutStack
 import com.example.xhvy.ui.components.general.FaIconButton
@@ -39,6 +42,7 @@ import java.util.Date
 fun NewWorkoutScreen(
     navHostController: NavHostController,
     newWorkoutViewModel: NewWorkoutViewModel = viewModel(),
+    workoutRepository: WorkoutRepository,
 ) {
     Column(
         Modifier
@@ -58,7 +62,7 @@ fun NewWorkoutScreen(
                 onClick = {})
             StyledButton(
                 Modifier.padding(end = 12.dp),
-                onClick = {},
+                onClick = { newWorkoutViewModel.saveWorkout(workoutRepository) },
                 shape = RoundedCornerShape(3.dp)
             ) {
                 Text(text = "Finish", style = MaterialTheme.typography.titleSmall)
@@ -97,6 +101,7 @@ fun NewWorkoutScreen(
                 items(newWorkoutViewModel.workoutExercises) { workoutExercise ->
                     val index = newWorkoutViewModel.workoutExercises.indexOf(workoutExercise)
                     WorkoutEntryRow(
+                        modifier = Modifier.padding(vertical = 12.dp),
                         workoutExercise = workoutExercise,
                         onSetAction = { action: SetAction ->
                             when (action) {
@@ -163,6 +168,12 @@ fun NewWorkoutScreen(
 @Composable
 fun NewWorkoutScreenPreview() {
     XhvyTheme {
-        NewWorkoutScreen(navHostController = rememberNavController())
+
+        NewWorkoutScreen(
+            navHostController = rememberNavController(),
+            workoutRepository = WorkoutRepository(
+                AppDatabase.getDatabase(LocalContext.current).workoutDao()
+            )
+        )
     }
 }

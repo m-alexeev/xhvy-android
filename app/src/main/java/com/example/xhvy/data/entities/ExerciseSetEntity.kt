@@ -18,16 +18,14 @@ data class ExerciseSetEntity(
     var reps: Int? = 0,
     var weight: Float? = 0.0f,
     val completed: Boolean = false,
-    val workoutExerciseId: Int,
+    var workoutExerciseId: Int = 0,
 ) {
     companion object {
         fun from(exerciseSet: ExerciseSet): ExerciseSetEntity {
             return ExerciseSetEntity(
-                exerciseSet.id,
-                exerciseSet.reps,
-                exerciseSet.weight,
-                exerciseSet.completed,
-                0,
+                reps = exerciseSet.reps,
+                weight = exerciseSet.weight,
+                completed = exerciseSet.completed,
             )
         }
     }
