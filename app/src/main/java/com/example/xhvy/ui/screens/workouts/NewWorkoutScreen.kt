@@ -109,7 +109,13 @@ fun NewWorkoutScreen(
                                 }
 
                                 is SetAction.ToggleComplete -> TODO()
-                                is SetAction.UpdateSet -> TODO()
+                                is SetAction.UpdateSet -> {
+                                    newWorkoutViewModel.editSet(
+                                        index,
+                                        action.setIndex,
+                                        action.exerciseSet
+                                    )
+                                }
                             }
                         },
                     )

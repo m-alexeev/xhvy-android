@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,6 +37,8 @@ import com.example.xhvy.data.models.ExerciseCategory
 import com.example.xhvy.data.models.ExerciseSet
 import com.example.xhvy.data.models.SetAction
 import com.example.xhvy.data.models.WorkoutExercise
+import com.example.xhvy.domain.utils.DecimalFormatter
+import com.example.xhvy.ui.components.general.DecimalStyledInput
 import com.example.xhvy.ui.components.general.FaIcon
 import com.example.xhvy.ui.components.general.FaIconButton
 import com.example.xhvy.ui.components.general.StyledButton
@@ -200,16 +204,40 @@ fun TableRow(
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.outline
         )
-        StyledInput(
-            value = "",
-            onValueChange = {},
+        DecimalStyledInput(
+            initialValue = "${if (set.weight != null) set.weight else ""}",
+            onValueChange = { weight ->
+                val newWeight = DecimalFormatter().cleanup(weight).toFloatOrNull()
+
+                onSetAction(
+                    SetAction.UpdateSet(
+                        index,
+                        set.copy(weight = if (newWeight == 0f) null else newWeight)
+                    )
+                )
+            },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal
+            ),
             modifier = Modifier
                 .weight(0.2f),
-            backgroundColor = if (checked) MaterialTheme.colorScheme.primaryContainer else null
-
+            backgroundColor = if (checked) MaterialTheme.colorScheme.primaryContainer else null,
+            decimalFormatter = DecimalFormatter()
         )
         StyledInput(
-            value = "", onValueChange = {},
+            value = "${if (set.reps != null) set.reps else ""}",
+            onValueChange = { reps ->
+                val newValue = reps.filter { char -> char.isDigit() }
+                onSetAction(
+                    SetAction.UpdateSet(
+                        index,
+                        set.copy(reps = newValue.toIntOrNull())
+                    )
+                )
+            },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number
+            ),
             modifier = Modifier
                 .weight(0.2f)
                 .padding(horizontal = 4.dp),

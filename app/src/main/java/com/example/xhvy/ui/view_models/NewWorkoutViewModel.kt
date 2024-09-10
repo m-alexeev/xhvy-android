@@ -36,12 +36,18 @@ class NewWorkoutViewModel : ViewModel() {
 
     fun addSet(index: Int) {
         val workoutExercise = _workoutExercises[index]
-        workoutExercise.exerciseSets.add(ExerciseSet(workoutExercise.getSets().size, 0, 0f))
+        workoutExercise.exerciseSets.add(ExerciseSet(workoutExercise.getSets().size, null, null))
     }
 
     fun removeSet(exerciseIndex: Int, setIndex: Int) {
         val workoutExercise = _workoutExercises[exerciseIndex]
         workoutExercise.exerciseSets.removeAt(setIndex)
 
+    }
+
+
+    fun editSet(exerciseIndex: Int, setIndex: Int, updatedSet: ExerciseSet) {
+        val workoutExercise = _workoutExercises[exerciseIndex]
+        workoutExercise.exerciseSets[setIndex] = updatedSet
     }
 }

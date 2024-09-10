@@ -15,8 +15,8 @@ import com.example.xhvy.data.models.ExerciseSet
 )
 data class ExerciseSetEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    var reps: Int = 0,
-    var weight: Float = 0.0f,
+    var reps: Int? = 0,
+    var weight: Float? = 0.0f,
     val completed: Boolean = false,
     val workoutExerciseId: Int,
 ) {
