@@ -39,7 +39,10 @@ fun StyledInput(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .background(backgroundColor ?: MaterialTheme.colorScheme.surfaceContainer),
-        textStyle = TextStyle(textAlign = TextAlign.Center),
+        textStyle = TextStyle(
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurface
+        ),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.secondary),
         visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,

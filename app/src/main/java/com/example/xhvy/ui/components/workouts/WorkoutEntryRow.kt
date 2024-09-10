@@ -109,7 +109,6 @@ fun WorkoutEntryRow(
                 TableRow(
                     index,
                     item,
-                    checked = false,
                     onSetAction = {
                         onSetAction(it)
                     },
@@ -177,7 +176,6 @@ fun RowScope.TableHeaderColumn(
 fun TableRow(
     index: Int,
     set: ExerciseSet,
-    checked: Boolean,
     onSetAction: (action: SetAction) -> Unit,
 ) {
     Log.d("WKT", set.id.toString())
@@ -185,9 +183,8 @@ fun TableRow(
         Modifier
             .fillMaxWidth()
             .height(32.dp)
-            .background(if (checked) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface)
+            .background(if (set.completed) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface)
             .padding(vertical = 2.dp),
-
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -221,7 +218,7 @@ fun TableRow(
             ),
             modifier = Modifier
                 .weight(0.2f),
-            backgroundColor = if (checked) MaterialTheme.colorScheme.primaryContainer else null,
+            backgroundColor = if (set.completed) MaterialTheme.colorScheme.primaryContainer else null,
             decimalFormatter = DecimalFormatter()
         )
         StyledInput(
@@ -241,7 +238,7 @@ fun TableRow(
             modifier = Modifier
                 .weight(0.2f)
                 .padding(horizontal = 4.dp),
-            backgroundColor = if (checked) MaterialTheme.colorScheme.primaryContainer else null
+            backgroundColor = if (set.completed) MaterialTheme.colorScheme.primaryContainer else null
         )
         Box(
             modifier = Modifier
@@ -252,9 +249,16 @@ fun TableRow(
                     .size(24.dp)
                     .align(Alignment.Center)
                     .clip(RoundedCornerShape(4.dp))
-                    .background(if (checked) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceDim)
-                    .clickable { onSetAction(SetAction.RemoveSet(-1, index)) },
-                tint = if (checked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,
+                    .background(if (set.completed) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceDim)
+                    .clickable {
+                        onSetAction(
+                            SetAction.UpdateSet(
+                                index,
+                                set.copy(completed = !set.completed)
+                            )
+                        )
+                    },
+                tint = if (set.completed) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,
                 iconPainterId = R.drawable.ic_check,
                 contentDescription = null,
             )
