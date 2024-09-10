@@ -1,15 +1,22 @@
 package com.example.xhvy.ui.components.general
 
-import androidx.annotation.Dimension
-import androidx.annotation.Size
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,22 +44,55 @@ fun FaIconButton(
     modifier: Modifier = Modifier,
     contentDescription: String?,
     tint: Color = MaterialTheme.colorScheme.onSurface,
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
+    contentPadding: PaddingValues = PaddingValues(4.dp),
+    shape: Shape = RoundedCornerShape(4.dp),
     onClick: () -> Unit
 ) {
-    FaIcon(
-        iconPainterId = iconPainterId,
-        modifier = modifier.clickable { onClick() },
-        contentDescription = contentDescription,
-        tint = tint,
-    )
+    Box(
+        modifier = modifier
+            .clickable { onClick() }
+            .clip(shape)
+            .background(backgroundColor)
+    ) {
+        FaIcon(
+            iconPainterId = iconPainterId,
+            modifier = Modifier.padding(contentPadding),
+            contentDescription = contentDescription,
+            tint = tint,
+        )
+    }
+
 }
 
-@Preview(showBackground = false)
+@Composable
+fun FaLabeledIcon(
+    iconPainterId: Int,
+    modifier: Modifier = Modifier,
+    contentDescription: String? = null,
+    tint: Color = MaterialTheme.colorScheme.primary,
+    label: @Composable() () -> Unit,
+) {
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+        FaIcon(
+            iconPainterId = iconPainterId,
+            tint = tint,
+            contentDescription = contentDescription,
+            modifier = Modifier.size(18.dp)
+        )
+        label()
+    }
+}
+
+@Preview(showBackground = true)
 @Composable
 fun FaIconPreview() {
     XhvyTheme {
-        Column {
-            FaIcon(iconPainterId = R.drawable.ic_dumbbell)
+        Row {
+            FaIconButton(
+                iconPainterId = R.drawable.ic_dumbbell,
+                contentDescription = null,
+                onClick = {})
         }
     }
 }

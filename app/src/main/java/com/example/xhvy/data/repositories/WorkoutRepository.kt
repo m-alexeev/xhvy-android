@@ -14,11 +14,6 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
         workoutDAO.insertWorkoutExercise(workoutExercise)
     }
 
-
-//    suspend fun insertWorkout(workoutEntity: WorkoutEntity) {
-//        workoutDAO.insertWorkout(workoutEntity)
-//    }
-
     suspend fun insertWorkoutExercises(workoutExercises: List<WorkoutExerciseEntity>) {
         workoutDAO.insertWorkoutExercises(workoutExercises)
     }

@@ -1,9 +1,10 @@
 package com.example.xhvy.ui.screens.workouts
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.xhvy.navigation.WorkoutStack
+import com.example.xhvy.ui.components.workouts.WorkoutRowItem
 import com.example.xhvy.ui.theme.XhvyTheme
 import com.example.xhvy.ui.view_models.WorkoutsViewModel
 
@@ -31,10 +33,10 @@ fun WorkoutScreen(
     val workouts by workoutsViewModel.workouts.collectAsState()
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth()
-            .safeContentPadding()
+            .padding(horizontal = 12.dp)
     ) {
         Text(text = "WorkoutScreen")
         Button(
@@ -44,7 +46,10 @@ fun WorkoutScreen(
             Text(text = "Create Empty Workout")
         }
         LazyColumn {
-            items(items = workouts) { workout -> Text(text = workout.name) }
+            items(items = workouts) { workout ->
+                WorkoutRowItem(workout = workout)
+                Spacer(modifier = Modifier.padding(vertical = 6.dp))
+            }
         }
     }
 }

@@ -13,6 +13,8 @@ import com.example.xhvy.data.entities.WorkoutExerciseFull
 import com.example.xhvy.data.models.Workout
 import com.example.xhvy.data.models.WorkoutExercise
 import kotlinx.coroutines.flow.Flow
+import java.time.Instant
+import java.util.Date
 
 @Dao
 interface WorkoutDAO {
@@ -32,7 +34,7 @@ interface WorkoutDAO {
     suspend fun insertExerciseSets(exerciseSets: List<ExerciseSetEntity>): List<Long>
 
     @Transaction
-    @Query("Select * from `workouts`")
+    @Query("Select * from `workouts` ORDER BY `startTime` DESC")
     fun getAllWorkouts(): Flow<List<FullWorkout>>
 
     @Transaction
@@ -40,7 +42,9 @@ interface WorkoutDAO {
         workout: Workout,
         workoutExercises: List<WorkoutExercise>
     ) {
-        val workoutId = insertWorkout(WorkoutEntity.from(workout))
+        val workoutWithEnd = WorkoutEntity.from(workout)
+        workoutWithEnd.endTime = Date.from(Instant.now())
+        val workoutId = insertWorkout(workoutWithEnd)
 
         workoutExercises.forEach { workoutExercise ->
             // Insert workout exercises

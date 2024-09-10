@@ -7,6 +7,7 @@ enum class ExerciseCategory(private val displayName: String) {
     BARBELL("Barbell"),
     DUMBBELL("Dumbbell"),
     MACHINE("Machine"),
+    CABLE("Cable"),
     WEIGHTED_BODYWEIGHT("Weighted Bodyweight"),
     ASSISTED_BODYWEIGHT("Assisted Bodyweight"),
     REPS("Reps"),

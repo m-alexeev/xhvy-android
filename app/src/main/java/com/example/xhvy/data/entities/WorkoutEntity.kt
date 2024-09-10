@@ -16,7 +16,7 @@ data class WorkoutEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val startTime: Date = Date.from(Instant.now()),
-    val endTime: Date? = null
+    var endTime: Date = Date.from(Instant.now())
 ) {
     companion object {
         fun from(workout: Workout): WorkoutEntity {
