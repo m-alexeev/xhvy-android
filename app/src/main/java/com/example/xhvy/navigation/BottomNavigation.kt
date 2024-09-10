@@ -35,6 +35,7 @@ import com.example.xhvy.ui.screens.workouts.NewWorkoutScreen
 import com.example.xhvy.ui.screens.workouts.WorkoutScreen
 import com.example.xhvy.ui.view_models.ExercisesViewModel
 import com.example.xhvy.ui.view_models.NewWorkoutViewModel
+import com.example.xhvy.ui.view_models.WorkoutsViewModel
 
 
 @Composable
@@ -47,9 +48,9 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
 
 
     val exerciseRepository = ExerciseRepository(database.exerciseDao())
-    val workoutRepository = WorkoutRepository(database.workoutDao())
     val exerciseViewModel = ExercisesViewModel(exerciseRepository)
-
+    val workoutRepository = WorkoutRepository(database.workoutDao())
+    val workoutViewModel = WorkoutsViewModel(workoutRepository)
 
     Scaffold(
         modifier = modifier,
@@ -98,9 +99,9 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
             composable<MainStack.HistoryRoute> {
                 HistoryScreen()
             }
-            navigation<MainStack.WorkoutRoute>(startDestination = WorkoutStack.NewWorkout) {
+            navigation<MainStack.WorkoutRoute>(startDestination = WorkoutStack.WorkoutRoute) {
                 composable<WorkoutStack.WorkoutRoute> {
-                    WorkoutScreen(navController)
+                    WorkoutScreen(navController, workoutViewModel)
                 }
                 composable<WorkoutStack.NewWorkout> { entry ->
                     val viewModel =
@@ -113,12 +114,12 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
                     )
                 }
                 dialog<WorkoutStack.ExerciseList> { entry ->
-                    val workoutViewModel =
+                    val newWorkoutViewModel =
                         entry.sharedViewModel<NewWorkoutViewModel>(navController = navController)
                     SelectExerciseModal(
                         navController = navController,
                         exercisesViewModel = exerciseViewModel,
-                        newWorkoutViewModel = workoutViewModel,
+                        newWorkoutViewModel = newWorkoutViewModel,
                     )
                 }
             }

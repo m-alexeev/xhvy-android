@@ -46,13 +46,6 @@ data class WorkoutExerciseEntity(
     }
 }
 
-data class WorkoutExerciseWithSets(
-    @Embedded
-    val workoutExerciseEntity: WorkoutExerciseEntity,
-    @Relation(parentColumn = "id", entityColumn = "workoutExerciseId")
-    val exerciseSets: List<ExerciseSetEntity>
-)
-
 
 data class WorkoutExerciseFull(
     @Embedded val workoutExerciseEntity: WorkoutExerciseEntity,
@@ -70,7 +63,3 @@ data class WorkoutExerciseFull(
     val exerciseSets: List<ExerciseSetEntity>
 )
 
-data class WorkoutExerciseWithSet(
-    val workoutExerciseEntity: WorkoutExerciseEntity,
-    val exerciseSets: List<ExerciseSetEntity>
-)

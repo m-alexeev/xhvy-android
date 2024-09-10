@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.example.xhvy.data.entities.ExerciseSetEntity
+import com.example.xhvy.data.entities.FullWorkout
 import com.example.xhvy.data.entities.WorkoutEntity
 import com.example.xhvy.data.entities.WorkoutExerciseEntity
 import com.example.xhvy.data.entities.WorkoutExerciseFull
@@ -29,6 +30,10 @@ interface WorkoutDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertExerciseSets(exerciseSets: List<ExerciseSetEntity>): List<Long>
+
+    @Transaction
+    @Query("Select * from `workouts`")
+    fun getAllWorkouts(): Flow<List<FullWorkout>>
 
     @Transaction
     suspend fun insertWorkoutTransaction(

@@ -1,10 +1,12 @@
 package com.example.xhvy.data.entities
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import com.example.xhvy.data.models.Workout
+import com.example.xhvy.data.models.WorkoutExercise
 import java.time.Instant
 import java.util.Date
 
@@ -25,6 +27,26 @@ data class WorkoutEntity(
             )
         }
     }
+
+    fun toWorkout(fullWorkout: FullWorkout): Workout {
+        val workoutExercises: List<WorkoutExercise> =
+            fullWorkout.workoutExercises.map { workoutExerciseFull ->
+                WorkoutExercise(
+                    id = workoutExerciseFull.workoutExerciseEntity.id,
+                    workoutExerciseFull.exercise.toExercise(),
+                    completed = workoutExerciseFull.workoutExerciseEntity.completed,
+                    exerciseSets = mutableStateListOf(*workoutExerciseFull.exerciseSets.map { set -> set.toExerciseSet() }
+                        .toTypedArray()),
+                )
+            }
+        return Workout(
+            id,
+            name,
+            startTime,
+            endTime,
+            workoutExercises = workoutExercises.toMutableList()
+        )
+    }
 }
 
 
@@ -33,8 +55,9 @@ data class FullWorkout(
     val workout: WorkoutEntity,
 
     @Relation(
+        entity = WorkoutExerciseEntity::class,
         parentColumn = "id",
         entityColumn = "workoutId",
     )
-    var workoutExercises: List<WorkoutExerciseFull>
+    val workoutExercises: List<WorkoutExerciseFull>
 )

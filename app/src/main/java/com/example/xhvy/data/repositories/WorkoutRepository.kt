@@ -1,6 +1,7 @@
 package com.example.xhvy.data.repositories
 
 import com.example.xhvy.data.entities.ExerciseSetEntity
+import com.example.xhvy.data.entities.FullWorkout
 import com.example.xhvy.data.entities.WorkoutExerciseEntity
 import com.example.xhvy.data.entities.WorkoutExerciseFull
 import com.example.xhvy.data.models.Workout
@@ -12,6 +13,7 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
     suspend fun insertWorkoutExercises(workoutExercise: WorkoutExerciseEntity) {
         workoutDAO.insertWorkoutExercise(workoutExercise)
     }
+
 
 //    suspend fun insertWorkout(workoutEntity: WorkoutEntity) {
 //        workoutDAO.insertWorkout(workoutEntity)
@@ -34,5 +36,9 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
 
     fun getAllWorkoutExercises(): Flow<List<WorkoutExerciseFull>> {
         return workoutDAO.getWorkoutExercises()
+    }
+
+    suspend fun getAllWorkouts(): Flow<List<FullWorkout>> {
+        return workoutDAO.getAllWorkouts()
     }
 }
