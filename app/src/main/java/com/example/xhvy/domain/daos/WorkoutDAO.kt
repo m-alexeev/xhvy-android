@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.example.xhvy.data.entities.ExerciseSetEntity
 import com.example.xhvy.data.entities.FullWorkout
 import com.example.xhvy.data.entities.WorkoutEntity
@@ -33,9 +34,27 @@ interface WorkoutDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertExerciseSets(exerciseSets: List<ExerciseSetEntity>): List<Long>
 
+    @Query("DELETE from workouts where active = 1")
+    fun deleteActiveWorkout()
+
+    @Query("DELETE FROM `exercise-sets` where id =:setId")
+    fun deleteSetById(setId: Int)
+
+    @Query("UPDATE `exercise-sets` SET reps=:reps, weight=:weight, completed=:completed WHERE id=:setId")
+    fun updateSetById(setId: Int, reps: Int?, weight: Float?, completed: Boolean)
+
+    @Update
+    fun updateSetById(exerciseSetEntity: ExerciseSetEntity)
+
+    @Query("SELECT * from workouts where active = 1")
+    fun getWorkout(): Flow<FullWorkout?>
+
     @Transaction
     @Query("Select * from `workouts` ORDER BY `startTime` DESC")
     fun getAllWorkouts(): Flow<List<FullWorkout>>
+
+    @Query("UPDATE workouts set active = 0 where id =:workoutId")
+    suspend fun completeWorkout(workoutId: Int)
 
     @Transaction
     suspend fun insertWorkoutTransaction(

@@ -9,6 +9,7 @@ import com.example.xhvy.data.models.Workout
 import com.example.xhvy.data.models.WorkoutExercise
 import java.time.Instant
 import java.util.Date
+import kotlin.math.acos
 
 
 @Entity(tableName = "workouts")
@@ -16,14 +17,16 @@ data class WorkoutEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val startTime: Date = Date.from(Instant.now()),
-    var endTime: Date = Date.from(Instant.now())
+    var endTime: Date = Date.from(Instant.now()),
+    val active: Boolean = false,
 ) {
     companion object {
         fun from(workout: Workout): WorkoutEntity {
             return WorkoutEntity(
                 name = workout.name,
                 startTime = workout.startTime,
-                endTime = workout.endTime
+                endTime = workout.endTime,
+                active = workout.active
             )
         }
     }
@@ -44,7 +47,8 @@ data class WorkoutEntity(
             name,
             startTime,
             endTime,
-            workoutExercises = workoutExercises.toMutableList()
+            workoutExercises = workoutExercises.toMutableList(),
+            active
         )
     }
 }

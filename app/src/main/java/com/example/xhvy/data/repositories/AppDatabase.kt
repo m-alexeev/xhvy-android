@@ -7,8 +7,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.xhvy.data.entities.ExerciseEntity
 import com.example.xhvy.data.entities.ExerciseSetEntity
 import com.example.xhvy.data.entities.WorkoutEntity
@@ -33,7 +31,7 @@ class Converters {
 
 @Database(
     entities = [ExerciseEntity::class, WorkoutEntity::class, WorkoutExerciseEntity::class, ExerciseSetEntity::class],
-    version = 4
+    version = 5
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -54,87 +52,11 @@ abstract class AppDatabase : RoomDatabase() {
                     "exercise-db"
                 )
                     .createFromAsset("exercises.db")
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
                     .build()
                 INSTANCE = instance
                 instance
             }
         }
-    }
-}
-
-private val MIGRATION_1_2 = object : Migration(1, 2) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL("ALTER TABLE exercises ADD COLUMN 'deletable' INTEGER  DEFAULT 0 NOT NULL")
-    }
-}
-
-private val MIGRATION_2_3 = object : Migration(2, 3) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        // Create tables for ExerciseSetEntity
-        db.execSQL(
-            """
-            CREATE TABLE IF NOT EXISTS `exercise-sets` (
-                `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                `reps` INTEGER,
-                `weight` REAL,
-                `completed` INTEGER NOT NULL,
-                `workoutExerciseId` INTEGER NOT NULL,
-                FOREIGN KEY(`workoutExerciseId`) REFERENCES `workout-exercises`(`id`) ON DELETE CASCADE
-            )
-        """
-        )
-
-        // Create tables for WorkoutEntity
-        db.execSQL(
-            """
-            CREATE TABLE IF NOT EXISTS `workouts` (
-                `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                `name` TEXT NOT NULL,
-                `startTime` INTEGER NOT NULL,
-                `endTime` INTEGER
-            )
-        """
-        )
-
-        // Create tables for WorkoutExerciseEntity
-        db.execSQL(
-            """
-            CREATE TABLE IF NOT EXISTS `workout-exercises` (
-                `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                `completed` INTEGER NOT NULL,
-                `exerciseId` INTEGER NOT NULL,
-                `workoutId` INTEGER NOT NULL,
-                FOREIGN KEY(`exerciseId`) REFERENCES `exercises`(`id`) ON DELETE CASCADE,
-                FOREIGN KEY(`workoutId`) REFERENCES `workouts`(`id`) ON DELETE CASCADE
-            )
-        """
-        )
-    }
-}
-
-private val MIGRATION_3_4 = object : Migration(3, 4) {
-    override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL("""
-            CREATE TABLE new_workouts (
-                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                `name` TEXT NOT NULL,
-                `startTime` INTEGER NOT NULL,
-                endTime INTEGER NOT NULL 
-            )
-        """)
-
-        // Step 2: Copy data from old table to new table
-        db.execSQL("""
-            INSERT INTO new_workouts (id, name, startTime, endTime)
-            SELECT id, name, startTime, COALESCE(endTime, 0)
-            FROM workouts
-        """)
-
-        // Step 3: Drop the old table
-        db.execSQL("DROP TABLE workouts")
-
-        // Step 4: Rename the new table to the original table name
-        db.execSQL("ALTER TABLE new_workouts RENAME TO workouts")
     }
 }

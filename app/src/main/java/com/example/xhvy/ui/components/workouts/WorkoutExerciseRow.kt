@@ -206,7 +206,6 @@ fun TableRow(
 
                 onSetAction(
                     SetAction.UpdateSet(
-                        index,
                         set.copy(weight = if (newWeight == 0f) null else newWeight)
                     )
                 )
@@ -217,7 +216,8 @@ fun TableRow(
             modifier = Modifier
                 .weight(0.2f),
             backgroundColor = if (set.completed) MaterialTheme.colorScheme.primaryContainer else null,
-            decimalFormatter = DecimalFormatter()
+            decimalFormatter = DecimalFormatter(),
+            debounceTime = 200,
         )
         StyledInput(
             value = "${if (set.reps != null) set.reps else ""}",
@@ -225,8 +225,7 @@ fun TableRow(
                 val newValue = reps.filter { char -> char.isDigit() }
                 onSetAction(
                     SetAction.UpdateSet(
-                        index,
-                        set.copy(reps = newValue.toIntOrNull())
+                        set.copy(reps = reps.toIntOrNull())
                     )
                 )
             },
@@ -236,7 +235,8 @@ fun TableRow(
             modifier = Modifier
                 .weight(0.2f)
                 .padding(horizontal = 4.dp),
-            backgroundColor = if (set.completed) MaterialTheme.colorScheme.primaryContainer else null
+            backgroundColor = if (set.completed) MaterialTheme.colorScheme.primaryContainer else null,
+            debounceTime = 200,
         )
         Box(
             modifier = Modifier
@@ -250,10 +250,11 @@ fun TableRow(
                     .background(if (set.completed) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceDim)
                     .clickable {
                         onSetAction(
-                            SetAction.UpdateSet(
-                                index,
-                                set.copy(completed = !set.completed)
-                            )
+                            SetAction.RemoveSet(setId = set.id)
+//                            SetAction.UpdateSet(
+//                                index,
+//                                set.copy(completed = !set.completed)
+//                            )
                         )
                     },
                 tint = if (set.completed) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,

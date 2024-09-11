@@ -7,9 +7,9 @@ import java.util.Date
 fun calcTimeDifference(time1: Date, time2: Date): String {
     val diff = time1.toInstant().toEpochMilli() - time2.toInstant().toEpochMilli()
 
-    val seconds = diff / 1000;
-    val minutes = seconds / 60;
-    val hours = minutes / 60;
+    val seconds = diff / 1000
+    val minutes = seconds / 60
+    val hours = minutes / 60
 
     if (hours > 0) {
         return "${hours}h:${minutes}m"

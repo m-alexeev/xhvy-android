@@ -11,8 +11,8 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -51,6 +51,7 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
     val exerciseViewModel = ExercisesViewModel(exerciseRepository)
     val workoutRepository = WorkoutRepository(database.workoutDao())
     val workoutViewModel = WorkoutsViewModel(workoutRepository)
+    val newWorkoutViewModel = NewWorkoutViewModel(workoutRepository)
 
     Scaffold(
         modifier = modifier,
@@ -91,31 +92,26 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
             modifier = Modifier
                 .consumeWindowInsets(innerPadding)
                 .padding(innerPadding),
-            startDestination = MainStack.WorkoutRoute
+            startDestination = MainStack.DashboardRoute
         ) {
-            composable<MainStack.DashboardRoute> {
+            composable<MainStack.DashboardRoute> { navBackStackEntry ->
                 DashboardScreen(modifier = Modifier)
             }
-            composable<MainStack.HistoryRoute> {
-                HistoryScreen()
+            composable<MainStack.HistoryRoute> { navBackStackEntry ->
+                HistoryScreen(workoutViewModel = newWorkoutViewModel)
             }
             navigation<MainStack.WorkoutRoute>(startDestination = WorkoutStack.WorkoutRoute) {
                 composable<WorkoutStack.WorkoutRoute> {
-                    WorkoutScreen(navController, workoutViewModel)
+                    WorkoutScreen(navController, workoutViewModel, newWorkoutViewModel)
                 }
-                composable<WorkoutStack.NewWorkout> { entry ->
-                    val viewModel =
-                        entry.sharedViewModel<NewWorkoutViewModel>(navController = navController)
-
+                composable<WorkoutStack.NewWorkout> {
                     NewWorkoutScreen(
                         navController,
-                        newWorkoutViewModel = viewModel,
+                        newWorkoutViewModel = newWorkoutViewModel,
                         workoutRepository = workoutRepository
                     )
                 }
-                dialog<WorkoutStack.ExerciseList> { entry ->
-                    val newWorkoutViewModel =
-                        entry.sharedViewModel<NewWorkoutViewModel>(navController = navController)
+                dialog<WorkoutStack.ExerciseList> {
                     SelectExerciseModal(
                         navController = navController,
                         exercisesViewModel = exerciseViewModel,
@@ -151,12 +147,28 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
 }
 
 @Composable
-inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
-    navController: NavHostController,
-): T {
-    val navGraphRoute = destination.parent?.route ?: return viewModel()
-    val parentEntry = remember(this) {
-        navController.getBackStackEntry(navGraphRoute)
+inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(navController: NavHostController): T {
+//    val navGraphRoute = destination.parent?.route ?: return hiltViewModel()
+//    val parentEntry = remember(this) {
+//        navController.getBackStackEntry(navGraphRoute)
+//    }
+//
+//    return hiltViewModel(parentEntry)
+    val rootEntry = remember(navController) {
+        navController.getBackStackEntry(navController.graph.startDestinationRoute!!)
     }
-    return viewModel(parentEntry)
+    return hiltViewModel(rootEntry)
 }
+
+//
+
+//@Composable
+//inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
+//    navController: NavHostController,
+//): T {
+//    val navGraphRoute = destination.parent?.route ?: return viewModel()
+//    val parentEntry = remember(this) {
+//        navController.getBackStackEntry(navGraphRoute)
+//    }
+//    return viewModel(parentEntry)
+//}

@@ -23,6 +23,7 @@ data class ExerciseSetEntity(
     companion object {
         fun from(exerciseSet: ExerciseSet): ExerciseSetEntity {
             return ExerciseSetEntity(
+                id = exerciseSet.id,
                 reps = exerciseSet.reps,
                 weight = exerciseSet.weight,
                 completed = exerciseSet.completed,

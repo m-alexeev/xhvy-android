@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material.ripple
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Surface
@@ -66,7 +66,7 @@ fun BottomNavBarItem(
                 onClick = {
                     onClick()
                 },
-                indication = rememberRipple(
+                indication = ripple(
                     bounded = false,
                     color = MaterialTheme.colorScheme.primary,
                     radius = 48.dp,
