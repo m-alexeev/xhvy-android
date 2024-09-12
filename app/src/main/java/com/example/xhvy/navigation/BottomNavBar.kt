@@ -5,11 +5,13 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsIgnoringVisibility
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.ripple
@@ -27,11 +29,12 @@ import androidx.compose.ui.unit.dp
 import com.example.xhvy.ui.components.general.FaIcon
 import com.example.xhvy.ui.theme.XhvyTheme
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun BottomNavBar(modifier: Modifier = Modifier, content: @Composable() (RowScope.() -> Unit)) {
     val windowInsets: WindowInsets = NavigationBarDefaults.windowInsets
     Surface(
-        modifier = modifier.windowInsetsPadding(WindowInsets(0.dp)),
+        modifier = modifier.windowInsetsPadding(WindowInsets.navigationBarsIgnoringVisibility),
         shadowElevation = 12.dp,
     ) {
         Row(

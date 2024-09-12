@@ -4,14 +4,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.xhvy.data.models.WorkoutAction
-import com.example.xhvy.data.repositories.AppDatabase
-import com.example.xhvy.data.repositories.WorkoutRepository
 import com.example.xhvy.navigation.WorkoutStack
 import com.example.xhvy.ui.theme.XhvyTheme
 import com.example.xhvy.ui.view_models.NewWorkoutViewModel
@@ -28,11 +25,15 @@ fun NewWorkoutScreen(
             when (action) {
                 WorkoutAction.AddExercise -> navHostController.navigate(WorkoutStack.ExerciseList)
                 WorkoutAction.CancelWorkout -> {
-                    newWorkoutViewModel.cancelWorkout()
                     navHostController.popBackStack()
+                    newWorkoutViewModel.cancelWorkout()
                 }
 
-                WorkoutAction.CompleteWorkout -> TODO()
+                WorkoutAction.CompleteWorkout -> {
+                    navHostController.popBackStack()
+                    newWorkoutViewModel.saveWorkout()
+                }
+
                 is WorkoutAction.EditSet -> {
                     newWorkoutViewModel.editSet(updatedSet = action.exerciseSet)
                 }
@@ -57,8 +58,8 @@ fun NewWorkoutScreen(
 @Composable
 fun NewWorkoutScreenPreview() {
     XhvyTheme {
-
         NewWorkoutScreen(
-            navHostController = rememberNavController()¬)
+            navHostController = rememberNavController()
+        )
     }
 }

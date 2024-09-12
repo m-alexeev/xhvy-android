@@ -49,7 +49,7 @@ fun ActiveWorkout(workout: Workout, onWorkoutAction: (workoutAction: WorkoutActi
                 onClick = {})
             StyledButton(
                 Modifier.padding(end = 12.dp),
-                onClick = { WorkoutAction.CompleteWorkout },
+                onClick = { onWorkoutAction(WorkoutAction.CompleteWorkout) },
                 shape = RoundedCornerShape(3.dp)
             ) {
                 Text(text = "Finish", style = MaterialTheme.typography.titleSmall)
@@ -120,7 +120,6 @@ fun ActiveWorkout(workout: Workout, onWorkoutAction: (workoutAction: WorkoutActi
                     StyledButton(
                         onClick = {
                             onWorkoutAction(WorkoutAction.AddExercise)
-//                            navHostController.navigate(WorkoutStack.ExerciseList)
                         },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(6.dp),

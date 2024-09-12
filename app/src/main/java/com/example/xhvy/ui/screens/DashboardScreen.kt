@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.xhvy.navigation.TopNavBar
 import com.example.xhvy.ui.components.dashboard.ProfileHeading
 import com.example.xhvy.ui.theme.XhvyTheme

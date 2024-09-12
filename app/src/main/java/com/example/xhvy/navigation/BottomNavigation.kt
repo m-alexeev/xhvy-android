@@ -11,8 +11,8 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -94,10 +94,10 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
                 .padding(innerPadding),
             startDestination = MainStack.DashboardRoute
         ) {
-            composable<MainStack.DashboardRoute> { navBackStackEntry ->
+            composable<MainStack.DashboardRoute> {
                 DashboardScreen(modifier = Modifier)
             }
-            composable<MainStack.HistoryRoute> { navBackStackEntry ->
+            composable<MainStack.HistoryRoute> {
                 HistoryScreen(workoutViewModel = newWorkoutViewModel)
             }
             navigation<MainStack.WorkoutRoute>(startDestination = WorkoutStack.WorkoutRoute) {
@@ -108,7 +108,6 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
                     NewWorkoutScreen(
                         navController,
                         newWorkoutViewModel = newWorkoutViewModel,
-                        workoutRepository = workoutRepository
                     )
                 }
                 dialog<WorkoutStack.ExerciseList> {
@@ -146,29 +145,14 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
     }
 }
 
+
 @Composable
-inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(navController: NavHostController): T {
-//    val navGraphRoute = destination.parent?.route ?: return hiltViewModel()
-//    val parentEntry = remember(this) {
-//        navController.getBackStackEntry(navGraphRoute)
-//    }
-//
-//    return hiltViewModel(parentEntry)
-    val rootEntry = remember(navController) {
-        navController.getBackStackEntry(navController.graph.startDestinationRoute!!)
+inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
+    navController: NavHostController,
+): T {
+    val navGraphRoute = destination.parent?.route ?: return viewModel()
+    val parentEntry = remember(this) {
+        navController.getBackStackEntry(navGraphRoute)
     }
-    return hiltViewModel(rootEntry)
+    return viewModel(parentEntry)
 }
-
-//
-
-//@Composable
-//inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
-//    navController: NavHostController,
-//): T {
-//    val navGraphRoute = destination.parent?.route ?: return viewModel()
-//    val parentEntry = remember(this) {
-//        navController.getBackStackEntry(navGraphRoute)
-//    }
-//    return viewModel(parentEntry)
-//}

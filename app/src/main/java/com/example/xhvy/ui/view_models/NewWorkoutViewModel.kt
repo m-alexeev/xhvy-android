@@ -83,24 +83,12 @@ class NewWorkoutViewModel(private val workoutRepository: WorkoutRepository) : Vi
         }
     }
 
-    fun saveWorkout(workoutRepository: WorkoutRepository) {
+    fun saveWorkout() {
         viewModelScope.launch {
             val workout = _workout.value ?: return@launch
             workoutRepository.completeWorkout(workout.id)
             _workout.value = null
         }
-//        val workoutExerciseEntity = workoutExercises.map { it ->
-//            WorkoutExerciseFull(
-//                workoutExerciseEntity = WorkoutExerciseEntity.from(it),
-//                exercise = ExerciseEntity.from(it.exercise),
-//                exerciseSets = it.exerciseSets.map { set ->
-//                    ExerciseSetEntity.from(set)
-//                })
-//        }
-//        // Insert workout
-//        viewModelScope.launch(Dispatchers.IO) {
-//            workoutRepository.insertWorkout(_workout, workoutExercises)
-//        }
 
     }
 }

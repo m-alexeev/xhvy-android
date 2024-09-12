@@ -23,6 +23,5 @@ class WorkoutsViewModel(private val workoutRepository: WorkoutRepository) : View
                 _allWorkouts.value = workouts
             }
         }
-
     }
 }

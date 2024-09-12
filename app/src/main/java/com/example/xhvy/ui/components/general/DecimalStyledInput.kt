@@ -52,6 +52,7 @@ fun DecimalStyledInput(
     backgroundColor: Color? = null,
     initialValue: String,
     onValueChange: (value: String) -> Unit,
+    debounceTime: Long = 0,
 ) {
     StyledInput(
         modifier = modifier,
@@ -60,5 +61,6 @@ fun DecimalStyledInput(
         value = initialValue,
         visualTransformation = DecimalInputVisualTransformation(decimalFormatter = decimalFormatter),
         onValueChange = onValueChange,
+        debounceTime = debounceTime
     )
 }
