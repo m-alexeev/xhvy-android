@@ -20,8 +20,8 @@ import com.example.xhvy.R
 import com.example.xhvy.data.models.Exercise
 import com.example.xhvy.ui.components.general.FaIconButton
 import com.example.xhvy.ui.theme.XhvyTheme
-import com.example.xhvy.ui.view_models.ExercisesViewModel
-import com.example.xhvy.ui.view_models.getExercises
+import com.example.xhvy.view_models.ExercisesViewModel
+import com.example.xhvy.view_models.getExercises
 import java.util.Locale
 
 

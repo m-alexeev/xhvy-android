@@ -32,15 +32,15 @@ import com.example.xhvy.data.models.exerciseCategories
 import com.example.xhvy.navigation.TopNavBar
 import com.example.xhvy.ui.components.general.DialogWithList
 import com.example.xhvy.ui.theme.XhvyTheme
-import com.example.xhvy.ui.view_models.ExercisesViewModel
-import com.example.xhvy.ui.view_models.NewExerciseViewModel
+import com.example.xhvy.view_models.ExercisesViewModel
+import com.example.xhvy.view_models.ExerciseNewViewModel
 
 @Composable
 fun NewExerciseScreen(
     navHostController: NavHostController,
     modifier: Modifier = Modifier,
     exercisesViewModel: ExercisesViewModel = viewModel(),
-    newExerciseViewModel: NewExerciseViewModel = viewModel()
+    exerciseNewViewModel: ExerciseNewViewModel = viewModel()
 ) {
     var openCategory by remember { mutableStateOf(false) }
     var openBodyPart by remember {
@@ -59,8 +59,8 @@ fun NewExerciseScreen(
                 TextField(label = { Text(text = "Name") },
                     modifier = Modifier.fillMaxWidth(),
                     placeholder = { Text(text = "Exercise Name") },
-                    value = newExerciseViewModel.name,
-                    onValueChange = { newExerciseViewModel.updateName(it) })
+                    value = exerciseNewViewModel.name,
+                    onValueChange = { exerciseNewViewModel.updateName(it) })
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
@@ -69,9 +69,9 @@ fun NewExerciseScreen(
                 ) {
                     Text(text = "Category")
                     Text(
-                        text = if (newExerciseViewModel.category != null) newExerciseViewModel.category.toString() else "None",
+                        text = if (exerciseNewViewModel.category != null) exerciseNewViewModel.category.toString() else "None",
                         modifier = Modifier.clickable { openCategory = true },
-                        color = if (newExerciseViewModel.category != null) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.surfaceDim
+                        color = if (exerciseNewViewModel.category != null) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.surfaceDim
                     )
                 }
                 Row(
@@ -82,27 +82,27 @@ fun NewExerciseScreen(
                 ) {
                     Text(text = "Body Part")
                     Text(
-                        text = if (newExerciseViewModel.bodyPart != null) newExerciseViewModel.bodyPart.toString() else "None",
+                        text = if (exerciseNewViewModel.bodyPart != null) exerciseNewViewModel.bodyPart.toString() else "None",
                         modifier = Modifier.clickable { openBodyPart = true },
-                        color = if (newExerciseViewModel.bodyPart != null) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.surfaceDim
+                        color = if (exerciseNewViewModel.bodyPart != null) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.surfaceDim
                     )
                 }
             }
             if (openCategory) {
                 DialogWithList(
                     header = "Category",
-                    selected = newExerciseViewModel.category,
+                    selected = exerciseNewViewModel.category,
                     onDismissRequest = { openCategory = false },
-                    onSelect = { item -> newExerciseViewModel.updateCategory(item) },
+                    onSelect = { item -> exerciseNewViewModel.updateCategory(item) },
                     items = exerciseCategories
                 )
             }
             if (openBodyPart) {
                 DialogWithList(
                     header = "Body Part",
-                    selected = newExerciseViewModel.bodyPart,
+                    selected = exerciseNewViewModel.bodyPart,
                     onDismissRequest = { openBodyPart = false },
-                    onSelect = { item -> newExerciseViewModel.updateBodyPart(item) },
+                    onSelect = { item -> exerciseNewViewModel.updateBodyPart(item) },
                     items = exerciseBodyParts
                 )
             }
@@ -118,13 +118,13 @@ fun NewExerciseScreen(
                         Text(text = "Cancel")
                     }
                     Button(
-                        enabled = newExerciseViewModel.name.isNotEmpty() && newExerciseViewModel.bodyPart != null && newExerciseViewModel.category != null,
+                        enabled = exerciseNewViewModel.name.isNotEmpty() && exerciseNewViewModel.bodyPart != null && exerciseNewViewModel.category != null,
                         onClick = {
-                            if (newExerciseViewModel.name.isNotEmpty() && newExerciseViewModel.bodyPart != null && newExerciseViewModel.category != null) {
+                            if (exerciseNewViewModel.name.isNotEmpty() && exerciseNewViewModel.bodyPart != null && exerciseNewViewModel.category != null) {
                                 val exercise = Exercise(
-                                    name = newExerciseViewModel.name,
-                                    category = newExerciseViewModel.category!!,
-                                    bodyPart = newExerciseViewModel.bodyPart!!,
+                                    name = exerciseNewViewModel.name,
+                                    category = exerciseNewViewModel.category!!,
+                                    bodyPart = exerciseNewViewModel.bodyPart!!,
                                     deletable = true
                                 )
                                 exercisesViewModel.addExercise(exercise)

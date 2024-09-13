@@ -11,39 +11,39 @@ import androidx.navigation.compose.rememberNavController
 import com.example.xhvy.data.models.WorkoutAction
 import com.example.xhvy.navigation.WorkoutStack
 import com.example.xhvy.ui.theme.XhvyTheme
-import com.example.xhvy.ui.view_models.NewWorkoutViewModel
+import com.example.xhvy.view_models.WorkoutCreateViewModel
 
 
 @Composable
 fun NewWorkoutScreen(
     navHostController: NavHostController,
-    newWorkoutViewModel: NewWorkoutViewModel = viewModel(),
+    workoutCreateViewModel: WorkoutCreateViewModel = viewModel(),
 ) {
-    val workout by newWorkoutViewModel.workout.collectAsState()
+    val workout by workoutCreateViewModel.workout.collectAsState()
     workout?.let {
         ActiveWorkout(workout = it, onWorkoutAction = { action ->
             when (action) {
                 WorkoutAction.AddExercise -> navHostController.navigate(WorkoutStack.ExerciseList)
                 WorkoutAction.CancelWorkout -> {
                     navHostController.popBackStack()
-                    newWorkoutViewModel.cancelWorkout()
+                    workoutCreateViewModel.cancelWorkout()
                 }
 
                 WorkoutAction.CompleteWorkout -> {
                     navHostController.popBackStack()
-                    newWorkoutViewModel.saveWorkout()
+                    workoutCreateViewModel.saveWorkout()
                 }
 
                 is WorkoutAction.EditSet -> {
-                    newWorkoutViewModel.editSet(updatedSet = action.exerciseSet)
+                    workoutCreateViewModel.editSet(updatedSet = action.exerciseSet)
                 }
 
                 is WorkoutAction.RemoveSet -> {
-                    newWorkoutViewModel.removeSet(action.setId)
+                    workoutCreateViewModel.removeSet(action.setId)
                 }
 
                 is WorkoutAction.AddSet -> {
-                    newWorkoutViewModel.addSet(workoutExerciseId = action.exerciseId)
+                    workoutCreateViewModel.addSet(workoutExerciseId = action.exerciseId)
                 }
             }
         })

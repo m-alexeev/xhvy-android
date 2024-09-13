@@ -95,7 +95,7 @@ fun BottomNavBarItem(
 fun BottomNavBarPreview() {
     XhvyTheme {
         BottomNavBar {
-            BottomNavigation.entries.forEachIndexed { index, item ->
+            BottomNavigationItems.entries.forEachIndexed { index, item ->
                 BottomNavBarItem(
                     selected = index % 2 == 0,
                     onClick = {},

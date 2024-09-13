@@ -24,16 +24,16 @@ import com.example.xhvy.navigation.TopNavBar
 import com.example.xhvy.navigation.WorkoutStack
 import com.example.xhvy.ui.components.general.FaIconButton
 import com.example.xhvy.ui.components.templates.TemplateGridView
-import com.example.xhvy.ui.view_models.NewWorkoutViewModel
+import com.example.xhvy.view_models.WorkoutCreateViewModel
 
 
 @Composable
 fun WorkoutScreen(
     navController: NavHostController,
-    newWorkoutViewModel: NewWorkoutViewModel,
+    workoutCreateViewModel: WorkoutCreateViewModel,
     modifier: Modifier = Modifier
 ) {
-    val activeWorkout by newWorkoutViewModel.workout.collectAsState()
+    val activeWorkout by workoutCreateViewModel.workout.collectAsState()
 
     Scaffold(
         topBar = { TopNavBar(label = "Workouts") },
@@ -53,7 +53,7 @@ fun WorkoutScreen(
             Button(
                 onClick = {
                     if (activeWorkout == null) {
-                        newWorkoutViewModel.createWorkout()
+                        workoutCreateViewModel.createWorkout()
                     }
                     navController.navigate(WorkoutStack.NewWorkout)
                 },
@@ -81,27 +81,27 @@ fun WorkoutScreen(
                     contentDescription = null,
                     onClick = {})
             }
-            TemplateGridView(0)
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "EXAMPLE TEMPLATES",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.outline
-                )
-                FaIconButton(
-                    modifier = Modifier.size(24.dp),
-                    iconPainterId = R.drawable.ic_plus,
-                    contentDescription = null,
-                    onClick = {})
-            }
-            TemplateGridView(5)
+            TemplateGridView(0, navController)
+//
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(top = 12.dp),
+//                verticalAlignment = Alignment.CenterVertically,
+//                horizontalArrangement = Arrangement.SpaceBetween
+//            ) {
+//                Text(
+//                    text = "EXAMPLE TEMPLATES",
+//                    style = MaterialTheme.typography.labelSmall,
+//                    color = MaterialTheme.colorScheme.outline
+//                )
+//                FaIconButton(
+//                    modifier = Modifier.size(24.dp),
+//                    iconPainterId = R.drawable.ic_plus,
+//                    contentDescription = null,
+//                    onClick = {})
+//            }
+//            TemplateGridView(5, navController)
         }
     }
 

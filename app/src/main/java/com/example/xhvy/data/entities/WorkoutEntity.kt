@@ -5,11 +5,11 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import com.example.xhvy.data.models.Template
 import com.example.xhvy.data.models.Workout
 import com.example.xhvy.data.models.WorkoutExercise
 import java.time.Instant
 import java.util.Date
-import kotlin.math.acos
 
 
 @Entity(tableName = "workouts")
@@ -19,6 +19,7 @@ data class WorkoutEntity(
     val startTime: Date = Date.from(Instant.now()),
     var endTime: Date = Date.from(Instant.now()),
     val active: Boolean = false,
+    val isTemplate: Boolean = false,
 ) {
     companion object {
         fun from(workout: Workout): WorkoutEntity {
@@ -29,19 +30,16 @@ data class WorkoutEntity(
                 active = workout.active
             )
         }
+
+//        fun from(template: Template): WorkoutEntity {
+//            return WorkoutEntity(
+////                name = template
+//            )
+//        }
     }
 
     fun toWorkout(fullWorkout: FullWorkout): Workout {
-        val workoutExercises: List<WorkoutExercise> =
-            fullWorkout.workoutExercises.map { workoutExerciseFull ->
-                WorkoutExercise(
-                    id = workoutExerciseFull.workoutExerciseEntity.id,
-                    workoutExerciseFull.exercise.toExercise(),
-                    completed = workoutExerciseFull.workoutExerciseEntity.completed,
-                    exerciseSets = mutableStateListOf(*workoutExerciseFull.exerciseSets.map { set -> set.toExerciseSet() }
-                        .toTypedArray()),
-                )
-            }
+        val workoutExercises: List<WorkoutExercise> = getExerciseList(fullWorkout.workoutExercises)
         return Workout(
             id,
             name,
@@ -51,8 +49,45 @@ data class WorkoutEntity(
             active
         )
     }
+
+    fun toTemplate(fullTemplate: FullTemplate): Template {
+        val templateExercises: List<WorkoutExercise> =
+            getExerciseList(fullTemplate.workoutExercises)
+
+        return Template(
+            id = id,
+            name = name,
+            templateExercises = templateExercises.toMutableList(),
+            active = active,
+            isTemplate = true,
+        )
+    }
+
+    private fun getExerciseList(workoutExercises: List<WorkoutExerciseFull>): List<WorkoutExercise> {
+        return workoutExercises.map { workoutExerciseFull ->
+            WorkoutExercise(
+                id = workoutExerciseFull.workoutExerciseEntity.id,
+                workoutExerciseFull.exercise.toExercise(),
+                completed = workoutExerciseFull.workoutExerciseEntity.completed,
+                exerciseSets = mutableStateListOf(*workoutExerciseFull.exerciseSets.map { set -> set.toExerciseSet() }
+                    .toTypedArray()),
+            )
+        }
+    }
 }
 
+
+data class FullTemplate(
+    @Embedded
+    val template: WorkoutEntity,
+
+    @Relation(
+        entity = WorkoutExerciseEntity::class,
+        parentColumn = "id",
+        entityColumn = "workoutId"
+    )
+    val workoutExercises: List<WorkoutExerciseFull>
+)
 
 data class FullWorkout(
     @Embedded

@@ -12,15 +12,15 @@ import androidx.navigation.NavHostController
 import com.example.xhvy.data.models.WorkoutExercise
 import com.example.xhvy.navigation.ExerciseStack
 import com.example.xhvy.ui.components.exercises.ExerciseItemListSelect
-import com.example.xhvy.ui.view_models.ExercisesViewModel
-import com.example.xhvy.ui.view_models.NewWorkoutViewModel
+import com.example.xhvy.view_models.ExercisesViewModel
+import com.example.xhvy.view_models.WorkoutCreateViewModel
 
 @Composable
 fun SelectExerciseModal(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     exercisesViewModel: ExercisesViewModel = viewModel(),
-    newWorkoutViewModel: NewWorkoutViewModel = viewModel(),
+    workoutCreateViewModel: WorkoutCreateViewModel = viewModel(),
 ) {
 
     Dialog(onDismissRequest = { navController.popBackStack() }) {
@@ -37,7 +37,7 @@ fun SelectExerciseModal(
                     exercises.forEachIndexed { index, exercise ->
                         val workoutExercise: WorkoutExercise =
                             WorkoutExercise(exercise = exercise)
-                        newWorkoutViewModel.addWorkoutExercise(workoutExercise)
+                        workoutCreateViewModel.addWorkoutExercise(workoutExercise)
                     }
                     navController.popBackStack()
                 },

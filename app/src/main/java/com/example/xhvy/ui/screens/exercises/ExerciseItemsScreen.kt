@@ -18,7 +18,7 @@ import com.example.xhvy.navigation.TopNavBar
 import com.example.xhvy.ui.components.exercises.ExerciseItemsList
 import com.example.xhvy.ui.components.general.FaIconButton
 import com.example.xhvy.ui.theme.XhvyTheme
-import com.example.xhvy.ui.view_models.ExercisesViewModel
+import com.example.xhvy.view_models.ExercisesViewModel
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

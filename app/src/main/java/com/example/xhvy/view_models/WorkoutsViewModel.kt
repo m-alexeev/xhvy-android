@@ -1,4 +1,4 @@
-package com.example.xhvy.ui.view_models
+package com.example.xhvy.view_models
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

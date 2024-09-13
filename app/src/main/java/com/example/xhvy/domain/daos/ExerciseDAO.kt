@@ -21,5 +21,5 @@ interface ExerciseDAO {
     fun delete(exercise: ExerciseEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(listOf: List<ExerciseEntity>)
+    suspend fun insertAll(listOf: List<ExerciseEntity>)
 }

@@ -1,4 +1,4 @@
-package com.example.xhvy.ui.view_models
+package com.example.xhvy.view_models
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class NewWorkoutViewModel(private val workoutRepository: WorkoutRepository) : ViewModel() {
+class WorkoutCreateViewModel(private val workoutRepository: WorkoutRepository) : ViewModel() {
     private val _workout = MutableStateFlow<Workout?>(null)
     val workout: StateFlow<Workout?> = _workout.asStateFlow()
 

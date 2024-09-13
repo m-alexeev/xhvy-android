@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.xhvy.navigation.TopNavBar
 import com.example.xhvy.ui.components.workouts.WorkoutRowItem
-import com.example.xhvy.ui.view_models.WorkoutsViewModel
+import com.example.xhvy.view_models.WorkoutsViewModel
 
 @Composable
 fun HistoryScreen(workoutsViewModel: WorkoutsViewModel, modifier: Modifier = Modifier ) {

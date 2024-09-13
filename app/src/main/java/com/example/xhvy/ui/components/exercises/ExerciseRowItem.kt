@@ -26,7 +26,7 @@ import com.example.xhvy.R
 import com.example.xhvy.data.models.Exercise
 import com.example.xhvy.ui.components.general.FaIconButton
 import com.example.xhvy.ui.theme.XhvyTheme
-import com.example.xhvy.ui.view_models.getExercises
+import com.example.xhvy.view_models.getExercises
 
 @Composable
 fun ExerciseRowItem(exercise: Exercise, modifier: Modifier = Modifier, onDelete: () -> Unit) {

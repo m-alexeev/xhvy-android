@@ -12,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import com.example.xhvy.navigation.TopNavBar
 import com.example.xhvy.ui.components.dashboard.ProfileHeading
 import com.example.xhvy.ui.theme.XhvyTheme
-import com.example.xhvy.ui.view_models.NewWorkoutViewModel
 
 @Composable
 fun DashboardScreen(modifier: Modifier = Modifier) {

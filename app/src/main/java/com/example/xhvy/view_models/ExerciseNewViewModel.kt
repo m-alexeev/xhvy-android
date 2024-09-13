@@ -1,4 +1,4 @@
-package com.example.xhvy.ui.view_models
+package com.example.xhvy.view_models
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.xhvy.data.models.ExerciseBodyPart
 import com.example.xhvy.data.models.ExerciseCategory
 
-class NewExerciseViewModel : ViewModel() {
+class ExerciseNewViewModel : ViewModel() {
     private var _name by mutableStateOf("")
     private var _category by mutableStateOf<ExerciseCategory?>(null)
     private var _bodyPart by mutableStateOf<ExerciseBodyPart?>(null)

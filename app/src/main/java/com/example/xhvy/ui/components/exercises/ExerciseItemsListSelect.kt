@@ -38,7 +38,7 @@ import com.example.xhvy.ui.components.general.FaIconButton
 import com.example.xhvy.ui.components.general.StyledButton
 import com.example.xhvy.ui.components.general.StyledSearch
 import com.example.xhvy.ui.components.general.StyledTextButton
-import com.example.xhvy.ui.view_models.ExercisesViewModel
+import com.example.xhvy.view_models.ExercisesViewModel
 
 
 @Composable

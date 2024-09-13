@@ -32,10 +32,11 @@ import com.example.xhvy.ui.screens.exercises.ExerciseItemScreen
 import com.example.xhvy.ui.screens.exercises.NewExerciseScreen
 import com.example.xhvy.ui.screens.exercises.SelectExerciseModal
 import com.example.xhvy.ui.screens.workouts.NewWorkoutScreen
+import com.example.xhvy.ui.screens.workouts.TemplateCreateScreen
 import com.example.xhvy.ui.screens.workouts.WorkoutScreen
-import com.example.xhvy.ui.view_models.ExercisesViewModel
-import com.example.xhvy.ui.view_models.NewWorkoutViewModel
-import com.example.xhvy.ui.view_models.WorkoutsViewModel
+import com.example.xhvy.view_models.ExercisesViewModel
+import com.example.xhvy.view_models.WorkoutCreateViewModel
+import com.example.xhvy.view_models.WorkoutsViewModel
 
 
 @Composable
@@ -51,14 +52,14 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
     val exerciseViewModel = ExercisesViewModel(exerciseRepository)
     val workoutRepository = WorkoutRepository(database.workoutDao())
     val workoutViewModel = WorkoutsViewModel(workoutRepository)
-    val newWorkoutViewModel = NewWorkoutViewModel(workoutRepository)
+    val workoutCreateViewModel = WorkoutCreateViewModel(workoutRepository)
 
     Scaffold(
         modifier = modifier,
         bottomBar = {
             if (showBottomNavBar(currentRoute)) {
                 BottomNavBar {
-                    BottomNavigation.entries.forEachIndexed { _, item ->
+                    BottomNavigationItems.entries.forEachIndexed { _, item ->
                         val isSelected by remember(currentRoute) {
                             derivedStateOf { currentRoute == item.route::class.simpleName }
                         }
@@ -102,20 +103,23 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
             }
             navigation<MainStack.WorkoutRoute>(startDestination = WorkoutStack.WorkoutRoute) {
                 composable<WorkoutStack.WorkoutRoute> {
-                    WorkoutScreen(navController, newWorkoutViewModel)
+                    WorkoutScreen(navController, workoutCreateViewModel)
                 }
                 composable<WorkoutStack.NewWorkout> {
                     NewWorkoutScreen(
                         navController,
-                        newWorkoutViewModel = newWorkoutViewModel,
+                        workoutCreateViewModel = workoutCreateViewModel,
                     )
                 }
                 dialog<WorkoutStack.ExerciseList> {
                     SelectExerciseModal(
                         navController = navController,
                         exercisesViewModel = exerciseViewModel,
-                        newWorkoutViewModel = newWorkoutViewModel,
+                        workoutCreateViewModel = workoutCreateViewModel,
                     )
+                }
+                composable<WorkoutStack.NewTemplate> {
+                    TemplateCreateScreen()
                 }
             }
             navigation<MainStack.ExercisesRoute>(startDestination = ExerciseStack.ExercisesRoute) {

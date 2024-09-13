@@ -1,5 +1,6 @@
 package com.example.xhvy.ui.components.templates
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,17 +12,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.xhvy.R
 import com.example.xhvy.data.models.TemplateAction
+import com.example.xhvy.navigation.WorkoutStack
 import com.example.xhvy.ui.components.general.DropdownMenuItemVariant
 import com.example.xhvy.ui.components.general.DropdownOption
 
 
 @Composable
-fun TemplateGridView(numTemplates: Int) {
-
+fun TemplateGridView(numTemplates: Int, navHostController: NavHostController) {
     val sampleList = (0..numTemplates).toList()
     LazyVerticalGrid(
         columns = GridCells.Fixed(count = 2),
@@ -30,13 +33,20 @@ fun TemplateGridView(numTemplates: Int) {
     ) {
         item {
             TemplateContainer() {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .clip(MaterialTheme.shapes.small)
+                        .clickable {
+                            navHostController.navigate(WorkoutStack.NewTemplate)
+                        },
+                    contentAlignment = Alignment.Center,
+                ) {
                     Text(
                         text = "Tap to Add\n New Template",
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.primary
-
                     )
                 }
             }
