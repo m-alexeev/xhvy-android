@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -28,10 +29,17 @@ import com.example.xhvy.ui.theme.XhvyTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+sealed class DropdownMenuItemVariant {
+    data object DEFAULT : DropdownMenuItemVariant()
+    data object WARNING : DropdownMenuItemVariant()
+    data object DESTRUCTIVE : DropdownMenuItemVariant()
+}
+
 data class DropdownOption<T>(
     val action: T,
     val label: String,
-    val icon: Int?
+    val icon: Int?,
+    val variant: DropdownMenuItemVariant = DropdownMenuItemVariant.DEFAULT,
 )
 
 @Composable
@@ -40,9 +48,7 @@ fun <T> StyledDropdownMenu(
     onOptionSelected: (DropdownOption<T>) -> Unit,
     expanded: Boolean,
     onDismissRequest: () -> Unit,
-
-    ) {
-
+) {
     val closeCoroutine = rememberCoroutineScope()
 
     DropdownMenu(
@@ -51,16 +57,28 @@ fun <T> StyledDropdownMenu(
         Modifier.defaultMinSize(minWidth = 192.dp)
     ) {
         options.forEach { option ->
+            val backgroundColor = when (option.variant) {
+                is DropdownMenuItemVariant.DEFAULT -> Color.Unspecified
+                DropdownMenuItemVariant.DESTRUCTIVE -> MaterialTheme.colorScheme.errorContainer
+                DropdownMenuItemVariant.WARNING -> MaterialTheme.colorScheme.tertiaryContainer
+            }
             DropdownMenuItem(
+                modifier = Modifier.background(backgroundColor),
                 text = { Text(text = option.label) },
-                leadingIcon = { option.icon?.let { FaIcon(iconPainterId = it) } },
+                leadingIcon = {
+                    option.icon?.let {
+                        FaIcon(
+                            iconPainterId = it,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                },
                 onClick = {
                     closeCoroutine.launch {
                         onOptionSelected(option)
                         // Delay closure to actually show the ripple of the item being selected
                         delay(75)
                         onDismissRequest()
-
                     }
                 },
             )

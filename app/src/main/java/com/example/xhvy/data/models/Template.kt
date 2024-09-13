@@ -1,8 +1,12 @@
 package com.example.xhvy.data.models
 
 sealed class TemplateAction {
-    data object DeleteAction : TemplateAction()
     data class EditAction(val templateId: Int) : TemplateAction()
+    data class RenameAction(val templateId: Int) : TemplateAction()
+    data class ShareAction(val templateId: Int) : TemplateAction()
+    data class DuplicateAction(val templateId: Int) : TemplateAction()
+    data class ArchiveAction(val templateId: Int) : TemplateAction()
+    data class DeleteAction(val templateId: Int) : TemplateAction()
 }
 
 
