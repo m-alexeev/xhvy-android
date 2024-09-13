@@ -41,18 +41,19 @@ fun FaIcon(
 fun FaIconButton(
     iconPainterId: Int,
     modifier: Modifier = Modifier,
-    contentDescription: String?,
+    contentDescription: String? = null,
     tint: Color = MaterialTheme.colorScheme.onSurface,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     contentPadding: PaddingValues = PaddingValues(4.dp),
     shape: Shape = RoundedCornerShape(4.dp),
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    content: @Composable() (() -> Unit)? = null
 ) {
     Box(
         modifier = modifier
-            .clickable { onClick() }
             .clip(shape)
             .background(backgroundColor)
+            .clickable { onClick() }
     ) {
         FaIcon(
             iconPainterId = iconPainterId,
@@ -60,6 +61,9 @@ fun FaIconButton(
             contentDescription = contentDescription,
             tint = tint,
         )
+        if (content != null) {
+            content()
+        }
     }
 
 }

@@ -98,11 +98,11 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
                 DashboardScreen(modifier = Modifier)
             }
             composable<MainStack.HistoryRoute> {
-                HistoryScreen(workoutViewModel = newWorkoutViewModel)
+                HistoryScreen(workoutViewModel)
             }
             navigation<MainStack.WorkoutRoute>(startDestination = WorkoutStack.WorkoutRoute) {
                 composable<WorkoutStack.WorkoutRoute> {
-                    WorkoutScreen(navController, workoutViewModel, newWorkoutViewModel)
+                    WorkoutScreen(navController, newWorkoutViewModel)
                 }
                 composable<WorkoutStack.NewWorkout> {
                     NewWorkoutScreen(

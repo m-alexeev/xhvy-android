@@ -71,7 +71,7 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
         return workoutDAO.getWorkout()
     }
 
-    fun getAllWorkouts(): Flow<List<FullWorkout>> {
+    fun getCompletedWorkouts(): Flow<List<FullWorkout>> {
         return workoutDAO.getAllWorkouts()
     }
 }

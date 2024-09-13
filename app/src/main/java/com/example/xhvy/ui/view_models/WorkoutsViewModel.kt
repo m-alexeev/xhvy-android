@@ -16,7 +16,7 @@ class WorkoutsViewModel(private val workoutRepository: WorkoutRepository) : View
 
     init {
         viewModelScope.launch {
-            workoutRepository.getAllWorkouts().collect { workoutEntities ->
+            workoutRepository.getCompletedWorkouts().collect { workoutEntities ->
                 val workouts: List<Workout> = workoutEntities.map { fullWorkout: FullWorkout ->
                     fullWorkout.workout.toWorkout(fullWorkout)
                 }

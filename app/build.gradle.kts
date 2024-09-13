@@ -72,10 +72,9 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
 
-    implementation("androidx.compose.material:material:1.7.0") // or latest stable version
-    implementation("androidx.compose.ui:ui:1.7.0")
-    implementation("androidx.compose.ui:ui-tooling:1.7.0")
-    implementation("androidx.compose.runtime:runtime:1.7.0")
+    implementation(libs.androidx.ui.v171)
+    implementation(libs.ui.tooling)
+    implementation(libs.androidx.runtime)
 
     val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")

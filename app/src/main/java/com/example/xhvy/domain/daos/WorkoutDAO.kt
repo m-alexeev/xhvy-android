@@ -50,7 +50,7 @@ interface WorkoutDAO {
     fun getWorkout(): Flow<FullWorkout?>
 
     @Transaction
-    @Query("Select * from `workouts` ORDER BY `startTime` DESC")
+    @Query("Select * from `workouts` WHERE active=0 ORDER BY `startTime` DESC")
     fun getAllWorkouts(): Flow<List<FullWorkout>>
 
     @Query("UPDATE workouts set active = 0 where id =:workoutId")
