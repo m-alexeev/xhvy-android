@@ -27,12 +27,57 @@ import com.example.xhvy.ui.components.general.DropdownOption
 import com.example.xhvy.ui.components.general.FaIconButton
 import com.example.xhvy.ui.components.general.StyledDropdownMenu
 
+
 @Composable
-fun <T> TemplateContainer(
+fun <T> TemplateContainerWithDropDown(
     modifier: Modifier = Modifier,
     title: String? = null,
     dropDownOptions: List<DropdownOption<T>>? = null,
-    onOptionSelected: (DropdownOption<T>) -> Unit,
+    onOptionSelected: ((DropdownOption<T>) -> Unit)? = null,
+    content: @Composable () -> Unit
+) {
+
+    var expanded by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    TemplateContainer {
+        Row(
+            modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            if (title != null) {
+                Text(text = title, style = MaterialTheme.typography.titleMedium)
+            }
+            if (dropDownOptions != null && onOptionSelected != null) {
+                Box {
+                    FaIconButton(
+                        iconPainterId = R.drawable.ic_ellipsis,
+                        modifier = Modifier.size(24.dp),
+                        backgroundColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = .7f),
+                        tint = MaterialTheme.colorScheme.primary,
+                        onClick = { expanded = true }
+                    )
+                    StyledDropdownMenu(
+                        options = dropDownOptions,
+                        onOptionSelected = { action ->
+                            onOptionSelected(action)
+                        },
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    )
+                }
+            }
+        }
+        content()
+    }
+}
+
+
+@Composable
+fun TemplateContainer(
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     var expanded by rememberSaveable {
@@ -50,34 +95,6 @@ fun <T> TemplateContainer(
                 .padding(vertical = 8.dp, horizontal = 8.dp)
                 .fillMaxSize()
         ) {
-            Row(
-                modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                if (title != null) {
-                    Text(text = title, style = MaterialTheme.typography.titleMedium)
-                }
-                if (dropDownOptions != null) {
-                    Box {
-                        FaIconButton(
-                            iconPainterId = R.drawable.ic_ellipsis,
-                            modifier = Modifier.size(24.dp),
-                            backgroundColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = .7f),
-                            tint = MaterialTheme.colorScheme.primary,
-                            onClick = { expanded = true }
-                        )
-                        StyledDropdownMenu(
-                            options = dropDownOptions,
-                            onOptionSelected = { action ->
-                                onOptionSelected(action)
-                            },
-                            expanded = expanded,
-                            onDismissRequest = { expanded = false }
-                        )
-                    }
-                }
-            }
             content()
         }
     }

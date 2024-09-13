@@ -71,7 +71,7 @@ fun WorkoutScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "TEMPLATES",
+                    text = "MY TEMPLATES",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.outline
                 )
@@ -81,7 +81,27 @@ fun WorkoutScreen(
                     contentDescription = null,
                     onClick = {})
             }
-            TemplateGridView()
+            TemplateGridView(0)
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "EXAMPLE TEMPLATES",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.outline
+                )
+                FaIconButton(
+                    modifier = Modifier.size(24.dp),
+                    iconPainterId = R.drawable.ic_plus,
+                    contentDescription = null,
+                    onClick = {})
+            }
+            TemplateGridView(5)
         }
     }
 

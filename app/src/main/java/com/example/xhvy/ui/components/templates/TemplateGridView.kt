@@ -1,11 +1,17 @@
 package com.example.xhvy.ui.components.templates
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.xhvy.R
 import com.example.xhvy.data.models.TemplateAction
@@ -14,16 +20,29 @@ import com.example.xhvy.ui.components.general.DropdownOption
 
 
 @Composable
-fun TemplateGridView() {
+fun TemplateGridView(numTemplates: Int) {
 
-    val sampleList = (1..10).toList()
+    val sampleList = (0..numTemplates).toList()
     LazyVerticalGrid(
         columns = GridCells.Fixed(count = 2),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
+        item {
+            TemplateContainer() {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(
+                        text = "Tap to Add\n New Template",
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary
+
+                    )
+                }
+            }
+        }
         items(sampleList) { index ->
-            TemplateContainer<TemplateAction>(
+            TemplateContainerWithDropDown(
                 title = "Template",
                 dropDownOptions = getTemplateOptions(index),
                 onOptionSelected = { dropdownOption ->
