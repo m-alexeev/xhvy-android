@@ -1,5 +1,6 @@
 package com.example.xhvy.view_models
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -17,8 +18,9 @@ class TemplateCreateViewModel : ViewModel() {
     val templateExercises: MutableList<WorkoutExercise>
         get() = _templateExercises
 
-    fun addExercise() {
-
+    fun addExercise(workoutExercise: WorkoutExercise) {
+        templateExercises.add(workoutExercise)
+        Log.d("TEMPLATE", templateExercises.toString() )
     }
 
     fun removeExercise() {

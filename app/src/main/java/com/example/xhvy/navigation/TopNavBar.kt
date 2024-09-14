@@ -28,7 +28,8 @@ import com.example.xhvy.ui.theme.XhvyTheme
 fun TopNavBar(
     modifier: Modifier = Modifier,
     label: String,
-    rightMenu: @Composable() (() -> Unit)? = null
+    leadingButton: @Composable() (() -> Unit)? = null,
+    trailingButton: @Composable() (() -> Unit)? = null,
 ) {
     Surface(
         modifier = modifier
@@ -39,14 +40,23 @@ fun TopNavBar(
     ) {
         Row(
             modifier = Modifier
-                .padding(horizontal = 12.dp)
+                .padding(end = 12.dp)
                 .displayCutoutPadding(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = label, fontSize = 24.sp)
-            if (rightMenu != null) {
-                rightMenu()
+            Row(
+                modifier = Modifier.padding(if (leadingButton == null) 12.dp else 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                if (leadingButton != null) {
+                    leadingButton()
+                }
+                Text(text = label, fontSize = 24.sp)
+            }
+            if (trailingButton != null) {
+                trailingButton()
             }
         }
     }
@@ -71,7 +81,7 @@ fun TopNavBarPreview() {
         Scaffold(topBar = {
             TopNavBar(
                 label = "Exercises",
-                rightMenu = {
+                trailingButton = {
                     FaIconButton(
                         iconPainterId = R.drawable.ic_dashboard,
                         contentDescription = null,

@@ -9,20 +9,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.xhvy.data.models.WorkoutExercise
 import com.example.xhvy.navigation.ExerciseStack
 import com.example.xhvy.ui.components.exercises.ExerciseItemListSelect
 import com.example.xhvy.view_models.ExercisesViewModel
-import com.example.xhvy.view_models.WorkoutCreateViewModel
 
 @Composable
 fun SelectExerciseModal(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     exercisesViewModel: ExercisesViewModel = viewModel(),
-    workoutCreateViewModel: WorkoutCreateViewModel = viewModel(),
 ) {
-
     Dialog(onDismissRequest = { navController.popBackStack() }) {
         Card(
             modifier = modifier
@@ -33,12 +29,11 @@ fun SelectExerciseModal(
                 exercisesViewModel = exercisesViewModel,
                 onSelect = {},
                 onCancel = { navController.popBackStack() },
-                onClickAdd = { exercises ->
-                    exercises.forEachIndexed { index, exercise ->
-                        val workoutExercise: WorkoutExercise =
-                            WorkoutExercise(exercise = exercise)
-                        workoutCreateViewModel.addWorkoutExercise(workoutExercise)
-                    }
+                onConfirm = { exercises ->
+                    navController.previousBackStackEntry?.savedStateHandle?.set(
+                        "selectedExercises",
+                        exercises.toList()
+                    )
                     navController.popBackStack()
                 },
                 onClickNew = {

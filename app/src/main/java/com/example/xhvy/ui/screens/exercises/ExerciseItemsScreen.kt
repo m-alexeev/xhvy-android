@@ -33,7 +33,7 @@ fun ExerciseItemScreen(
     Scaffold(topBar = {
         TopNavBar(
             label = "Exercises",
-            rightMenu = { CreateExerciseButton(navController) })
+            trailingButton = { CreateExerciseButton(navController) })
     }) { innerPadding ->
         Column(modifier.padding(innerPadding)) {
             ExerciseItemsList(

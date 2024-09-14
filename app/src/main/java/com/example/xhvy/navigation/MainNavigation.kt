@@ -31,8 +31,8 @@ import com.example.xhvy.ui.screens.MeasureScreen
 import com.example.xhvy.ui.screens.exercises.ExerciseItemScreen
 import com.example.xhvy.ui.screens.exercises.NewExerciseScreen
 import com.example.xhvy.ui.screens.exercises.SelectExerciseModal
-import com.example.xhvy.ui.screens.workouts.NewWorkoutScreen
 import com.example.xhvy.ui.screens.workouts.TemplateCreateScreen
+import com.example.xhvy.ui.screens.workouts.WorkoutCreateScreen
 import com.example.xhvy.ui.screens.workouts.WorkoutScreen
 import com.example.xhvy.view_models.ExercisesViewModel
 import com.example.xhvy.view_models.WorkoutCreateViewModel
@@ -106,7 +106,7 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
                     WorkoutScreen(navController, workoutCreateViewModel)
                 }
                 composable<WorkoutStack.NewWorkout> {
-                    NewWorkoutScreen(
+                    WorkoutCreateScreen(
                         navController,
                         workoutCreateViewModel = workoutCreateViewModel,
                     )
@@ -115,11 +115,10 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
                     SelectExerciseModal(
                         navController = navController,
                         exercisesViewModel = exerciseViewModel,
-                        workoutCreateViewModel = workoutCreateViewModel,
                     )
                 }
                 composable<WorkoutStack.NewTemplate> {
-                    TemplateCreateScreen()
+                    TemplateCreateScreen(navHostController = navController)
                 }
             }
             navigation<MainStack.ExercisesRoute>(startDestination = ExerciseStack.ExercisesRoute) {

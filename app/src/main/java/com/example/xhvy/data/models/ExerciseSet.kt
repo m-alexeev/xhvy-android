@@ -7,6 +7,7 @@ sealed class SetAction {
     data class ToggleComplete(val setIndex: Int) : SetAction()
 }
 
+
 data class ExerciseSet(
     val id: Int = 0,
     var reps: Int? = 0,

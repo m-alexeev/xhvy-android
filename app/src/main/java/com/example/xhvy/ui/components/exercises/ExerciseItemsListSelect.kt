@@ -47,7 +47,7 @@ fun ExerciseItemListSelect(
     onCancel: () -> Unit,
     onSelect: (exercise: Exercise) -> Unit,
     onClickNew: () -> Unit,
-    onClickAdd: (exercises: List<Exercise>) -> Unit,
+    onConfirm: (exercises: List<Exercise>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val exercises by exercisesViewModel.exercises.collectAsState()
@@ -68,15 +68,24 @@ fun ExerciseItemListSelect(
                 onClick = onCancel
             )
             StyledTextButton(
-                text = stringResource(id = R.string.exercise_new),
-                style = MaterialTheme.typography.titleSmall,
                 onClick = { onClickNew() }
-            )
+            ) {
+                Text(
+                    text = stringResource(id = R.string.exercise_new),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
             Spacer(modifier = Modifier.weight(1.0f))
             StyledTextButton(
-                text = stringResource(id = R.string.exercise_add),
                 enabled = selectedExercises.isNotEmpty(),
-                onClick = { onClickAdd(selectedExercises) })
+                onClick = { onConfirm(selectedExercises.toList()) })
+            {
+                Text(
+                    text = stringResource(id = R.string.exercise_add),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
         StyledSearch(
             modifier = Modifier.fillMaxWidth(),
