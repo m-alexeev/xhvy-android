@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -55,6 +56,7 @@ class TableColumn(
 fun WorkoutEntryRow(
     modifier: Modifier = Modifier,
     workoutExercise: WorkoutExercise,
+    template: Boolean = false,
     onSetAction: (action: SetAction) -> Unit,
 ) {
     val columnWeights = listOf(
@@ -62,12 +64,15 @@ fun WorkoutEntryRow(
         TableColumn("PREVIOUS", .3f),
         TableColumn("LBS", 0.2f),
         TableColumn("REPS", 0.2f),
-        TableColumn(icon = R.drawable.ic_check, weight = 0.1f)
+        TableColumn(
+            title = if (template) "" else null,
+            icon = if (!template) R.drawable.ic_check else null,
+            weight = 0.1f
+        )
     )
     var expanded by remember {
         mutableStateOf(false)
     }
-
 
     Column(modifier.fillMaxWidth()) {
         Row(
@@ -108,10 +113,10 @@ fun WorkoutEntryRow(
                 TableRow(
                     index,
                     item,
-                    onSetAction = {
-                        onSetAction(it)
-                    },
-                )
+                    template = template
+                ) {
+                    onSetAction(it)
+                }
             }
 
         }
@@ -175,6 +180,7 @@ fun RowScope.TableHeaderColumn(
 fun TableRow(
     index: Int,
     set: ExerciseSet,
+    template: Boolean = false,
     onSetAction: (action: SetAction) -> Unit,
 ) {
     Row(
@@ -203,7 +209,6 @@ fun TableRow(
             initialValue = "${if (set.weight != null) set.weight else ""}",
             onValueChange = { weight ->
                 val newWeight = DecimalFormatter().cleanup(weight).toFloatOrNull()
-
                 onSetAction(
                     SetAction.UpdateSet(
                         set.copy(weight = if (newWeight == 0f) null else newWeight)
@@ -213,6 +218,7 @@ fun TableRow(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Decimal
             ),
+            textStyle = TextStyle(textAlign = TextAlign.Center),
             modifier = Modifier
                 .weight(0.2f),
             backgroundColor = if (set.completed) MaterialTheme.colorScheme.primaryContainer else null,
@@ -222,13 +228,13 @@ fun TableRow(
         StyledInput(
             value = "${if (set.reps != null) set.reps else ""}",
             onValueChange = { reps ->
-                val newValue = reps.filter { char -> char.isDigit() }
                 onSetAction(
                     SetAction.UpdateSet(
                         set.copy(reps = reps.toIntOrNull())
                     )
                 )
             },
+            textStyle = TextStyle(textAlign = TextAlign.Center),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number
             ),
@@ -244,21 +250,19 @@ fun TableRow(
         ) {
             FaIcon(
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(if (template) 18.dp else 24.dp)
                     .align(Alignment.Center)
                     .clip(RoundedCornerShape(4.dp))
                     .background(if (set.completed) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceDim)
-                    .clickable {
+                    .clickable(enabled = !template) {
                         onSetAction(
-                            SetAction.RemoveSet(setId = set.id)
-//                            SetAction.UpdateSet(
-//                                index,
-//                                set.copy(completed = !set.completed)
-//                            )
+                            SetAction.UpdateSet(
+                                set.copy(completed = !set.completed)
+                            )
                         )
                     },
                 tint = if (set.completed) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,
-                iconPainterId = R.drawable.ic_check,
+                iconPainterId = if (template) R.drawable.ic_lock else R.drawable.ic_check,
                 contentDescription = null,
             )
         }

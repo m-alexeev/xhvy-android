@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
@@ -49,6 +50,7 @@ fun DecimalStyledInput(
     modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
     decimalFormatter: DecimalFormatter,
+    textStyle: TextStyle = TextStyle.Default,
     backgroundColor: Color? = null,
     initialValue: String,
     onValueChange: (value: String) -> Unit,
@@ -58,6 +60,7 @@ fun DecimalStyledInput(
         modifier = modifier,
         keyboardOptions = keyboardOptions,
         backgroundColor = backgroundColor,
+        textStyle = textStyle,
         value = initialValue,
         visualTransformation = DecimalInputVisualTransformation(decimalFormatter = decimalFormatter),
         onValueChange = onValueChange,

@@ -1,10 +1,10 @@
 package com.example.xhvy.view_models
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
+import com.example.xhvy.data.models.ExerciseSet
 import com.example.xhvy.data.models.WorkoutExercise
 
 class TemplateCreateViewModel : ViewModel() {
@@ -18,20 +18,28 @@ class TemplateCreateViewModel : ViewModel() {
     val templateExercises: MutableList<WorkoutExercise>
         get() = _templateExercises
 
-    fun addExercise(workoutExercise: WorkoutExercise) {
-        templateExercises.add(workoutExercise)
-        Log.d("TEMPLATE", templateExercises.toString() )
+    fun addExercise(newExercise: WorkoutExercise) {
+        val exists =
+            templateExercises.find { templateExercise -> templateExercise.exercise.id == newExercise.exercise.id }
+        if (exists == null) {
+            templateExercises.add(newExercise)
+        }
     }
 
-    fun removeExercise() {
-
+    fun removeExercise(removeExercise: WorkoutExercise) {
+        if (templateExercises.contains(removeExercise)) {
+            templateExercises.remove(removeExercise)
+        }
     }
 
-    fun addSet() {
-
+    fun addSet(templateExercise: WorkoutExercise) {
+        val newSet = ExerciseSet(templateExercise.getSets().size)
+        templateExercise.exerciseSets.add(newSet)
     }
 
-    fun removeSet() {
-
+    fun removeSet(removeSet: ExerciseSet, templateExercise: WorkoutExercise) {
+        if (templateExercise.exerciseSets.contains(removeSet)) {
+            templateExercise.exerciseSets.remove(removeSet)
+        }
     }
 }
