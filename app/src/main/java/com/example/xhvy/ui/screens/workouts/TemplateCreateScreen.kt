@@ -28,7 +28,6 @@ import com.example.xhvy.data.models.WorkoutExercise
 import com.example.xhvy.navigation.TopNavBar
 import com.example.xhvy.navigation.WorkoutStack
 import com.example.xhvy.ui.components.general.FaIconButton
-import com.example.xhvy.ui.components.general.StyledButton
 import com.example.xhvy.ui.components.general.StyledTextButton
 import com.example.xhvy.ui.components.templates.TemplateName
 import com.example.xhvy.ui.components.workouts.WorkoutEntryRow
@@ -88,18 +87,31 @@ fun TemplateCreateScreen(
                     item { Spacer(modifier = Modifier.padding(vertical = 24.dp)) }
                 }
                 items(items = templateCreateViewModel.templateExercises) { exercise ->
-                    WorkoutEntryRow(workoutExercise = exercise, template = true) { action: SetAction ->
+                    WorkoutEntryRow(
+                        workoutExercise = exercise,
+                        template = true
+                    ) { action: SetAction ->
                         when (action) {
-                            SetAction.AddSet -> {}
-                            is SetAction.RemoveSet -> {}
+                            SetAction.AddSet -> {
+                                templateCreateViewModel.addSet(exercise)
+                            }
+
+                            is SetAction.RemoveSet -> {
+                                templateCreateViewModel.removeSet(action.setId, exercise)
+                            }
+
                             is SetAction.ToggleComplete -> {}
-                            is SetAction.UpdateSet -> {}
+                            is SetAction.UpdateSet -> {
+                                templateCreateViewModel.updateSet(action.exerciseSet, exercise)
+                            }
                         }
                     }
                 }
                 item {
                     StyledTextButton(
-                        modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 12.dp),
                         shape = MaterialTheme.shapes.small,
                         onClick = { navHostController.navigate(WorkoutStack.ExerciseList) }) {
                         Text(

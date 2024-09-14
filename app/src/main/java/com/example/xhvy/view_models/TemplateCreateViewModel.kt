@@ -1,5 +1,6 @@
 package com.example.xhvy.view_models
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -20,7 +21,7 @@ class TemplateCreateViewModel : ViewModel() {
 
     fun addExercise(newExercise: WorkoutExercise) {
         val exists =
-            templateExercises.find { templateExercise -> templateExercise.exercise.id == newExercise.exercise.id }
+            templateExercises.find { it.exercise.id == newExercise.exercise.id }
         if (exists == null) {
             templateExercises.add(newExercise)
         }
@@ -37,9 +38,21 @@ class TemplateCreateViewModel : ViewModel() {
         templateExercise.exerciseSets.add(newSet)
     }
 
-    fun removeSet(removeSet: ExerciseSet, templateExercise: WorkoutExercise) {
-        if (templateExercise.exerciseSets.contains(removeSet)) {
-            templateExercise.exerciseSets.remove(removeSet)
+    fun removeSet(removeSetId: Int, templateExercise: WorkoutExercise) {
+        val removeSet = templateExercise.exerciseSets.find { it.id == removeSetId }
+        if (removeSet != null) {
+            if (templateExercise.exerciseSets.contains(removeSet)) {
+                templateExercise.exerciseSets.remove(removeSet)
+            }
         }
+    }
+
+    fun updateSet(updatedTemplateSet: ExerciseSet, templateExercise: WorkoutExercise) {
+        val setToUpdate = templateExercise.exerciseSets.find { it.id == updatedTemplateSet.id }
+        if (setToUpdate != null) {
+            val setIndex = templateExercise.exerciseSets.indexOf(setToUpdate)
+            templateExercise.exerciseSets[setIndex] = updatedTemplateSet
+        }
+        Log.d("TEMPLATE", templateExercise.toString())
     }
 }
