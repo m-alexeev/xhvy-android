@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -45,9 +46,8 @@ import com.example.xhvy.view_models.ExercisesViewModel
 fun ExerciseItemListSelect(
     exercisesViewModel: ExercisesViewModel,
     onCancel: () -> Unit,
-    onSelect: (exercise: Exercise) -> Unit,
     onClickNew: () -> Unit,
-    onConfirm: (exercises: List<Exercise>) -> Unit,
+    onSelect: (exercises: List<Exercise>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val exercises by exercisesViewModel.exercises.collectAsState()
@@ -57,33 +57,38 @@ fun ExerciseItemListSelect(
     }
 
     Column(modifier = modifier.padding(horizontal = 8.dp, vertical = 8.dp)) {
-
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(bottom = 12.dp)
         ) {
             FaIconButton(
                 iconPainterId = R.drawable.ic_x,
-                contentDescription = null,
+                backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
                 onClick = onCancel
             )
-            StyledTextButton(
+            TextButton(
+//                backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
                 onClick = { onClickNew() }
             ) {
                 Text(
                     text = stringResource(id = R.string.exercise_new),
                     style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
             Spacer(modifier = Modifier.weight(1.0f))
+            TextButton(onClick = { /*TODO*/ }) {
+                
+            }
             StyledTextButton(
+                backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
                 enabled = selectedExercises.isNotEmpty(),
-                onClick = { onConfirm(selectedExercises.toList()) })
+                onClick = { onSelect(selectedExercises.toList()) })
             {
                 Text(
                     text = stringResource(id = R.string.exercise_add),
-                    color = MaterialTheme.colorScheme.primary
+//                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleSmall
                 )
             }
         }

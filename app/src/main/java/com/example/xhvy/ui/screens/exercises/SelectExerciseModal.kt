@@ -27,9 +27,8 @@ fun SelectExerciseModal(
         ) {
             ExerciseItemListSelect(
                 exercisesViewModel = exercisesViewModel,
-                onSelect = {},
                 onCancel = { navController.popBackStack() },
-                onConfirm = { exercises ->
+                onSelect = { exercises ->
                     navController.previousBackStackEntry?.savedStateHandle?.set(
                         "selectedExercises",
                         exercises.toList()
