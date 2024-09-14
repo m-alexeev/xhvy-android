@@ -53,6 +53,5 @@ class TemplateCreateViewModel : ViewModel() {
             val setIndex = templateExercise.exerciseSets.indexOf(setToUpdate)
             templateExercise.exerciseSets[setIndex] = updatedTemplateSet
         }
-        Log.d("TEMPLATE", templateExercise.toString())
     }
 }
