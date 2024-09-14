@@ -157,7 +157,7 @@ fun RowScope.TableHeaderColumn(
                 .weight(weight)
                 .padding(vertical = 8.dp),
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.secondary,
+            color = MaterialTheme.colorScheme.outline,
             fontSize = MaterialTheme.typography.labelSmall.fontSize,
             fontWeight = FontWeight(400)
         )
@@ -170,7 +170,7 @@ fun RowScope.TableHeaderColumn(
                 .weight(weight)
                 .size(18.dp),
 
-            tint = MaterialTheme.colorScheme.secondary,
+            tint = MaterialTheme.colorScheme.outline,
         )
     }
 }
@@ -187,7 +187,7 @@ fun TableRow(
         Modifier
             .fillMaxWidth()
             .height(32.dp)
-            .background(if (set.completed) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.8f) else MaterialTheme.colorScheme.surface)
+            .background(if (set.completed) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface)
             .padding(vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -218,7 +218,10 @@ fun TableRow(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Decimal
             ),
-            textStyle = TextStyle(textAlign = TextAlign.Center),
+            textStyle = TextStyle(
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurface
+            ),
             modifier = Modifier
                 .weight(0.2f),
             backgroundColor = if (set.completed) MaterialTheme.colorScheme.primaryContainer else null,
@@ -234,7 +237,11 @@ fun TableRow(
                     )
                 )
             },
-            textStyle = TextStyle(textAlign = TextAlign.Center),
+            textStyle = TextStyle(
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurface
+
+            ),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number
             ),
@@ -261,7 +268,7 @@ fun TableRow(
                             )
                         )
                     },
-                tint = if (set.completed) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,
+                tint = if (set.completed) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
                 iconPainterId = if (template) R.drawable.ic_lock else R.drawable.ic_check,
                 contentDescription = null,
             )

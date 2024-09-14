@@ -1,5 +1,6 @@
 package com.example.xhvy.ui.components.dashboard
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,7 +43,8 @@ fun ProfileHeading(name: String, workouts: Int, modifier: Modifier = Modifier) {
             Text(
                 text = "$workouts Workouts",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.primary
+//                color = MaterialTheme.colorScheme.secondary
             )
         }
     }

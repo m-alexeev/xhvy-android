@@ -55,7 +55,7 @@ fun <T> TemplateContainerWithDropDown(
                     FaIconButton(
                         iconPainterId = R.drawable.ic_ellipsis,
                         modifier = Modifier.size(24.dp),
-                        backgroundColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = .7f),
+                        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                         tint = MaterialTheme.colorScheme.primary,
                         onClick = { expanded = true }
                     )

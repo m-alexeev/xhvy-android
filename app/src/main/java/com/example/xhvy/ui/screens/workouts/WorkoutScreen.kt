@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -23,7 +22,9 @@ import com.example.xhvy.R
 import com.example.xhvy.navigation.TopNavBar
 import com.example.xhvy.navigation.WorkoutStack
 import com.example.xhvy.ui.components.general.FaIconButton
+import com.example.xhvy.ui.components.general.StyledButton
 import com.example.xhvy.ui.components.templates.TemplateGridView
+import com.example.xhvy.ui.theme.Blue800
 import com.example.xhvy.view_models.WorkoutCreateViewModel
 
 
@@ -43,25 +44,25 @@ fun WorkoutScreen(
                 .fillMaxHeight()
                 .fillMaxWidth()
                 .padding(innerPadding)
-                .padding(horizontal = 12.dp)
+                .padding(horizontal = 12.dp, vertical = 12.dp)
         ) {
             Text(
                 text = "QUICK START",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.outline
             )
-            Button(
+            StyledButton(
                 onClick = {
                     if (activeWorkout == null) {
                         workoutCreateViewModel.createWorkout()
                     }
                     navController.navigate(WorkoutStack.NewWorkout)
                 },
+                backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 shape = RoundedCornerShape(8.dp),
-                modifier = Modifier.fillMaxWidth()
-
+                modifier = Modifier.fillMaxWidth(),
             ) {
-                Text(text = "Create Empty Workout")
+                Text(text = "Create Empty Workout", color = Blue800)
             }
             Row(
                 modifier = Modifier

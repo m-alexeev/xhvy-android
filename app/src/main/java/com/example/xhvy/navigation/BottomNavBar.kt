@@ -57,8 +57,8 @@ fun BottomNavBarItem(
     icon: @Composable (color: Color) -> Unit,
     modifier: Modifier = Modifier,
     label: @Composable() ((color: Color) -> Unit)? = null,
-    selectedColor: Color = MaterialTheme.colorScheme.primary,
-    unSelectedColor: Color = MaterialTheme.colorScheme.secondary,
+    selectedColor: Color = MaterialTheme.colorScheme.onSurface,
+    unSelectedColor: Color = MaterialTheme.colorScheme.outline,
 ) {
     val color: Color = if (selected) selectedColor else unSelectedColor
 
@@ -71,7 +71,7 @@ fun BottomNavBarItem(
                 },
                 indication = rememberRipple(
                     bounded = false,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = selectedColor,
                     radius = 48.dp,
                 ),
                 interactionSource = remember { MutableInteractionSource() }
@@ -93,7 +93,7 @@ fun BottomNavBarItem(
 @Preview
 @Composable
 fun BottomNavBarPreview() {
-    XhvyTheme {
+    XhvyTheme (darkTheme = true){
         BottomNavBar {
             BottomNavigationItems.entries.forEachIndexed { index, item ->
                 BottomNavBarItem(

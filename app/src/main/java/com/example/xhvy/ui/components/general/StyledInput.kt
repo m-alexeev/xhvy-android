@@ -1,7 +1,6 @@
 package com.example.xhvy.ui.components.general
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -66,7 +65,7 @@ fun StyledInput(
             .clip(RoundedCornerShape(8.dp))
             .background(backgroundColor ?: MaterialTheme.colorScheme.surfaceContainer),
         textStyle = textStyle,
-        cursorBrush = SolidColor(MaterialTheme.colorScheme.secondary),
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.outline),
         visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
         decorationBox = { innerTextField ->
@@ -75,7 +74,11 @@ fun StyledInput(
                     .padding(contentPadding),
             ) {
                 if (value.isEmpty()) {
-                    Text(text = placeholder, color = MaterialTheme.colorScheme.outline, style = textStyle)
+                    Text(
+                        text = placeholder,
+                        color = MaterialTheme.colorScheme.outline,
+                        style = textStyle
+                    )
                 }
                 innerTextField()
             }

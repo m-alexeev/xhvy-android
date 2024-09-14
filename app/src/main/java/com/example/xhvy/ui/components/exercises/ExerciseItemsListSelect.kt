@@ -56,6 +56,7 @@ fun ExerciseItemListSelect(
         mutableStateListOf<Exercise>()
     }
 
+
     Column(modifier = modifier.padding(horizontal = 8.dp, vertical = 8.dp)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -67,7 +68,6 @@ fun ExerciseItemListSelect(
                 onClick = onCancel
             )
             TextButton(
-//                backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
                 onClick = { onClickNew() }
             ) {
                 Text(
@@ -78,23 +78,24 @@ fun ExerciseItemListSelect(
             }
             Spacer(modifier = Modifier.weight(1.0f))
             TextButton(onClick = { /*TODO*/ }) {
-                
+
             }
             StyledTextButton(
                 backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
                 enabled = selectedExercises.isNotEmpty(),
                 onClick = { onSelect(selectedExercises.toList()) })
             {
+                val enabled = selectedExercises.isNotEmpty()
                 Text(
                     text = stringResource(id = R.string.exercise_add),
-//                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleSmall
+                    color = if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                    style = MaterialTheme.typography.titleSmall,
                 )
             }
         }
         StyledSearch(
             modifier = Modifier.fillMaxWidth(),
-            backgroundColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            backgroundColor = MaterialTheme.colorScheme.surfaceContainerLow,
             value = exercisesViewModel.search,
             leadingIcon = {
                 FaIcon(
@@ -113,7 +114,7 @@ fun ExerciseItemListSelect(
         ) {
             StyledButton(
                 onClick = { /*TODO*/ },
-                backgroundColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                backgroundColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                 shape = MaterialTheme.shapes.small,
                 contentPadding = PaddingValues(vertical = 4.dp),
                 modifier = Modifier
@@ -124,7 +125,7 @@ fun ExerciseItemListSelect(
             }
             StyledButton(
                 onClick = { /*TODO*/ },
-                backgroundColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                backgroundColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                 shape = MaterialTheme.shapes.small,
                 contentPadding = PaddingValues(vertical = 4.dp),
                 modifier = Modifier.weight(1f)
@@ -163,7 +164,7 @@ fun LazyItemScope.ExerciseItemRow(
 ) {
     val backgroundColor by animateColorAsState(
         targetValue = if (selected) {
-            MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+            MaterialTheme.colorScheme.primaryContainer
         } else Color.Unspecified, label = ""
     )
 
@@ -179,7 +180,7 @@ fun LazyItemScope.ExerciseItemRow(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
                 modifier = Modifier
                     .padding(end = 8.dp)
@@ -189,7 +190,11 @@ fun LazyItemScope.ExerciseItemRow(
             )
             Column {
                 Text(text = exercise.name)
-                Text(text = exercise.bodyPart.toString())
+                Text(
+                    text = exercise.bodyPart.toString(),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.outline
+                )
             }
         }
 

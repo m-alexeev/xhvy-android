@@ -126,7 +126,8 @@ fun ActiveWorkout(workout: Workout, onWorkoutAction: (workoutAction: WorkoutActi
                     ) {
                         Text(
                             text = stringResource(id = R.string.workout_add_exercise),
-                            style = MaterialTheme.typography.titleSmall
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
                     }
                     Spacer(modifier = Modifier.padding(bottom = 6.dp))
@@ -140,7 +141,9 @@ fun ActiveWorkout(workout: Workout, onWorkoutAction: (workoutAction: WorkoutActi
                     ) {
                         Text(
                             text = stringResource(id = R.string.workout_cancel_workout),
-                            style = MaterialTheme.typography.titleSmall
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.onErrorContainer
+
                         )
                     }
                 }

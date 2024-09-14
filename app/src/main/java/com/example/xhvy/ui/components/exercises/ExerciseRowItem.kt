@@ -57,7 +57,7 @@ fun ExerciseRowItem(exercise: Exercise, modifier: Modifier = Modifier, onDelete:
             Text(
                 text = exercise.category.toString(),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.outline
             )
         }
         Spacer(modifier = Modifier.weight(1f))

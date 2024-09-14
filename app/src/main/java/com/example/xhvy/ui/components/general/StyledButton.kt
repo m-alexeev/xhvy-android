@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -35,7 +36,7 @@ fun StyledButton(
     backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     content: @Composable RowScope.() -> Unit,
 ) {
-    val contentColor = if (enabled) MaterialTheme.colorScheme.primary else colors.disabledContentColor
+    val contentColor = if (enabled) colors.contentColor else colors.disabledContentColor
 
     Surface(
         modifier = modifier,
