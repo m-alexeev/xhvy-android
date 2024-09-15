@@ -3,6 +3,10 @@ package com.example.xhvy.data.models
 import kotlin.enums.EnumEntries
 import kotlin.enums.enumEntries
 
+sealed class ExerciseAction(){
+    data object DeleteExercise: ExerciseAction()
+}
+
 enum class ExerciseCategory(private val displayName: String) {
     BARBELL("Barbell"),
     DUMBBELL("Dumbbell"),

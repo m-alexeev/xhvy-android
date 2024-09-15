@@ -22,6 +22,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.xhvy.R
 import com.example.xhvy.data.models.Exercise
+import com.example.xhvy.data.models.ExerciseAction
 import com.example.xhvy.data.models.ExerciseSet
 import com.example.xhvy.data.models.SetAction
 import com.example.xhvy.data.models.WorkoutExercise
@@ -97,23 +98,31 @@ fun TemplateCreateScreen(
                     key = { it.exercise.name }) { exercise ->
                     WorkoutEntryRow(
                         workoutExercise = exercise,
-                        template = true
-                    ) { action: SetAction ->
-                        when (action) {
-                            SetAction.AddSet -> {
-                                templateCreateViewModel.addSet(exercise)
-                            }
+                        template = true,
+                        onSetAction = { action: SetAction ->
+                            when (action) {
+                                SetAction.AddSet -> {
+                                    templateCreateViewModel.addSet(exercise)
+                                }
 
-                            is SetAction.RemoveSet -> {
-                                templateCreateViewModel.removeSet(action.setId, exercise)
-                            }
+                                is SetAction.RemoveSet -> {
+                                    templateCreateViewModel.removeSet(action.setId, exercise)
+                                }
 
-                            is SetAction.ToggleComplete -> {}
-                            is SetAction.UpdateSet -> {
-                                templateCreateViewModel.updateSet(action.exerciseSet, exercise)
+                                is SetAction.ToggleComplete -> {}
+                                is SetAction.UpdateSet -> {
+                                    templateCreateViewModel.updateSet(action.exerciseSet, exercise)
+                                }
+                            }
+                        },
+                        onExerciseAction = { action: ExerciseAction ->
+                            when (action) {
+                                is ExerciseAction.DeleteExercise -> {
+                                    templateCreateViewModel.removeExercise(exercise)
+                                }
                             }
                         }
-                    }
+                    )
                 }
                 item {
                     StyledTextButton(

@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -32,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.xhvy.R
 import com.example.xhvy.data.models.Exercise
+import com.example.xhvy.data.models.ExerciseAction
 import com.example.xhvy.data.models.ExerciseBodyPart
 import com.example.xhvy.data.models.ExerciseCategory
 import com.example.xhvy.data.models.ExerciseSet
@@ -51,13 +55,13 @@ class TableColumn(
     val icon: Int? = null,
 )
 
-
 @Composable
 fun WorkoutEntryRow(
     modifier: Modifier = Modifier,
     workoutExercise: WorkoutExercise,
     template: Boolean = false,
     onSetAction: (action: SetAction) -> Unit,
+    onExerciseAction: (action: ExerciseAction) -> Unit,
 ) {
     val columnWeights = listOf(
         TableColumn("SET", 0.1f),
@@ -92,6 +96,11 @@ fun WorkoutEntryRow(
                     tint = MaterialTheme.colorScheme.primary,
                     onClick = { expanded = true }
                 )
+                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                    DropdownMenuItem(
+                        text = { Text(text = stringResource(id = R.string.action_delete)) },
+                        onClick = { onExerciseAction(ExerciseAction.DeleteExercise) })
+                }
             }
         }
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -285,7 +294,8 @@ fun WorkoutEntryRowPreview() {
                 0,
                 Exercise(0, "Test", ExerciseCategory.CARDIO, ExerciseBodyPart.CARDIO)
             ),
-            onSetAction = {}
+            onSetAction = {},
+            onExerciseAction = {}
         )
     }
 }

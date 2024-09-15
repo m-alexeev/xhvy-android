@@ -106,6 +106,7 @@ fun ActiveWorkout(workout: Workout, onWorkoutAction: (workoutAction: WorkoutActi
                                 }
                             }
                         },
+                        onExerciseAction = {}
                     )
                 }
             }
