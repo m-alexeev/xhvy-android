@@ -21,7 +21,6 @@ import com.example.xhvy.R
 import com.example.xhvy.data.models.Template
 import com.example.xhvy.data.models.TemplateAction
 import com.example.xhvy.navigation.WorkoutStack
-import com.example.xhvy.ui.components.general.DropdownMenuItemVariant
 import com.example.xhvy.ui.components.general.DropdownOption
 
 
@@ -33,7 +32,7 @@ fun TemplateGridView(templates: List<Template>, navHostController: NavHostContro
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         item {
-            TemplateContainer() {
+            TemplateContainer {
                 Box(
                     Modifier
                         .fillMaxSize()
