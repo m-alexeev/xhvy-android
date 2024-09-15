@@ -85,7 +85,7 @@ fun WorkoutScreen(
                     contentDescription = null,
                     onClick = {})
             }
-            TemplateGridView(templates, navController)
+            TemplateGridView(templates, navController, templatesViewModel)
         }
     }
 

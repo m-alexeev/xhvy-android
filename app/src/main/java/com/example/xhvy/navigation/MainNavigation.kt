@@ -23,6 +23,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.xhvy.data.repositories.AppDatabase
 import com.example.xhvy.data.repositories.ExerciseRepository
+import com.example.xhvy.data.repositories.TemplateRepository
 import com.example.xhvy.data.repositories.WorkoutRepository
 import com.example.xhvy.ui.components.general.FaIcon
 import com.example.xhvy.ui.screens.DashboardScreen
@@ -54,7 +55,8 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
     val workoutRepository = WorkoutRepository(database.workoutDao())
     val workoutViewModel = WorkoutsViewModel(workoutRepository)
     val workoutCreateViewModel = WorkoutCreateViewModel(workoutRepository)
-    val templatesViewModel = TemplatesViewModel(workoutRepository)
+    val templateRepository = TemplateRepository(database.templateDao())
+    val templatesViewModel = TemplatesViewModel(templateRepository)
 
     Scaffold(
         modifier = modifier,
@@ -123,7 +125,7 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
                     TemplateCreateScreen(
                         modifier = Modifier,
                         navHostController = navController,
-                        workoutRepository = workoutRepository
+                        templateRepository = templateRepository
                     )
                 }
             }

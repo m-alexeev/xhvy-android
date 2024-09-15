@@ -32,7 +32,7 @@ import com.example.xhvy.ui.components.general.StyledDropdownMenu
 fun <T> TemplateContainerWithDropDown(
     modifier: Modifier = Modifier,
     title: String? = null,
-    dropDownOptions: List<DropdownOption<T>>? = null,
+    dropDownOptions: List<DropdownOption<T>>? = listOf(),
     onOptionSelected: ((DropdownOption<T>) -> Unit)? = null,
     content: @Composable () -> Unit
 ) {

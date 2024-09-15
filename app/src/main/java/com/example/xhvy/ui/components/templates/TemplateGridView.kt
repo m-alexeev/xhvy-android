@@ -22,10 +22,15 @@ import com.example.xhvy.data.models.Template
 import com.example.xhvy.data.models.TemplateAction
 import com.example.xhvy.navigation.WorkoutStack
 import com.example.xhvy.ui.components.general.DropdownOption
+import com.example.xhvy.view_models.TemplatesViewModel
 
 
 @Composable
-fun TemplateGridView(templates: List<Template>, navHostController: NavHostController) {
+fun TemplateGridView(
+    templates: List<Template>,
+    navHostController: NavHostController,
+    templatesViewModel: TemplatesViewModel
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(count = 2),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -59,7 +64,10 @@ fun TemplateGridView(templates: List<Template>, navHostController: NavHostContro
                     val action = dropdownOption.action
                     when (action) {
                         is TemplateAction.EditAction -> {}
-                        is TemplateAction.DeleteAction -> {}
+                        is TemplateAction.DeleteAction -> {
+                            templatesViewModel.deleteTemplate(template)
+                        }
+
                         is TemplateAction.ArchiveAction -> {}
                         is TemplateAction.DuplicateAction -> {}
                         is TemplateAction.RenameAction -> {}
@@ -107,8 +115,7 @@ fun getTemplateOptions(templateId: Int): List<DropdownOption<TemplateAction>> {
             label = "Delete",
             icon = R.drawable.ic_trash_2,
             action = TemplateAction.DeleteAction(templateId),
-        ),
-
         )
+    )
     return templateDropdownOptions
 }

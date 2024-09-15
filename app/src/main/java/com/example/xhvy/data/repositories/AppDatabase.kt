@@ -12,6 +12,7 @@ import com.example.xhvy.data.entities.ExerciseSetEntity
 import com.example.xhvy.data.entities.WorkoutEntity
 import com.example.xhvy.data.entities.WorkoutExerciseEntity
 import com.example.xhvy.domain.daos.ExerciseDAO
+import com.example.xhvy.domain.daos.TemplateDAO
 import com.example.xhvy.domain.daos.WorkoutDAO
 import java.util.Date
 import kotlin.concurrent.Volatile
@@ -37,6 +38,7 @@ class Converters {
 abstract class AppDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDAO
     abstract fun workoutDao(): WorkoutDAO
+    abstract fun templateDao(): TemplateDAO
 
     companion object {
         @Volatile

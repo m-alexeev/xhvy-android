@@ -58,34 +58,7 @@ interface WorkoutDAO {
     @Query("UPDATE workouts set active = 0 where id =:workoutId")
     suspend fun completeWorkout(workoutId: Int)
 
-    @Transaction
-    suspend fun insertTemplateTransaction(
-        template: Template,
-        templateExercises: List<WorkoutExercise>
-    ) {
-        val templateEntity = WorkoutEntity.from(template)
-        val templateId = insertWorkout(templateEntity)
 
-        templateExercises.forEach { templateExercise ->
-            val templateExerciseEntity = WorkoutExerciseEntity.from(templateExercise)
-            templateExerciseEntity.workoutId = templateId.toInt()
-
-            val templateExerciseId = insertWorkoutExercise(templateExerciseEntity)
-            val exerciseSets: List<ExerciseSetEntity> = templateExercise.exerciseSets.map { set ->
-                val exerciseSetEntity = ExerciseSetEntity.from(
-                    set.copy(
-                        reps = set.reps,
-                        weight = set.weight,
-                        completed = false
-                    )
-                )
-                exerciseSetEntity.workoutExerciseId = templateExerciseId.toInt()
-                exerciseSetEntity
-            }
-
-            insertExerciseSets(exerciseSets)
-        }
-    }
 
     @Transaction
     suspend fun insertWorkoutTransaction(
@@ -117,7 +90,5 @@ interface WorkoutDAO {
     @Query("Select * from `workout-exercises`")
     fun getWorkoutExercises(): Flow<List<WorkoutExerciseFull>>
 
-    @Query("Select * from workouts where isTemplate == 1")
-    fun getAllTemplates(): Flow<List<FullTemplate>>
 
 }

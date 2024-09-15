@@ -26,6 +26,7 @@ import com.example.xhvy.data.models.ExerciseAction
 import com.example.xhvy.data.models.ExerciseSet
 import com.example.xhvy.data.models.SetAction
 import com.example.xhvy.data.models.WorkoutExercise
+import com.example.xhvy.data.repositories.TemplateRepository
 import com.example.xhvy.data.repositories.WorkoutRepository
 import com.example.xhvy.navigation.TopNavBar
 import com.example.xhvy.navigation.WorkoutStack
@@ -40,7 +41,7 @@ fun TemplateCreateScreen(
     navHostController: NavHostController,
     modifier: Modifier = Modifier,
     templateCreateViewModel: TemplateCreateViewModel = viewModel(),
-    workoutRepository: WorkoutRepository,
+    templateRepository: TemplateRepository,
 ) {
     val savedStateHandle = remember { navHostController.currentBackStackEntry?.savedStateHandle }
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -68,7 +69,7 @@ fun TemplateCreateScreen(
                 })
         }, trailingButton = {
             StyledTextButton(onClick = {
-                templateCreateViewModel.saveTemplate(workoutRepository)
+                templateCreateViewModel.saveTemplate(templateRepository)
                 navHostController.popBackStack()
             }) {
                 Text(

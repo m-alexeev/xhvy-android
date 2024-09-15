@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.xhvy.data.models.ExerciseSet
 import com.example.xhvy.data.models.Template
 import com.example.xhvy.data.models.WorkoutExercise
+import com.example.xhvy.data.repositories.TemplateRepository
 import com.example.xhvy.data.repositories.WorkoutRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -59,7 +60,7 @@ class TemplateCreateViewModel : ViewModel() {
         }
     }
 
-    fun saveTemplate(repository: WorkoutRepository) {
+    fun saveTemplate(repository: TemplateRepository) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.insertTemplate(
                 Template(name = name, isTemplate = true),

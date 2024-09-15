@@ -61,9 +61,7 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
         workoutDAO.insertWorkoutTransaction(workout, workoutExercises = workoutExercises)
     }
 
-    suspend fun insertTemplate(template: Template, workoutExercises: List<WorkoutExercise>){
-        workoutDAO.insertTemplateTransaction(template, workoutExercises)
-    }
+
 
     suspend fun completeWorkout(workoutId: Int) {
         workoutDAO.completeWorkout(workoutId)
@@ -79,9 +77,5 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
 
     fun getCompletedWorkouts(): Flow<List<FullWorkout>> {
         return workoutDAO.getAllWorkouts()
-    }
-
-    fun getTemplates(): Flow<List<FullTemplate>>{
-        return workoutDAO.getAllTemplates()
     }
 }
