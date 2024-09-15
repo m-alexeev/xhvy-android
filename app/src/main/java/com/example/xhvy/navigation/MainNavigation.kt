@@ -31,10 +31,11 @@ import com.example.xhvy.ui.screens.MeasureScreen
 import com.example.xhvy.ui.screens.exercises.ExerciseItemScreen
 import com.example.xhvy.ui.screens.exercises.NewExerciseScreen
 import com.example.xhvy.ui.screens.exercises.SelectExerciseModal
-import com.example.xhvy.ui.screens.workouts.TemplateCreateScreen
+import com.example.xhvy.ui.screens.templates.TemplateCreateScreen
 import com.example.xhvy.ui.screens.workouts.WorkoutCreateScreen
 import com.example.xhvy.ui.screens.workouts.WorkoutScreen
 import com.example.xhvy.view_models.ExercisesViewModel
+import com.example.xhvy.view_models.TemplatesViewModel
 import com.example.xhvy.view_models.WorkoutCreateViewModel
 import com.example.xhvy.view_models.WorkoutsViewModel
 
@@ -53,6 +54,7 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
     val workoutRepository = WorkoutRepository(database.workoutDao())
     val workoutViewModel = WorkoutsViewModel(workoutRepository)
     val workoutCreateViewModel = WorkoutCreateViewModel(workoutRepository)
+    val templatesViewModel = TemplatesViewModel(workoutRepository)
 
     Scaffold(
         modifier = modifier,
@@ -103,7 +105,7 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
             }
             navigation<MainStack.WorkoutRoute>(startDestination = WorkoutStack.WorkoutRoute) {
                 composable<WorkoutStack.WorkoutRoute> {
-                    WorkoutScreen(navController, workoutCreateViewModel)
+                    WorkoutScreen(navController, workoutCreateViewModel, templatesViewModel)
                 }
                 composable<WorkoutStack.NewWorkout> {
                     WorkoutCreateScreen(
@@ -118,7 +120,11 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
                     )
                 }
                 composable<WorkoutStack.NewTemplate> {
-                    TemplateCreateScreen(navHostController = navController)
+                    TemplateCreateScreen(
+                        modifier = Modifier,
+                        navHostController = navController,
+                        workoutRepository = workoutRepository
+                    )
                 }
             }
             navigation<MainStack.ExercisesRoute>(startDestination = ExerciseStack.ExercisesRoute) {

@@ -1,12 +1,16 @@
 package com.example.xhvy.view_models
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.xhvy.data.models.ExerciseSet
+import com.example.xhvy.data.models.Template
 import com.example.xhvy.data.models.WorkoutExercise
+import com.example.xhvy.data.repositories.WorkoutRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class TemplateCreateViewModel : ViewModel() {
     private var _name = mutableStateOf("New Template")
@@ -52,6 +56,15 @@ class TemplateCreateViewModel : ViewModel() {
         if (setToUpdate != null) {
             val setIndex = templateExercise.exerciseSets.indexOf(setToUpdate)
             templateExercise.exerciseSets[setIndex] = updatedTemplateSet
+        }
+    }
+
+    fun saveTemplate(repository: WorkoutRepository) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insertTemplate(
+                Template(name = name, isTemplate = true),
+                workoutExercises = templateExercises
+            )
         }
     }
 }

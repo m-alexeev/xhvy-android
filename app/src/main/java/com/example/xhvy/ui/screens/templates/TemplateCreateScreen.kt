@@ -1,4 +1,4 @@
-package com.example.xhvy.ui.screens.workouts
+package com.example.xhvy.ui.screens.templates
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,6 +25,7 @@ import com.example.xhvy.data.models.Exercise
 import com.example.xhvy.data.models.ExerciseSet
 import com.example.xhvy.data.models.SetAction
 import com.example.xhvy.data.models.WorkoutExercise
+import com.example.xhvy.data.repositories.WorkoutRepository
 import com.example.xhvy.navigation.TopNavBar
 import com.example.xhvy.navigation.WorkoutStack
 import com.example.xhvy.ui.components.general.FaIconButton
@@ -38,6 +39,7 @@ fun TemplateCreateScreen(
     navHostController: NavHostController,
     modifier: Modifier = Modifier,
     templateCreateViewModel: TemplateCreateViewModel = viewModel(),
+    workoutRepository: WorkoutRepository,
 ) {
     val savedStateHandle = remember { navHostController.currentBackStackEntry?.savedStateHandle }
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -56,14 +58,18 @@ fun TemplateCreateScreen(
             }
     }
 
-
     Scaffold(topBar = {
         TopNavBar(label = "New Template", leadingButton = {
             FaIconButton(
                 iconPainterId = R.drawable.ic_x,
-                onClick = { navHostController.popBackStack() })
+                onClick = {
+                    navHostController.popBackStack()
+                })
         }, trailingButton = {
-            StyledTextButton(onClick = { /*TODO*/ }) {
+            StyledTextButton(onClick = {
+                templateCreateViewModel.saveTemplate(workoutRepository)
+                navHostController.popBackStack()
+            }) {
                 Text(
                     text = stringResource(id = R.string.action_save),
                     color = MaterialTheme.colorScheme.primary,
@@ -78,7 +84,7 @@ fun TemplateCreateScreen(
                 .padding(horizontal = 12.dp, vertical = 24.dp)
         ) {
             LazyColumn {
-                item {
+                item(key = "NameField") {
                     TemplateName(
                         name = templateCreateViewModel.name,
                         onNameUpdate = { newName -> templateCreateViewModel.name = newName })
@@ -86,7 +92,9 @@ fun TemplateCreateScreen(
                 if (templateCreateViewModel.templateExercises.isEmpty()) {
                     item { Spacer(modifier = Modifier.padding(vertical = 24.dp)) }
                 }
-                items(items = templateCreateViewModel.templateExercises) { exercise ->
+                items(
+                    items = templateCreateViewModel.templateExercises,
+                    key = { it.exercise.name }) { exercise ->
                     WorkoutEntryRow(
                         workoutExercise = exercise,
                         template = true

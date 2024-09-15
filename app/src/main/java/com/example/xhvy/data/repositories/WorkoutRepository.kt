@@ -1,17 +1,18 @@
 package com.example.xhvy.data.repositories
 
 import com.example.xhvy.data.entities.ExerciseSetEntity
+import com.example.xhvy.data.entities.FullTemplate
 import com.example.xhvy.data.entities.FullWorkout
 import com.example.xhvy.data.entities.WorkoutEntity
 import com.example.xhvy.data.entities.WorkoutExerciseEntity
 import com.example.xhvy.data.entities.WorkoutExerciseFull
+import com.example.xhvy.data.models.Template
 import com.example.xhvy.data.models.Workout
 import com.example.xhvy.data.models.WorkoutExercise
 import com.example.xhvy.domain.daos.WorkoutDAO
 import kotlinx.coroutines.flow.Flow
 
 class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
-
 
     suspend fun insertWorkoutExercise(workoutExercise: WorkoutExerciseEntity) {
         workoutDAO.insertWorkoutExercise(workoutExercise)
@@ -29,7 +30,6 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
         workoutDAO.insertExerciseSets(exerciseSetEntities)
     }
 
-
     fun deleteActiveWorkout() {
         workoutDAO.deleteActiveWorkout()
     }
@@ -41,6 +41,8 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
     fun updateSetById(setId: Int, reps: Int?, weight: Float?, completed: Boolean) {
         workoutDAO.updateSetById(setId, reps, weight, completed)
     }
+
+
 
     fun updateSetById(exerciseSetEntity: ExerciseSetEntity) {
         workoutDAO.updateSetById(exerciseSetEntity)
@@ -59,6 +61,10 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
         workoutDAO.insertWorkoutTransaction(workout, workoutExercises = workoutExercises)
     }
 
+    suspend fun insertTemplate(template: Template, workoutExercises: List<WorkoutExercise>){
+        workoutDAO.insertTemplateTransaction(template, workoutExercises)
+    }
+
     suspend fun completeWorkout(workoutId: Int) {
         workoutDAO.completeWorkout(workoutId)
     }
@@ -73,5 +79,9 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
 
     fun getCompletedWorkouts(): Flow<List<FullWorkout>> {
         return workoutDAO.getAllWorkouts()
+    }
+
+    fun getTemplates(): Flow<List<FullTemplate>>{
+        return workoutDAO.getAllTemplates()
     }
 }

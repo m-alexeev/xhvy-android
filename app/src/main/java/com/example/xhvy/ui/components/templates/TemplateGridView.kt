@@ -3,6 +3,7 @@ package com.example.xhvy.ui.components.templates
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -17,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.xhvy.R
+import com.example.xhvy.data.models.Template
 import com.example.xhvy.data.models.TemplateAction
 import com.example.xhvy.navigation.WorkoutStack
 import com.example.xhvy.ui.components.general.DropdownMenuItemVariant
@@ -24,8 +26,7 @@ import com.example.xhvy.ui.components.general.DropdownOption
 
 
 @Composable
-fun TemplateGridView(numTemplates: Int, navHostController: NavHostController) {
-    val sampleList = (0..numTemplates).toList()
+fun TemplateGridView(templates: List<Template>, navHostController: NavHostController) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(count = 2),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -51,10 +52,10 @@ fun TemplateGridView(numTemplates: Int, navHostController: NavHostController) {
                 }
             }
         }
-        items(sampleList) { index ->
+        items(templates) { template ->
             TemplateContainerWithDropDown(
-                title = "Template",
-                dropDownOptions = getTemplateOptions(index),
+                title = template.name,
+                dropDownOptions = getTemplateOptions(template.id),
                 onOptionSelected = { dropdownOption ->
                     val action = dropdownOption.action
                     when (action) {
@@ -66,7 +67,11 @@ fun TemplateGridView(numTemplates: Int, navHostController: NavHostController) {
                         is TemplateAction.ShareAction -> {}
                     }
                 }) {
-                Text(text = "Sample Text")
+                Column {
+                    template.templateExercises.forEach { workoutExercise ->
+                        Text(text = workoutExercise.exercise.name)
+                    }
+                }
             }
         }
     }

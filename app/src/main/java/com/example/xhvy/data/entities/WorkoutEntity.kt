@@ -31,11 +31,12 @@ data class WorkoutEntity(
             )
         }
 
-//        fun from(template: Template): WorkoutEntity {
-//            return WorkoutEntity(
-////                name = template
-//            )
-//        }
+        fun from(template: Template): WorkoutEntity {
+            return WorkoutEntity(
+                name = template.name,
+                isTemplate = true
+            )
+        }
     }
 
     fun toWorkout(fullWorkout: FullWorkout): Workout {

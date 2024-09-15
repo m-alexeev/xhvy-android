@@ -25,6 +25,7 @@ import com.example.xhvy.ui.components.general.FaIconButton
 import com.example.xhvy.ui.components.general.StyledButton
 import com.example.xhvy.ui.components.templates.TemplateGridView
 import com.example.xhvy.ui.theme.Blue800
+import com.example.xhvy.view_models.TemplatesViewModel
 import com.example.xhvy.view_models.WorkoutCreateViewModel
 
 
@@ -32,9 +33,11 @@ import com.example.xhvy.view_models.WorkoutCreateViewModel
 fun WorkoutScreen(
     navController: NavHostController,
     workoutCreateViewModel: WorkoutCreateViewModel,
+    templatesViewModel: TemplatesViewModel,
     modifier: Modifier = Modifier
 ) {
     val activeWorkout by workoutCreateViewModel.workout.collectAsState()
+    val templates by templatesViewModel.templates.collectAsState()
 
     Scaffold(
         topBar = { TopNavBar(label = "Workouts") },
@@ -82,27 +85,7 @@ fun WorkoutScreen(
                     contentDescription = null,
                     onClick = {})
             }
-            TemplateGridView(0, navController)
-//
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(top = 12.dp),
-//                verticalAlignment = Alignment.CenterVertically,
-//                horizontalArrangement = Arrangement.SpaceBetween
-//            ) {
-//                Text(
-//                    text = "EXAMPLE TEMPLATES",
-//                    style = MaterialTheme.typography.labelSmall,
-//                    color = MaterialTheme.colorScheme.outline
-//                )
-//                FaIconButton(
-//                    modifier = Modifier.size(24.dp),
-//                    iconPainterId = R.drawable.ic_plus,
-//                    contentDescription = null,
-//                    onClick = {})
-//            }
-//            TemplateGridView(5, navController)
+            TemplateGridView(templates, navController)
         }
     }
 

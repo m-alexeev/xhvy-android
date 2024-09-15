@@ -39,6 +39,7 @@ data class WorkoutExerciseEntity(
                 workoutId = 0
             )
         }
+
     }
 
     fun toWorkoutExercise(): WorkoutExercise? {

@@ -34,7 +34,7 @@ fun ProfileHeading(name: String, workouts: Int, modifier: Modifier = Modifier) {
             FaIcon(
                 iconPainterId = R.drawable.ic_user_round,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.secondary
+                tint = MaterialTheme.colorScheme.outline
             )
         }
 
@@ -43,8 +43,7 @@ fun ProfileHeading(name: String, workouts: Int, modifier: Modifier = Modifier) {
             Text(
                 text = "$workouts Workouts",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary
-//                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.outline
             )
         }
     }
