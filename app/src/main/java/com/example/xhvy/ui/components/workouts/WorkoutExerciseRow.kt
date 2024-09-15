@@ -18,19 +18,16 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -48,11 +45,11 @@ import com.example.xhvy.data.models.SetAction
 import com.example.xhvy.data.models.WorkoutExercise
 import com.example.xhvy.domain.utils.DecimalFormatter
 import com.example.xhvy.ui.components.general.DecimalStyledInput
-import com.example.xhvy.ui.components.general.DismissBackground
 import com.example.xhvy.ui.components.general.FaIcon
 import com.example.xhvy.ui.components.general.FaIconButton
 import com.example.xhvy.ui.components.general.StyledButton
 import com.example.xhvy.ui.components.general.StyledInput
+import com.example.xhvy.ui.components.general.SwipeToDeleteContainer
 import com.example.xhvy.ui.theme.XhvyTheme
 
 class TableColumn(
@@ -125,14 +122,21 @@ fun WorkoutEntryRow(
             }
             // Data Rows
             workoutExercise.exerciseSets.forEachIndexed { index, item ->
+                key(item.id) {
+                    SwipeToDeleteContainer(
+                        item = item,
+                        onDelete = { onSetAction(SetAction.RemoveSet(item.id)) }) {
+                        TableRow(
+                            index,
+                            item,
+                            template = template
+                        ) {
+                            onSetAction(it)
+                        }
+                    }
 
-                TableRow(
-                    index,
-                    item,
-                    template = template
-                ) {
-                    onSetAction(it)
                 }
+
             }
 
         }
@@ -200,116 +204,98 @@ fun TableRow(
     template: Boolean = false,
     onSetAction: (action: SetAction) -> Unit,
 ) {
-    val context = LocalContext.current
-    val dismissState = rememberSwipeToDismissBoxState(
-        confirmValueChange = {
-            when (it) {
-                SwipeToDismissBoxValue.EndToStart -> {
-                    onSetAction(SetAction.RemoveSet(set.id))
-                }
 
-                SwipeToDismissBoxValue.Settled -> return@rememberSwipeToDismissBoxState false
-                SwipeToDismissBoxValue.StartToEnd -> {}
-            }
-            return@rememberSwipeToDismissBoxState true
-        },
-        // positional threshold of 25%
-        positionalThreshold = { it * .25f }
-    )
-    SwipeToDismissBox(
-        state = dismissState,
-        backgroundContent = { DismissBackground(dismissState = dismissState) }) {
 
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .height(32.dp)
-                .background(if (set.completed) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface)
-                .padding(vertical = 2.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = (index + 1).toString(),
-                Modifier.weight(0.1f),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.outline
-            )
-            Text(
-                text = "180 lbs x 8",
-                Modifier.weight(0.3f),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.outline
-            )
-            DecimalStyledInput(
-                initialValue = "${if (set.weight != null) set.weight else ""}",
-                onValueChange = { weight ->
-                    val newWeight = DecimalFormatter().cleanup(weight).toFloatOrNull()
-                    onSetAction(
-                        SetAction.UpdateSet(
-                            set.copy(weight = if (newWeight == 0f) null else newWeight)
-                        )
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .height(32.dp)
+            .background(if (set.completed) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface)
+            .padding(vertical = 2.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = (index + 1).toString(),
+            Modifier.weight(0.1f),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.outline
+        )
+        Text(
+            text = "180 lbs x 8",
+            Modifier.weight(0.3f),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.outline
+        )
+        DecimalStyledInput(
+            initialValue = "${if (set.weight != null) set.weight else ""}",
+            onValueChange = { weight ->
+                val newWeight = DecimalFormatter().cleanup(weight).toFloatOrNull()
+                onSetAction(
+                    SetAction.UpdateSet(
+                        set.copy(weight = if (newWeight == 0f) null else newWeight)
                     )
-                },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Decimal
-                ),
-                textStyle = TextStyle(
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurface
-                ),
-                modifier = Modifier
-                    .weight(0.2f),
-                backgroundColor = if (set.completed) MaterialTheme.colorScheme.primaryContainer else null,
-                decimalFormatter = DecimalFormatter(),
-                debounceTime = 200,
-            )
-            StyledInput(
-                value = "${if (set.reps != null) set.reps else ""}",
-                onValueChange = { reps ->
-                    onSetAction(
-                        SetAction.UpdateSet(
-                            set.copy(reps = reps.toIntOrNull())
-                        )
-                    )
-                },
-                textStyle = TextStyle(
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurface
-
-                ),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number
-                ),
-                modifier = Modifier
-                    .weight(0.2f)
-                    .padding(horizontal = 4.dp),
-                backgroundColor = if (set.completed) MaterialTheme.colorScheme.primaryContainer else null,
-                debounceTime = 200,
-            )
-            Box(
-                modifier = Modifier
-                    .weight(0.1f)
-            ) {
-                FaIcon(
-                    modifier = Modifier
-                        .size(if (template) 18.dp else 24.dp)
-                        .align(Alignment.Center)
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(if (set.completed) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceDim)
-                        .clickable(enabled = !template) {
-                            onSetAction(
-                                SetAction.UpdateSet(
-                                    set.copy(completed = !set.completed)
-                                )
-                            )
-                        },
-                    tint = if (set.completed) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                    iconPainterId = if (template) R.drawable.ic_lock else R.drawable.ic_check,
-                    contentDescription = null,
                 )
-            }
+            },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal
+            ),
+            textStyle = TextStyle(
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurface
+            ),
+            modifier = Modifier
+                .weight(0.2f),
+            backgroundColor = if (set.completed) MaterialTheme.colorScheme.primaryContainer else null,
+            decimalFormatter = DecimalFormatter(),
+            debounceTime = 200,
+        )
+        StyledInput(
+            value = "${if (set.reps != null) set.reps else ""}",
+            onValueChange = { reps ->
+                onSetAction(
+                    SetAction.UpdateSet(
+                        set.copy(reps = reps.toIntOrNull())
+                    )
+                )
+            },
+            textStyle = TextStyle(
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurface
+
+            ),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number
+            ),
+            modifier = Modifier
+                .weight(0.2f)
+                .padding(horizontal = 4.dp),
+            backgroundColor = if (set.completed) MaterialTheme.colorScheme.primaryContainer else null,
+            debounceTime = 200,
+        )
+        Box(
+            modifier = Modifier
+                .weight(0.1f)
+        ) {
+            FaIcon(
+                modifier = Modifier
+                    .size(if (template) 18.dp else 24.dp)
+                    .align(Alignment.Center)
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(if (set.completed) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceDim)
+                    .clickable(enabled = !template) {
+                        onSetAction(
+                            SetAction.UpdateSet(
+                                set.copy(completed = !set.completed)
+                            )
+                        )
+                    },
+                tint = if (set.completed) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+                iconPainterId = if (template) R.drawable.ic_lock else R.drawable.ic_check,
+                contentDescription = null,
+            )
+
         }
     }
 }
