@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.xhvy.data.entities.FullWorkout
 import com.example.xhvy.data.models.Workout
 import com.example.xhvy.data.repositories.WorkoutRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,4 +25,18 @@ class WorkoutsViewModel(private val workoutRepository: WorkoutRepository) : View
             }
         }
     }
+
+    fun deleteWorkout(workout: Workout) {
+        viewModelScope.launch(Dispatchers.IO) {
+            workoutRepository.deleteWorkout(workout.id)
+        }
+    }
+
+    fun archiveWorkout(workout: Workout) {
+        viewModelScope.launch(Dispatchers.IO) {
+            workoutRepository.workoutArchiveToggle(workout.id, !workout.archived)
+        }
+    }
+
+
 }

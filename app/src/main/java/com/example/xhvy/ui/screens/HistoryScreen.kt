@@ -13,12 +13,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.xhvy.data.models.WorkoutDropdownAction
 import com.example.xhvy.navigation.TopNavBar
 import com.example.xhvy.ui.components.workouts.WorkoutRowItem
 import com.example.xhvy.view_models.WorkoutsViewModel
 
 @Composable
-fun HistoryScreen(workoutsViewModel: WorkoutsViewModel, modifier: Modifier = Modifier ) {
+fun HistoryScreen(workoutsViewModel: WorkoutsViewModel, modifier: Modifier = Modifier) {
 
     val completedWorkouts by workoutsViewModel.workouts.collectAsState()
     Scaffold(topBar = { TopNavBar(label = "History") }) { innerPadding ->
@@ -30,7 +31,19 @@ fun HistoryScreen(workoutsViewModel: WorkoutsViewModel, modifier: Modifier = Mod
         ) {
             LazyColumn {
                 items(items = completedWorkouts) { workout ->
-                    WorkoutRowItem(workout = workout)
+                    WorkoutRowItem(workout = workout, onOptionSelected = { workoutDropdownAction ->
+                        when (workoutDropdownAction) {
+                            WorkoutDropdownAction.ArchiveWorkout -> {
+                                workoutsViewModel.archiveWorkout(workout)
+                            }
+
+                            WorkoutDropdownAction.DeleteWorkout -> {
+                                workoutsViewModel.deleteWorkout(workout)
+                            }
+
+                            WorkoutDropdownAction.EditWorkout -> {}
+                        }
+                    })
                     Spacer(modifier = Modifier.padding(vertical = 6.dp))
                 }
             }

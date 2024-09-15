@@ -7,12 +7,10 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.example.xhvy.data.entities.ExerciseSetEntity
-import com.example.xhvy.data.entities.FullTemplate
 import com.example.xhvy.data.entities.FullWorkout
 import com.example.xhvy.data.entities.WorkoutEntity
 import com.example.xhvy.data.entities.WorkoutExerciseEntity
 import com.example.xhvy.data.entities.WorkoutExerciseFull
-import com.example.xhvy.data.models.Template
 import com.example.xhvy.data.models.Workout
 import com.example.xhvy.data.models.WorkoutExercise
 import kotlinx.coroutines.flow.Flow
@@ -26,9 +24,6 @@ interface WorkoutDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWorkoutExercise(workoutExerciseEntity: WorkoutExerciseEntity): Long
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertWorkoutExercises(workoutExerciseEntities: List<WorkoutExerciseEntity>): List<Long>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWorkoutExerciseSet(exerciseSetEntity: ExerciseSetEntity): Long
@@ -58,7 +53,11 @@ interface WorkoutDAO {
     @Query("UPDATE workouts set active = 0 where id =:workoutId")
     suspend fun completeWorkout(workoutId: Int)
 
+    @Query("DELETE from workouts where id=:workoutId")
+    suspend fun deleteWorkout(workoutId: Int)
 
+    @Query("UPDATE workouts set archived=:archive where id=:workoutId")
+    suspend fun toggleArchive(workoutId: Int, archive: Boolean)
 
     @Transaction
     suspend fun insertWorkoutTransaction(

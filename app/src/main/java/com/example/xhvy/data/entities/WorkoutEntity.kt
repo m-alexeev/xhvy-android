@@ -20,6 +20,7 @@ data class WorkoutEntity(
     var endTime: Date = Date.from(Instant.now()),
     val active: Boolean = false,
     val isTemplate: Boolean = false,
+    val archived: Boolean = false,
 ) {
     companion object {
         fun from(workout: Workout): WorkoutEntity {
@@ -27,14 +28,16 @@ data class WorkoutEntity(
                 name = workout.name,
                 startTime = workout.startTime,
                 endTime = workout.endTime,
-                active = workout.active
+                active = workout.active,
+                archived = workout.archived
             )
         }
 
         fun from(template: Template): WorkoutEntity {
             return WorkoutEntity(
                 name = template.name,
-                isTemplate = true
+                isTemplate = true,
+                archived = template.archived
             )
         }
     }
@@ -47,20 +50,21 @@ data class WorkoutEntity(
             startTime,
             endTime,
             workoutExercises = workoutExercises.toMutableList(),
-            active
+            active,
+            archived
         )
     }
 
     fun toTemplate(fullTemplate: FullTemplate): Template {
         val templateExercises: List<WorkoutExercise> =
             getExerciseList(fullTemplate.workoutExercises)
-
         return Template(
             id = id,
             name = name,
             templateExercises = templateExercises.toMutableList(),
             active = active,
             isTemplate = true,
+            archived = archived,
         )
     }
 

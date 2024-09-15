@@ -12,6 +12,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,17 +28,28 @@ import com.example.xhvy.data.models.ExerciseBodyPart
 import com.example.xhvy.data.models.ExerciseCategory
 import com.example.xhvy.data.models.ExerciseSet
 import com.example.xhvy.data.models.Workout
+import com.example.xhvy.data.models.WorkoutDropdownAction
 import com.example.xhvy.data.models.WorkoutExercise
+import com.example.xhvy.data.models.getWorkoutDropdownActions
 import com.example.xhvy.domain.utils.calcTimeDifference
 import com.example.xhvy.domain.utils.calcTotalWeight
 import com.example.xhvy.ui.components.general.FaIconButton
 import com.example.xhvy.ui.components.general.FaLabeledIcon
+import com.example.xhvy.ui.components.general.StyledDropdownMenu
 import com.example.xhvy.ui.theme.XhvyTheme
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
-fun WorkoutRowItem(modifier: Modifier = Modifier, workout: Workout) {
+fun WorkoutRowItem(
+    modifier: Modifier = Modifier,
+    workout: Workout,
+    onOptionSelected: (WorkoutDropdownAction) -> Unit
+) {
+    var expanded by remember {
+        mutableStateOf(false)
+    }
+
     Surface(
         modifier = modifier
             .fillMaxWidth(),
@@ -48,14 +63,23 @@ fun WorkoutRowItem(modifier: Modifier = Modifier, workout: Workout) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = workout.name, style = MaterialTheme.typography.titleMedium)
-                FaIconButton(
-                    modifier = Modifier.height(24.dp),
-                    iconPainterId = R.drawable.ic_ellipsis,
-                    tint = MaterialTheme.colorScheme.primary,
-                    contentDescription = null,
-                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
-                    onClick = {}
-                )
+                Box {
+                    FaIconButton(
+                        modifier = Modifier.height(24.dp),
+                        iconPainterId = R.drawable.ic_ellipsis,
+                        tint = MaterialTheme.colorScheme.primary,
+                        contentDescription = null,
+                        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                        onClick = { expanded = true }
+                    )
+                    StyledDropdownMenu(
+                        options = getWorkoutDropdownActions(),
+                        onOptionSelected = { dropdownOption ->
+                            onOptionSelected(dropdownOption.action)
+                        },
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false })
+                }
             }
             Text(
                 text = SimpleDateFormat("EEEE, dd MMM", Locale.CANADA).format(workout.startTime),
@@ -93,7 +117,7 @@ fun WorkoutRowItem(modifier: Modifier = Modifier, workout: Workout) {
                 }
                 Column {
                     workout.workoutExercises.forEach { workoutExercise ->
-                        WorkoutRow(
+                        WorkoutExerciseRow(
                             modifier = Modifier.fillMaxWidth(),
                             workoutExercise = workoutExercise
                         )
@@ -110,8 +134,8 @@ fun RowScope.WorkoutHeaderColumn(column: String, weight: Float = 0.5f) {
 }
 
 @Composable
-fun WorkoutRow(modifier: Modifier = Modifier, workoutExercise: WorkoutExercise) {
-    // Guard for empty workouts (shouldnt happen but useful for testing)
+fun WorkoutExerciseRow(modifier: Modifier = Modifier, workoutExercise: WorkoutExercise) {
+    // Guard for empty workouts (shouldn't happen but useful for testing)
     if (workoutExercise.exerciseSets.size == 0) {
         return
     }
@@ -190,8 +214,8 @@ fun WorkoutRowItemPreview() {
                             ).toMutableStateList()
                         )
                     ).toMutableList()
-                )
-
+                ),
+                onOptionSelected = {}
             )
         }
     }

@@ -1,14 +1,10 @@
 package com.example.xhvy.data.repositories
 
 import com.example.xhvy.data.entities.ExerciseSetEntity
-import com.example.xhvy.data.entities.FullTemplate
 import com.example.xhvy.data.entities.FullWorkout
 import com.example.xhvy.data.entities.WorkoutEntity
 import com.example.xhvy.data.entities.WorkoutExerciseEntity
-import com.example.xhvy.data.entities.WorkoutExerciseFull
-import com.example.xhvy.data.models.Template
 import com.example.xhvy.data.models.Workout
-import com.example.xhvy.data.models.WorkoutExercise
 import com.example.xhvy.domain.daos.WorkoutDAO
 import kotlinx.coroutines.flow.Flow
 
@@ -18,17 +14,17 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
         workoutDAO.insertWorkoutExercise(workoutExercise)
     }
 
-    suspend fun insertWorkoutExercises(workoutExercises: List<WorkoutExerciseEntity>) {
-        workoutDAO.insertWorkoutExercises(workoutExercises)
-    }
+//    suspend fun insertWorkoutExercises(workoutExercises: List<WorkoutExerciseEntity>) {
+//        workoutDAO.insertWorkoutExercises(workoutExercises)
+//    }
 
     suspend fun insertExerciseSet(exerciseSetEntity: ExerciseSetEntity) {
         workoutDAO.insertWorkoutExerciseSet(exerciseSetEntity)
     }
 
-    suspend fun insertExerciseSets(exerciseSetEntities: List<ExerciseSetEntity>) {
-        workoutDAO.insertExerciseSets(exerciseSetEntities)
-    }
+//    suspend fun insertExerciseSets(exerciseSetEntities: List<ExerciseSetEntity>) {
+//        workoutDAO.insertExerciseSets(exerciseSetEntities)
+//    }
 
     fun deleteActiveWorkout() {
         workoutDAO.deleteActiveWorkout()
@@ -43,13 +39,18 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
     }
 
 
-
-    fun updateSetById(exerciseSetEntity: ExerciseSetEntity) {
-        workoutDAO.updateSetById(exerciseSetEntity)
+    suspend fun deleteWorkout(workoutId: Int) {
+        workoutDAO.deleteWorkout(workoutId)
     }
 
-    fun deleteWorkoutExercise(workoutExerciseFull: WorkoutExerciseFull) {
+    suspend fun workoutArchiveToggle(workoutId: Int, archive: Boolean) {
+        workoutDAO.toggleArchive(workoutId, archive)
     }
+
+//    fun updateSetById(exerciseSetEntity: ExerciseSetEntity) {
+//        workoutDAO.updateSetById(exerciseSetEntity)
+//    }
+
 
     suspend fun insertWorkout(workoutEntity: WorkoutEntity): Workout {
         val workoutId = workoutDAO.insertWorkout(workoutEntity)
@@ -57,18 +58,9 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
             .toWorkout(FullWorkout(workout = workoutEntity, workoutExercises = emptyList()))
     }
 
-    suspend fun insertWorkout(workout: Workout, workoutExercises: List<WorkoutExercise>) {
-        workoutDAO.insertWorkoutTransaction(workout, workoutExercises = workoutExercises)
-    }
-
-
 
     suspend fun completeWorkout(workoutId: Int) {
         workoutDAO.completeWorkout(workoutId)
-    }
-
-    fun getAllWorkoutExercises(): Flow<List<WorkoutExerciseFull>> {
-        return workoutDAO.getWorkoutExercises()
     }
 
     fun getActiveWorkout(): Flow<FullWorkout?> {

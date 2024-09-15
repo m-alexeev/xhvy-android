@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.xhvy.R
@@ -75,9 +76,14 @@ fun TemplateGridView(
                     }
                 }) {
                 Column {
-                    template.templateExercises.forEach { workoutExercise ->
-                        Text(text = workoutExercise.exercise.name)
-                    }
+                    val exercisesString =
+                        template.templateExercises.joinToString(", ") { it.exercise.name }
+                    Text(
+                        text = exercisesString,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.outline,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
             }
         }
