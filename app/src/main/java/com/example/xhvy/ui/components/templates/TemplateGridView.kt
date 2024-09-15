@@ -103,13 +103,11 @@ fun getTemplateOptions(templateId: Int): List<DropdownOption<TemplateAction>> {
             label = "Archive",
             icon = R.drawable.ic_archive,
             action = TemplateAction.ArchiveAction(templateId),
-            variant = DropdownMenuItemVariant.WARNING
         ),
         DropdownOption(
             label = "Delete",
             icon = R.drawable.ic_trash_2,
             action = TemplateAction.DeleteAction(templateId),
-            variant = DropdownMenuItemVariant.DESTRUCTIVE
         ),
 
         )

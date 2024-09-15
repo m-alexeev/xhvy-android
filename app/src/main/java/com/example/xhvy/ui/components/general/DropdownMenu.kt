@@ -29,17 +29,10 @@ import com.example.xhvy.ui.theme.XhvyTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-sealed class DropdownMenuItemVariant {
-    data object DEFAULT : DropdownMenuItemVariant()
-    data object WARNING : DropdownMenuItemVariant()
-    data object DESTRUCTIVE : DropdownMenuItemVariant()
-}
-
 data class DropdownOption<T>(
     val action: T,
     val label: String,
     val icon: Int?,
-    val variant: DropdownMenuItemVariant = DropdownMenuItemVariant.DEFAULT,
 )
 
 @Composable
@@ -57,13 +50,7 @@ fun <T> StyledDropdownMenu(
         Modifier.defaultMinSize(minWidth = 192.dp)
     ) {
         options.forEach { option ->
-            val backgroundColor = when (option.variant) {
-                is DropdownMenuItemVariant.DEFAULT -> Color.Unspecified
-                DropdownMenuItemVariant.DESTRUCTIVE -> MaterialTheme.colorScheme.errorContainer
-                DropdownMenuItemVariant.WARNING -> MaterialTheme.colorScheme.tertiaryContainer
-            }
             DropdownMenuItem(
-                modifier = Modifier.background(backgroundColor),
                 text = { Text(text = option.label) },
                 leadingIcon = {
                     option.icon?.let {
