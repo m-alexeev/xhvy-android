@@ -60,7 +60,8 @@ fun StyledInput(
     }
 
     BasicTextField(
-        value = text, onValueChange = { t -> text = t },
+        value = text,
+        onValueChange = { t -> text = t },
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .background(backgroundColor ?: MaterialTheme.colorScheme.surfaceContainer),
