@@ -43,7 +43,7 @@ import com.example.xhvy.data.models.ExerciseCategory
 import com.example.xhvy.data.models.ExerciseSet
 import com.example.xhvy.data.models.SetAction
 import com.example.xhvy.data.models.WorkoutExercise
-import com.example.xhvy.domain.utils.DecimalFormatter
+import com.example.xhvy.ui.components.general.DecimalFormatter
 import com.example.xhvy.ui.components.general.DecimalStyledInput
 import com.example.xhvy.ui.components.general.FaIcon
 import com.example.xhvy.ui.components.general.FaIconButton
@@ -205,6 +205,12 @@ fun TableRow(
     onSetAction: (action: SetAction) -> Unit,
 ) {
 
+    var weight by remember {
+        mutableStateOf<String?>(set.weight.toString())
+    }
+    var reps by remember {
+        mutableStateOf<String?>(set.reps.toString())
+    }
 
     Row(
         Modifier
@@ -229,12 +235,13 @@ fun TableRow(
             color = MaterialTheme.colorScheme.outline
         )
         DecimalStyledInput(
-            initialValue = "${if (set.weight != null) set.weight else ""}",
-            onValueChange = { weight ->
-                val newWeight = DecimalFormatter().cleanup(weight).toFloatOrNull()
+            initialValue = "${if (weight != null) weight else ""}",
+            onValueChange = { newWeight ->
+                weight = newWeight
+                val weightFloat = newWeight.toFloatOrNull()
                 onSetAction(
                     SetAction.UpdateSet(
-                        set.copy(weight = if (newWeight == 0f) null else newWeight)
+                        set.copy(weight = if (weightFloat == 0f) null else weightFloat)
                     )
                 )
             },
@@ -252,11 +259,13 @@ fun TableRow(
             debounceTime = 200,
         )
         StyledInput(
-            value = "${if (set.reps != null) set.reps else ""}",
-            onValueChange = { reps ->
+            value = "${if (reps != null) reps else ""}",
+            onValueChange = { newRep ->
+                val validatedInput = newRep.filter { it.isDigit() }
+                reps = validatedInput
                 onSetAction(
                     SetAction.UpdateSet(
-                        set.copy(reps = reps.toIntOrNull())
+                        set.copy(reps = validatedInput.toIntOrNull())
                     )
                 )
             },

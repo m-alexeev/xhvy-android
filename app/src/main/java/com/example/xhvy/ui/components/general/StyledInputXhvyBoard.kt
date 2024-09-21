@@ -44,7 +44,7 @@ fun StyledInputXhvyBoard(value: String, onValueChange: (String) -> Unit) {
                     onValueChange(value + label)
                 } else {
                     if (value.isNotEmpty()) {
-                        onValueChange(value.drop(1))
+                        onValueChange(value.dropLast(1))
                     }
                 }
             })

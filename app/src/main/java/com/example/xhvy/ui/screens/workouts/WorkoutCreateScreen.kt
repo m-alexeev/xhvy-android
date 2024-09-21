@@ -1,6 +1,5 @@
 package com.example.xhvy.ui.screens.workouts
 
-import android.annotation.SuppressLint
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,6 +15,7 @@ import com.example.xhvy.data.models.Exercise
 import com.example.xhvy.data.models.WorkoutAction
 import com.example.xhvy.data.models.WorkoutExercise
 import com.example.xhvy.navigation.WorkoutStack
+import com.example.xhvy.ui.components.workouts.ActiveWorkout
 import com.example.xhvy.ui.theme.XhvyTheme
 import com.example.xhvy.view_models.WorkoutCreateViewModel
 

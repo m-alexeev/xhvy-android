@@ -1,4 +1,4 @@
-package com.example.xhvy.ui.screens.workouts
+package com.example.xhvy.ui.components.workouts
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,12 +22,8 @@ import com.example.xhvy.R
 import com.example.xhvy.data.models.SetAction
 import com.example.xhvy.data.models.Workout
 import com.example.xhvy.data.models.WorkoutAction
-import com.example.xhvy.domain.utils.calcTimeDifference
 import com.example.xhvy.ui.components.general.FaIconButton
 import com.example.xhvy.ui.components.general.StyledButton
-import com.example.xhvy.ui.components.workouts.WorkoutEntryRow
-import java.time.Instant
-import java.util.Date
 
 @Composable
 fun ActiveWorkout(workout: Workout, onWorkoutAction: (workoutAction: WorkoutAction) -> Unit) {
@@ -61,12 +57,7 @@ fun ActiveWorkout(workout: Workout, onWorkoutAction: (workoutAction: WorkoutActi
                 text = workout.name,
                 style = MaterialTheme.typography.titleLarge
             )
-            Text(
-                text = calcTimeDifference(
-                    Date.from(Instant.now()),
-                    workout.startTime
-                )
-            )
+            WorkoutDurationCounter(startTime = workout.startTime)
             Text(text = "Notes", style = MaterialTheme.typography.labelMedium)
         }
         // Workout Exercises
