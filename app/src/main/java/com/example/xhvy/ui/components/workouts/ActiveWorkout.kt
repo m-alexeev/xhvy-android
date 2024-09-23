@@ -87,7 +87,6 @@ fun ActiveWorkout(workout: Workout, onWorkoutAction: (workoutAction: WorkoutActi
                                     onWorkoutAction(WorkoutAction.RemoveSet(action.setId))
                                 }
 
-                                is SetAction.ToggleComplete -> TODO()
                                 is SetAction.UpdateSet -> {
                                     onWorkoutAction(
                                         WorkoutAction.EditSet(

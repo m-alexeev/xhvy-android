@@ -29,6 +29,8 @@ data class Workout(
     var workoutExercises: MutableList<WorkoutExercise> = mutableListOf(),
     val active: Boolean = false,
     val archived: Boolean = false,
+
+
 )
 
 fun getWorkoutDropdownActions(): List<DropdownOption<WorkoutDropdownAction>> {

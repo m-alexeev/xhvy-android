@@ -3,6 +3,7 @@ package com.example.xhvy.view_models
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xhvy.data.models.Template
+import com.example.xhvy.data.models.WorkoutExercise
 import com.example.xhvy.data.repositories.TemplateRepository
 import com.example.xhvy.data.repositories.WorkoutRepository
 import kotlinx.coroutines.Dispatchers

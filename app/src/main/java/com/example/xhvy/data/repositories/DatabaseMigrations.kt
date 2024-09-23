@@ -97,3 +97,10 @@ internal val MIGRATION_6_7 = object : Migration(6,7){
         db.execSQL("ALTER TABLE workouts ADD COLUMN archived INTEGER NOT NULL DEFAULT 0")
     }
 }
+
+internal val MIGRATION_7_8 = object : Migration(7,8) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE `workout-exercises` ADD COLUMN previousWorkoutExerciseId INTEGER")
+        db.execSQL("ALTER TABLE `exercise-sets` ADD COLUMN previousSetId INTEGER")
+    }
+}

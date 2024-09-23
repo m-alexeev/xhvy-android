@@ -1,12 +1,13 @@
 package com.example.xhvy.data.entities
 
+import androidx.compose.runtime.toMutableStateList
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import com.example.xhvy.data.models.Exercise
-import com.example.xhvy.data.models.Workout
+import com.example.xhvy.data.models.ExerciseSet
 import com.example.xhvy.data.models.WorkoutExercise
 
 @Entity(
@@ -29,8 +30,8 @@ data class WorkoutExerciseEntity(
     val completed: Boolean = false,
     val exerciseId: Int,
     var workoutId: Int,
-
-    ) {
+    val previousWorkoutExerciseId: Int? = null,
+) {
     companion object {
         fun from(workoutExercise: WorkoutExercise): WorkoutExerciseEntity {
             return WorkoutExerciseEntity(
@@ -40,10 +41,6 @@ data class WorkoutExerciseEntity(
             )
         }
 
-    }
-
-    fun toWorkoutExercise(): WorkoutExercise? {
-        return null
     }
 }
 
@@ -64,3 +61,21 @@ data class WorkoutExerciseFull(
     val exerciseSets: List<ExerciseSetEntity>
 )
 
+
+
+data class WorkoutExerciseWithPrevious(
+    @Embedded val workoutExerciseEntity: WorkoutExerciseEntity,
+
+    @Relation(
+        parentColumn = "exerciseId",
+        entityColumn = "id"
+    )
+    val exercise: ExerciseEntity,
+
+
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "workoutExerciseId",
+    )
+    val exerciseSets: List<ExerciseSetEntity>
+)

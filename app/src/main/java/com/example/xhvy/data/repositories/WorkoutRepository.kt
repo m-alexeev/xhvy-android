@@ -4,6 +4,7 @@ import com.example.xhvy.data.entities.ExerciseSetEntity
 import com.example.xhvy.data.entities.FullWorkout
 import com.example.xhvy.data.entities.WorkoutEntity
 import com.example.xhvy.data.entities.WorkoutExerciseEntity
+import com.example.xhvy.data.entities.WorkoutExerciseWithPrevious
 import com.example.xhvy.data.models.Workout
 import com.example.xhvy.domain.daos.WorkoutDAO
 import kotlinx.coroutines.flow.Flow
@@ -11,12 +12,18 @@ import kotlinx.coroutines.flow.Flow
 class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
 
     suspend fun insertWorkoutExercise(workoutExercise: WorkoutExerciseEntity) {
-        workoutDAO.insertWorkoutExercise(workoutExercise)
+        val exerciseId = workoutDAO.insertWorkoutExercise(workoutExercise)
+        workoutDAO.insertExerciseSets(listOf(ExerciseSetEntity(workoutExerciseId = exerciseId.toInt())))
     }
+
 
 //    suspend fun insertWorkoutExercises(workoutExercises: List<WorkoutExerciseEntity>) {
 //        workoutDAO.insertWorkoutExercises(workoutExercises)
 //    }
+
+    fun workoutExerciseWithPrevious(): Flow<WorkoutExerciseWithPrevious> {
+        return workoutDAO.getWorkoutWithHistoric()
+    }
 
     suspend fun insertExerciseSet(exerciseSetEntity: ExerciseSetEntity) {
         workoutDAO.insertWorkoutExerciseSet(exerciseSetEntity)

@@ -11,6 +11,7 @@ import com.example.xhvy.data.entities.FullWorkout
 import com.example.xhvy.data.entities.WorkoutEntity
 import com.example.xhvy.data.entities.WorkoutExerciseEntity
 import com.example.xhvy.data.entities.WorkoutExerciseFull
+import com.example.xhvy.data.entities.WorkoutExerciseWithPrevious
 import com.example.xhvy.data.models.Workout
 import com.example.xhvy.data.models.WorkoutExercise
 import kotlinx.coroutines.flow.Flow
@@ -40,12 +41,19 @@ interface WorkoutDAO {
     @Query("UPDATE `exercise-sets` SET reps=:reps, weight=:weight, completed=:completed WHERE id=:setId")
     fun updateSetById(setId: Int, reps: Int?, weight: Float?, completed: Boolean)
 
+
     @Update
     fun updateSetById(exerciseSetEntity: ExerciseSetEntity)
 
     @Query("SELECT * from workouts where active = 1")
     fun getWorkout(): Flow<FullWorkout?>
 
+    @Query("SELECT * from `workout-exercises` where id = 2")
+    fun getWorkoutWithHistoric(): Flow<WorkoutExerciseWithPrevious>
+
+    @Query("SELECT * from `workout-exercises` WE JOIN workouts W ON WE.workoutId=W.id WHERE W.endTime is not NULL ORDER BY w.endTime  LIMIT 1")
+    fun getHistoricalWorkoutExercise(): Flow<WorkoutExerciseFull>
+    
     @Transaction
     @Query("Select * from `workouts` WHERE active=0 AND isTemplate=0 ORDER BY `startTime` DESC")
     fun getAllWorkouts(): Flow<List<FullWorkout>>

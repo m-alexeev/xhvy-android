@@ -1,6 +1,5 @@
 package com.example.xhvy.view_models
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.xhvy.data.entities.ExerciseSetEntity
@@ -48,7 +47,6 @@ class WorkoutCreateViewModel(private val workoutRepository: WorkoutRepository) :
             val workoutExerciseEntity = WorkoutExerciseEntity.from(workoutExercise)
             workoutExerciseEntity.workoutId = _workout.value?.id ?: return@launch
             workoutRepository.insertWorkoutExercise(workoutExerciseEntity)
-            Log.e("WKT", workout.value?.workoutExercises.toString())
         }
     }
 

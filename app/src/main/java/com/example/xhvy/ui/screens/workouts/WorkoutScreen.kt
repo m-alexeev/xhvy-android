@@ -39,6 +39,7 @@ fun WorkoutScreen(
     val activeWorkout by workoutCreateViewModel.workout.collectAsState()
     val templates by templatesViewModel.templates.collectAsState()
 
+
     Scaffold(
         topBar = { TopNavBar(label = "Workouts") },
     ) { innerPadding ->

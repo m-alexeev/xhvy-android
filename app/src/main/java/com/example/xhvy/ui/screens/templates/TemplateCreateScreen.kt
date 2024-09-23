@@ -27,7 +27,6 @@ import com.example.xhvy.data.models.ExerciseSet
 import com.example.xhvy.data.models.SetAction
 import com.example.xhvy.data.models.WorkoutExercise
 import com.example.xhvy.data.repositories.TemplateRepository
-import com.example.xhvy.data.repositories.WorkoutRepository
 import com.example.xhvy.navigation.TopNavBar
 import com.example.xhvy.navigation.WorkoutStack
 import com.example.xhvy.ui.components.general.FaIconButton
@@ -110,7 +109,6 @@ fun TemplateCreateScreen(
                                     templateCreateViewModel.removeSet(action.setId, exercise)
                                 }
 
-                                is SetAction.ToggleComplete -> {}
                                 is SetAction.UpdateSet -> {
                                     templateCreateViewModel.updateSet(action.exerciseSet, exercise)
                                 }

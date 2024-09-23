@@ -1,10 +1,11 @@
 package com.example.xhvy.data.models
 
+import com.example.xhvy.data.entities.ExerciseEntity
 import kotlin.enums.EnumEntries
 import kotlin.enums.enumEntries
 
-sealed class ExerciseAction(){
-    data object DeleteExercise: ExerciseAction()
+sealed class ExerciseAction() {
+    data object DeleteExercise : ExerciseAction()
 }
 
 enum class ExerciseCategory(private val displayName: String) {
@@ -51,6 +52,18 @@ open class Exercise(
     val name: String,
     val category: ExerciseCategory,
     val bodyPart: ExerciseBodyPart,
-    val deletable: Boolean = false,
-)
+    val deletable: Boolean = false
+) {
+    companion object {
+        fun from(exerciseEntity: ExerciseEntity): Exercise {
+            return Exercise(
+                id = exerciseEntity.id,
+                name = exerciseEntity.name,
+                category = exerciseEntity.category,
+                bodyPart = exerciseEntity.bodyPart,
+                deletable = exerciseEntity.deletable
+            )
+        }
+    }
+}
 
