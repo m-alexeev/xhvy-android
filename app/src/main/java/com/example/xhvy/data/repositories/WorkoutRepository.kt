@@ -16,10 +16,9 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
         workoutDAO.insertExerciseSets(listOf(ExerciseSetEntity(workoutExerciseId = exerciseId.toInt())))
     }
 
-
-//    suspend fun insertWorkoutExercises(workoutExercises: List<WorkoutExerciseEntity>) {
-//        workoutDAO.insertWorkoutExercises(workoutExercises)
-//    }
+    fun getWorkout(id: Int): Flow<FullWorkout> {
+        return workoutDAO.getWorkout(id)
+    }
 
     fun workoutExerciseWithPrevious(): Flow<WorkoutExerciseWithPrevious> {
         return workoutDAO.getWorkoutWithHistoric()
@@ -29,9 +28,6 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
         workoutDAO.insertWorkoutExerciseSet(exerciseSetEntity)
     }
 
-//    suspend fun insertExerciseSets(exerciseSetEntities: List<ExerciseSetEntity>) {
-//        workoutDAO.insertExerciseSets(exerciseSetEntities)
-//    }
 
     fun deleteActiveWorkout() {
         workoutDAO.deleteActiveWorkout()
@@ -71,7 +67,7 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
     }
 
     fun getActiveWorkout(): Flow<FullWorkout?> {
-        return workoutDAO.getWorkout()
+        return workoutDAO.getWorkoutList()
     }
 
     fun getCompletedWorkouts(): Flow<List<FullWorkout>> {

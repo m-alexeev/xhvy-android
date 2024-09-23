@@ -44,6 +44,7 @@ import java.util.Locale
 fun WorkoutRowItem(
     modifier: Modifier = Modifier,
     workout: Workout,
+    showOptions: Boolean = true,
     onOptionSelected: (WorkoutDropdownAction) -> Unit
 ) {
     var expanded by remember {
@@ -63,22 +64,24 @@ fun WorkoutRowItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = workout.name, style = MaterialTheme.typography.titleMedium)
-                Box {
-                    FaIconButton(
-                        modifier = Modifier.height(24.dp),
-                        iconPainterId = R.drawable.ic_ellipsis,
-                        tint = MaterialTheme.colorScheme.primary,
-                        contentDescription = null,
-                        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
-                        onClick = { expanded = true }
-                    )
-                    StyledDropdownMenu(
-                        options = getWorkoutDropdownActions(),
-                        onOptionSelected = { dropdownOption ->
-                            onOptionSelected(dropdownOption.action)
-                        },
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false })
+                if (showOptions) {
+                    Box {
+                        FaIconButton(
+                            modifier = Modifier.height(24.dp),
+                            iconPainterId = R.drawable.ic_ellipsis,
+                            tint = MaterialTheme.colorScheme.primary,
+                            contentDescription = null,
+                            backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                            onClick = { expanded = true }
+                        )
+                        StyledDropdownMenu(
+                            options = getWorkoutDropdownActions(),
+                            onOptionSelected = { dropdownOption ->
+                                onOptionSelected(dropdownOption.action)
+                            },
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false })
+                    }
                 }
             }
             Text(

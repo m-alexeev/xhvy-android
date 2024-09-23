@@ -1,6 +1,7 @@
 package com.example.xhvy.data.models
 
 import com.example.xhvy.R
+import com.example.xhvy.data.entities.FullWorkout
 import com.example.xhvy.ui.components.general.DropdownOption
 import java.time.Instant
 import java.util.Date
@@ -29,9 +30,23 @@ data class Workout(
     var workoutExercises: MutableList<WorkoutExercise> = mutableListOf(),
     val active: Boolean = false,
     val archived: Boolean = false,
-
-
-)
+) {
+    companion object {
+        fun from(fullWorkout: FullWorkout): Workout {
+            val workout = fullWorkout.workout
+            val exercises = fullWorkout.workoutExercises
+            return Workout(
+                id = workout.id,
+                name = workout.name,
+                startTime = workout.startTime,
+                endTime = workout.endTime,
+                active = workout.active,
+                archived = workout.archived,
+                workoutExercises = exercises.map { WorkoutExercise.from(it) }.toMutableList()
+            )
+        }
+    }
+}
 
 fun getWorkoutDropdownActions(): List<DropdownOption<WorkoutDropdownAction>> {
     return listOf(

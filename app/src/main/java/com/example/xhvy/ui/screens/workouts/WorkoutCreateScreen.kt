@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.xhvy.data.models.Exercise
 import com.example.xhvy.data.models.WorkoutAction
 import com.example.xhvy.data.models.WorkoutExercise
+import com.example.xhvy.navigation.MainStack
 import com.example.xhvy.navigation.WorkoutStack
 import com.example.xhvy.ui.components.workouts.ActiveWorkout
 import com.example.xhvy.ui.theme.XhvyTheme
@@ -43,8 +44,8 @@ fun WorkoutCreateScreen(
 
 
     // TODO: Split into separate components and pass around data to make sure that the whole screen doesnt recompose
-    workout?.let {
-        ActiveWorkout(workout = it, onWorkoutAction = { action ->
+    workout?.let {workout ->
+        ActiveWorkout(workout = workout, onWorkoutAction = { action ->
             when (action) {
                 WorkoutAction.AddExercise -> navHostController.navigate(WorkoutStack.ExerciseList)
                 WorkoutAction.CancelWorkout -> {
@@ -53,7 +54,11 @@ fun WorkoutCreateScreen(
                 }
 
                 WorkoutAction.CompleteWorkout -> {
-                    navHostController.popBackStack()
+                    navHostController.navigate(WorkoutStack.WorkoutComplete(workoutId = workout.id)) {
+                        popUpTo(WorkoutStack.NewWorkout) {
+                            inclusive = true
+                        }
+                    }
                     workoutCreateViewModel.saveWorkout()
                 }
 

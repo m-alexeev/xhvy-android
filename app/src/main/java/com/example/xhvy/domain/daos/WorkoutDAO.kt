@@ -46,14 +46,17 @@ interface WorkoutDAO {
     fun updateSetById(exerciseSetEntity: ExerciseSetEntity)
 
     @Query("SELECT * from workouts where active = 1")
-    fun getWorkout(): Flow<FullWorkout?>
+    fun getWorkoutList(): Flow<FullWorkout?>
+
+    @Query("SELECT * FROM workouts where id=:id")
+    fun getWorkout(id: Int): Flow<FullWorkout>
 
     @Query("SELECT * from `workout-exercises` where id = 2")
     fun getWorkoutWithHistoric(): Flow<WorkoutExerciseWithPrevious>
 
     @Query("SELECT * from `workout-exercises` WE JOIN workouts W ON WE.workoutId=W.id WHERE W.endTime is not NULL ORDER BY w.endTime  LIMIT 1")
     fun getHistoricalWorkoutExercise(): Flow<WorkoutExerciseFull>
-    
+
     @Transaction
     @Query("Select * from `workouts` WHERE active=0 AND isTemplate=0 ORDER BY `startTime` DESC")
     fun getAllWorkouts(): Flow<List<FullWorkout>>

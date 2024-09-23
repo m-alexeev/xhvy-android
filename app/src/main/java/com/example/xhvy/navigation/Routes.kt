@@ -29,6 +29,9 @@ sealed class WorkoutStack() {
     data object NewWorkout : WorkoutStack()
 
     @Serializable
+    data class WorkoutComplete(val workoutId: Int) : WorkoutStack()
+
+    @Serializable
     data object NewTemplate : WorkoutStack()
 
     @Serializable

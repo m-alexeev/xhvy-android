@@ -21,6 +21,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.xhvy.data.repositories.AppDatabase
 import com.example.xhvy.data.repositories.ExerciseRepository
 import com.example.xhvy.data.repositories.TemplateRepository
@@ -33,6 +34,7 @@ import com.example.xhvy.ui.screens.exercises.ExerciseItemScreen
 import com.example.xhvy.ui.screens.exercises.NewExerciseScreen
 import com.example.xhvy.ui.screens.exercises.SelectExerciseModal
 import com.example.xhvy.ui.screens.templates.TemplateCreateScreen
+import com.example.xhvy.ui.screens.workouts.WorkoutCompleteScreen
 import com.example.xhvy.ui.screens.workouts.WorkoutCreateScreen
 import com.example.xhvy.ui.screens.workouts.WorkoutScreen
 import com.example.xhvy.view_models.ExercisesViewModel
@@ -113,6 +115,14 @@ fun MainNavigation(modifier: Modifier = Modifier, database: AppDatabase) {
                     WorkoutCreateScreen(
                         navController,
                         workoutCreateViewModel = workoutCreateViewModel,
+                    )
+                }
+                composable<WorkoutStack.WorkoutComplete> { stack ->
+                    val workoutId = stack.toRoute<WorkoutStack.WorkoutComplete>().workoutId
+                    WorkoutCompleteScreen(
+                        workoutId = workoutId,
+                        workoutRepository = workoutRepository,
+                        navHostController = navController
                     )
                 }
                 dialog<WorkoutStack.ExerciseList> {
