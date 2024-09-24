@@ -62,7 +62,6 @@ fun WorkoutScreen(
                     }
                     navController.navigate(WorkoutStack.NewWorkout)
                 },
-                backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth(),
             ) {

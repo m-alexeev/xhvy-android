@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -29,18 +28,17 @@ import com.example.xhvy.ui.theme.XhvyTheme
 fun StyledButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    shape: Shape = RoundedCornerShape(16.dp),
+    shape: Shape = MaterialTheme.shapes.extraSmall,
     enabled: Boolean = true,
     contentPadding: PaddingValues = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
     colors: ButtonColors = ButtonDefaults.buttonColors(),
-    backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     content: @Composable RowScope.() -> Unit,
 ) {
     val contentColor = if (enabled) colors.contentColor else colors.disabledContentColor
 
     Surface(
         modifier = modifier,
-        color = backgroundColor,
+        color = colors.containerColor,
         enabled = enabled,
         shape = shape,
         onClick = { onClick() }

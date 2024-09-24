@@ -128,7 +128,6 @@ fun ActiveWorkout(workout: Workout, onWorkoutAction: (workoutAction: WorkoutActi
                         },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(6.dp),
-                        backgroundColor = MaterialTheme.colorScheme.errorContainer
                     ) {
                         Text(
                             text = stringResource(id = R.string.workout_cancel_workout),

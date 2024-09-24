@@ -101,7 +101,6 @@ fun WorkoutCompleteView(
 
         StyledTextButton(
             onClick = onClickReturn,
-            backgroundColor = MaterialTheme.colorScheme.background,
         ) {
             Text(text = "Return Home", color = MaterialTheme.colorScheme.primary)
         }

@@ -9,7 +9,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,15 +21,15 @@ fun StyledTextButton(
     shape: Shape = MaterialTheme.shapes.small,
     contentPadding: PaddingValues = PaddingValues(horizontal = 4.dp),
     onClick: () -> Unit,
-    backgroundColor: Color = MaterialTheme.colorScheme.surface,
+    colors: ButtonColors = ButtonDefaults.buttonColors(),
     content: @Composable() () -> Unit,
 ) {
     StyledButton(
         modifier = modifier,
         shape = shape,
         onClick = onClick,
-        backgroundColor = backgroundColor,
         enabled = enabled,
+        colors = colors,
     ) {
         Box(modifier = Modifier.padding(contentPadding)) {
             content()

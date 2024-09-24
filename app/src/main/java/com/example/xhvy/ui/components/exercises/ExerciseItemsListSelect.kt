@@ -81,7 +81,6 @@ fun ExerciseItemListSelect(
 
             }
             StyledTextButton(
-                backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
                 enabled = selectedExercises.isNotEmpty(),
                 onClick = { onSelect(selectedExercises.toList()) })
             {
@@ -114,7 +113,6 @@ fun ExerciseItemListSelect(
         ) {
             StyledButton(
                 onClick = { /*TODO*/ },
-                backgroundColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                 shape = MaterialTheme.shapes.small,
                 contentPadding = PaddingValues(vertical = 4.dp),
                 modifier = Modifier
@@ -125,7 +123,6 @@ fun ExerciseItemListSelect(
             }
             StyledButton(
                 onClick = { /*TODO*/ },
-                backgroundColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                 shape = MaterialTheme.shapes.small,
                 contentPadding = PaddingValues(vertical = 4.dp),
                 modifier = Modifier.weight(1f)

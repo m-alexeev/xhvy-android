@@ -8,6 +8,9 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
@@ -87,6 +90,32 @@ private val LightColorScheme = lightColorScheme(
     surfaceDim = Gray200
 )
 
+
+@Immutable
+data class ExtendedColors(
+    val caution: Color,
+    val onCaution: Color,
+    val success: Color,
+    val onSuccess: Color,
+)
+
+val LocalExtendedColors = staticCompositionLocalOf {
+    ExtendedColors(
+        caution = Color.Unspecified,
+        onCaution = Color.Unspecified,
+        success = Color.Unspecified,
+        onSuccess = Color.Unspecified,
+    )
+}
+
+// Use with eg. ExtendedTheme.colors.caution
+object ExtendedTheme {
+    val colors: ExtendedColors
+        @Composable
+        get() = LocalExtendedColors.current
+}
+
+
 @Composable
 fun XhvyTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -103,10 +132,20 @@ fun XhvyTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
-
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
+    val extendedColors = ExtendedColors(
+        caution = if (isSystemInDarkTheme()) Orange500 else Orange700,
+        onCaution = if (isSystemInDarkTheme()) Orange900 else Orange300,
+        success = if (isSystemInDarkTheme()) Green500 else Green700,
+        onSuccess = if (isSystemInDarkTheme()) Green900 else Green300
     )
+
+    CompositionLocalProvider(value = LocalExtendedColors provides extendedColors) {
+
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
 }
+

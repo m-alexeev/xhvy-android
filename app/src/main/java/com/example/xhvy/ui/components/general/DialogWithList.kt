@@ -87,7 +87,7 @@ fun <T> DialogWithList(
                         text = stringResource(id = R.string.action_cancel),
                         modifier = Modifier.clickable { onDismissRequest() })
                     Text(
-                        text = stringResource(id = R.string.action_confirm),
+                        text = stringResource(id = R.string.action_ok),
                         modifier = Modifier
                             .clickable {
                                 onSelect(selected)
