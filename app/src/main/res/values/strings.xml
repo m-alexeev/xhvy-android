@@ -4,6 +4,7 @@
     <string name="action_ok">OK</string>
     <string name="action_confirm">Confirm</string>
     <string name="action_cancel">Cancel</string>
+    <string name="action_complete">Complete</string>
     <string name="exercise_list_title">Exercises</string>
     <string name="workout_add_exercise">Add Exercise</string>
     <string name="workout_cancel_workout">Cancel Workout</string>

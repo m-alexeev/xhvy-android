@@ -28,7 +28,7 @@ import com.example.xhvy.ui.theme.XhvyTheme
 fun StyledConfirmationButton(
     modifier: Modifier = Modifier,
     onConfirm: () -> Unit,
-    onCancel: () -> Unit,
+    onCancel: (() -> Unit)? = null,
     dialogContent: @Composable() () -> Unit,
     content: @Composable() () -> Unit,
 ) {
@@ -47,7 +47,9 @@ fun StyledConfirmationButton(
                             contentColor = MaterialTheme.colorScheme.onErrorContainer,
                             containerColor = MaterialTheme.colorScheme.errorContainer
                         ), onClick = {
-                            onCancel()
+                            if (onCancel != null){
+                                onCancel()
+                            }
                             showDialog = false
                         }) {
                         Text(text = stringResource(id = R.string.action_cancel))
@@ -60,6 +62,7 @@ fun StyledConfirmationButton(
                             onConfirm()
                             showDialog = false
                         }) {
+
                         Text(text = stringResource(id = R.string.action_confirm))
                     }
                 }

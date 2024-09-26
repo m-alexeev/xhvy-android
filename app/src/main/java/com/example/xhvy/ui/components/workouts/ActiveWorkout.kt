@@ -24,6 +24,7 @@ import com.example.xhvy.data.models.Workout
 import com.example.xhvy.data.models.WorkoutAction
 import com.example.xhvy.ui.components.general.FaIconButton
 import com.example.xhvy.ui.components.general.StyledButton
+import com.example.xhvy.ui.components.general.StyledConfirmationButton
 
 @Composable
 fun ActiveWorkout(workout: Workout, onWorkoutAction: (workoutAction: WorkoutAction) -> Unit) {
@@ -43,13 +44,17 @@ fun ActiveWorkout(workout: Workout, onWorkoutAction: (workoutAction: WorkoutActi
                 iconPainterId = R.drawable.ic_timer,
                 contentDescription = null,
                 onClick = {})
-            StyledButton(
-                Modifier.padding(end = 12.dp),
-                onClick = { onWorkoutAction(WorkoutAction.CompleteWorkout) },
-                shape = RoundedCornerShape(3.dp)
-            ) {
-                Text(text = "Finish", style = MaterialTheme.typography.titleSmall)
-            }
+            StyledConfirmationButton(
+                onConfirm = { onWorkoutAction(WorkoutAction.CompleteWorkout) },
+                dialogContent = {
+                    Text(text = "Are you sure you want to complete this workout?")
+                },
+                content = {
+                    Text(
+                        text = stringResource(id = R.string.action_complete),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                })
         }
         // Workout Title
         Column {
