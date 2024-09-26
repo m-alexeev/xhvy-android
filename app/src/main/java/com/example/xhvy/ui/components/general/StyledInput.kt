@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -38,12 +38,11 @@ fun StyledInput(
     placeholder: String = "",
     visualTransformation: VisualTransformation = VisualTransformation.None,
     backgroundColor: Color? = null,
+    shape: Shape = MaterialTheme.shapes.small,
     debounceTime: Long = 0,
     contentPadding: PaddingValues = PaddingValues(vertical = 4.dp),
 ) {
-    var internalVal by remember {
-        mutableStateOf(value)
-    }
+
 
     BasicTextField(
         value = value,
@@ -51,7 +50,7 @@ fun StyledInput(
             onValueChange(newText)
         },
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(shape)
             .background(backgroundColor ?: MaterialTheme.colorScheme.surfaceContainer),
         textStyle = textStyle,
         cursorBrush = SolidColor(MaterialTheme.colorScheme.outline),

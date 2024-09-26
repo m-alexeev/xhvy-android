@@ -1,7 +1,7 @@
 package com.example.xhvy.ui.components.templates
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -19,15 +19,15 @@ import com.example.xhvy.ui.theme.XhvyTheme
 fun TemplateName(
     name: String,
     onNameUpdate: (newName: String) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     StyledInput(
         value = name,
         onValueChange = { newName -> onNameUpdate(newName) },
         textStyle = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onSurface),
         placeholder = "Chest Day",
-        backgroundColor = MaterialTheme.colorScheme.surface,
-        )
+        backgroundColor = MaterialTheme.colorScheme.background,
+        shape = RoundedCornerShape(0.dp)
+    )
 }
 
 @Preview()
@@ -38,10 +38,9 @@ fun TemplateNamePreview() {
         mutableStateOf("Default Template")
     }
 
-    XhvyTheme(darkTheme = true) {
+    XhvyTheme(darkTheme = false) {
         Surface(modifier = Modifier.fillMaxSize()) {
             TemplateName(name = name, onNameUpdate = { newName -> name = newName })
-
 
         }
     }

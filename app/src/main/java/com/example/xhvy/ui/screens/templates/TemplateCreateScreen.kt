@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -73,7 +74,6 @@ fun TemplateCreateScreen(
             }) {
                 Text(
                     text = stringResource(id = R.string.action_save),
-                    color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -129,12 +129,15 @@ fun TemplateCreateScreen(
                             .fillMaxWidth()
                             .padding(top = 12.dp),
                         shape = MaterialTheme.shapes.small,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.background,
+                            contentColor = MaterialTheme.colorScheme.primary
+                        ),
                         onClick = { navHostController.navigate(WorkoutStack.ExerciseList) }) {
                         Text(
                             textAlign = TextAlign.Center,
                             text = stringResource(id = R.string.workout_add_exercise),
                             style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
