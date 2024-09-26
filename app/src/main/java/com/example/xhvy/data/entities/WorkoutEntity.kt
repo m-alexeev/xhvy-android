@@ -1,6 +1,7 @@
 package com.example.xhvy.data.entities
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -104,4 +105,8 @@ data class FullWorkout(
         entityColumn = "workoutId",
     )
     val workoutExercises: List<WorkoutExerciseFull>
+)
+
+data class WorkoutCount(
+    @ColumnInfo(name = "num_workouts") val numWorkouts: Int
 )

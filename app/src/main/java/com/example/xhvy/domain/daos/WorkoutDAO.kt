@@ -8,6 +8,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import com.example.xhvy.data.entities.ExerciseSetEntity
 import com.example.xhvy.data.entities.FullWorkout
+import com.example.xhvy.data.entities.WorkoutCount
 import com.example.xhvy.data.entities.WorkoutEntity
 import com.example.xhvy.data.entities.WorkoutExerciseEntity
 import com.example.xhvy.data.entities.WorkoutExerciseFull
@@ -50,6 +51,9 @@ interface WorkoutDAO {
 
     @Query("SELECT * FROM workouts where id=:id")
     fun getWorkout(id: Int): Flow<FullWorkout>
+
+    @Query("SELECT COUNT(*) from workouts where isTemplate == 0 and active == 0")
+    suspend fun getNumberOfWorkouts(): Int
 
     @Query("SELECT * from `workout-exercises` where id = 2")
     fun getWorkoutWithHistoric(): Flow<WorkoutExerciseWithPrevious>

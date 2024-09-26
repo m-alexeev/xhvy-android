@@ -7,15 +7,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +36,6 @@ import com.example.xhvy.ui.components.general.StyledTextButton
 import com.example.xhvy.ui.components.workouts.WorkoutRowItem
 import com.example.xhvy.ui.theme.Orange400
 import com.example.xhvy.ui.theme.XhvyTheme
-import kotlinx.coroutines.launch
 import java.sql.Time
 import java.time.Instant
 
@@ -49,19 +49,26 @@ fun WorkoutCompleteScreen(
     var completedWorkout by remember {
         mutableStateOf<Workout?>(null)
     }
-    val coroutine = rememberCoroutineScope()
-    LaunchedEffect(workoutId) {
-        coroutine.launch {
-            workoutRepository.getWorkout(workoutId).collect { fullWorkout ->
-                val workout = Workout.from(fullWorkout)
-                completedWorkout = workout
-            }
+    var workoutCount by remember {
+        mutableIntStateOf(0)
+    }
+
+    LaunchedEffect(Unit) {
+        workoutCount = workoutRepository.getNumberOfWorkouts()
+
+        workoutRepository.getWorkout(workoutId).collect { fullWorkout ->
+            val workout = Workout.from(fullWorkout)
+            completedWorkout = workout
         }
     }
+
     completedWorkout?.let { workout ->
-        WorkoutCompleteView(workout = workout, onClickReturn = {
-            navHostController.popBackStack()
-        })
+        WorkoutCompleteView(
+            workoutCount = workoutCount,
+            workout = workout,
+            onClickReturn = {
+                navHostController.popBackStack()
+            })
     } ?: run {
         Text(text = "Loading Workout Data")
     }
@@ -70,6 +77,7 @@ fun WorkoutCompleteScreen(
 @Composable
 fun WorkoutCompleteView(
     workout: Workout,
+    workoutCount: Int,
     onClickReturn: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -88,7 +96,10 @@ fun WorkoutCompleteView(
                         modifier = Modifier.size(28.dp)
                     )
                 }
-                Text(text = "Workout Complete", style = MaterialTheme.typography.labelLarge)
+                Text(
+                    text = "Workout $workoutCount Complete",
+                    style = MaterialTheme.typography.labelLarge
+                )
             }
         }
         Row(modifier = Modifier.padding(horizontal = 12.dp)) {
@@ -98,11 +109,15 @@ fun WorkoutCompleteView(
                 showOptions = false,
             )
         }
-
         StyledTextButton(
+            Modifier.padding(top = 12.dp),
             onClick = onClickReturn,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.primary
+            )
         ) {
-            Text(text = "Return Home", color = MaterialTheme.colorScheme.primary)
+            Text(text = "Return Home")
         }
     }
 }
@@ -115,6 +130,7 @@ fun WorkoutCompleteViewPreview() {
     XhvyTheme() {
         WorkoutCompleteView(
             onClickReturn = {},
+            workoutCount = 256,
             workout = Workout(
                 1, "New Afternoon Workout", startTime = Time.from(
                     Instant.now()

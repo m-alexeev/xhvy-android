@@ -20,6 +20,10 @@ class WorkoutRepository(private val workoutDAO: WorkoutDAO) {
         return workoutDAO.getWorkout(id)
     }
 
+    suspend fun getNumberOfWorkouts(): Int {
+        return workoutDAO.getNumberOfWorkouts()
+    }
+
     fun workoutExerciseWithPrevious(): Flow<WorkoutExerciseWithPrevious> {
         return workoutDAO.getWorkoutWithHistoric()
     }
