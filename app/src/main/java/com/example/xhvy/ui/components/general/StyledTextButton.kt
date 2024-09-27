@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,6 +26,7 @@ fun StyledTextButton(
         contentColor = MaterialTheme.colorScheme.primary,
         containerColor = MaterialTheme.colorScheme.background,
     ),
+    rippleColor: Color = MaterialTheme.colorScheme.primary,
     content: @Composable() () -> Unit,
 ) {
     StyledButton(
@@ -32,6 +34,7 @@ fun StyledTextButton(
         shape = shape,
         onClick = onClick,
         enabled = enabled,
+        rippleColor = rippleColor,
         colors = colors,
     ) {
         Box(modifier = Modifier.padding(contentPadding)) {

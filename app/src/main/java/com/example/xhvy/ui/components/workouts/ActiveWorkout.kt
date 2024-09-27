@@ -129,12 +129,11 @@ fun ActiveWorkout(workout: Workout, onWorkoutAction: (workoutAction: WorkoutActi
                     }
                     Spacer(modifier = Modifier.padding(bottom = 6.dp))
                     StyledTextButton(
+                        colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
+                        rippleColor = MaterialTheme.colorScheme.error,
                         onClick = {
                             onWorkoutAction(WorkoutAction.CancelWorkout)
                         },
-                        colors = ButtonDefaults.buttonColors(
-                            contentColor = MaterialTheme.colorScheme.onError
-                        ),
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(6.dp),
                     ) {
