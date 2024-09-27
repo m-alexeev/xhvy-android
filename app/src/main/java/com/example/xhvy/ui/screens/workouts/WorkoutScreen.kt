@@ -74,7 +74,7 @@ fun WorkoutScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 12.dp),
+                    .padding(top = 12.dp, bottom = 6.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -87,7 +87,9 @@ fun WorkoutScreen(
                     modifier = Modifier.size(24.dp),
                     iconPainterId = R.drawable.ic_plus,
                     contentDescription = null,
-                    onClick = {})
+                    onClick = {
+                        navController.navigate(WorkoutStack.NewTemplate)
+                    })
             }
             TemplateGridView(templates, navController, templatesViewModel)
         }

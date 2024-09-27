@@ -80,15 +80,12 @@ fun TemplateContainer(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    var expanded by rememberSaveable {
-        mutableStateOf(false)
-    }
     Surface(
-        border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.outline),
         modifier = modifier
             .height(128.dp),
         shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.surface
+        color = MaterialTheme.colorScheme.surface,
+        tonalElevation = 2.dp
     ) {
         Column(
             modifier = Modifier
