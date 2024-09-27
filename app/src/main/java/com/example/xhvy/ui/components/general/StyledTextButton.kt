@@ -21,7 +21,10 @@ fun StyledTextButton(
     shape: Shape = MaterialTheme.shapes.small,
     contentPadding: PaddingValues = PaddingValues(horizontal = 4.dp),
     onClick: () -> Unit,
-    colors: ButtonColors = ButtonDefaults.buttonColors(),
+    colors: ButtonColors = ButtonDefaults.buttonColors(
+        contentColor = MaterialTheme.colorScheme.primary,
+        containerColor = MaterialTheme.colorScheme.background,
+    ),
     content: @Composable() () -> Unit,
 ) {
     StyledButton(

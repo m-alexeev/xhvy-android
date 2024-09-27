@@ -10,13 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -25,8 +24,8 @@ import com.example.xhvy.data.models.SetAction
 import com.example.xhvy.data.models.Workout
 import com.example.xhvy.data.models.WorkoutAction
 import com.example.xhvy.ui.components.general.FaIconButton
-import com.example.xhvy.ui.components.general.StyledButton
 import com.example.xhvy.ui.components.general.StyledConfirmationButton
+import com.example.xhvy.ui.components.general.StyledTextButton
 
 @Composable
 fun ActiveWorkout(workout: Workout, onWorkoutAction: (workoutAction: WorkoutAction) -> Unit) {
@@ -116,7 +115,7 @@ fun ActiveWorkout(workout: Workout, onWorkoutAction: (workoutAction: WorkoutActi
                         .padding(top = 12.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    StyledButton(
+                    StyledTextButton(
                         onClick = {
                             onWorkoutAction(WorkoutAction.AddExercise)
                         },
@@ -126,22 +125,22 @@ fun ActiveWorkout(workout: Workout, onWorkoutAction: (workoutAction: WorkoutActi
                         Text(
                             text = stringResource(id = R.string.workout_add_exercise),
                             style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
                     }
                     Spacer(modifier = Modifier.padding(bottom = 6.dp))
-                    StyledButton(
+                    StyledTextButton(
                         onClick = {
                             onWorkoutAction(WorkoutAction.CancelWorkout)
                         },
+                        colors = ButtonDefaults.buttonColors(
+                            contentColor = MaterialTheme.colorScheme.onError
+                        ),
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(6.dp),
                     ) {
                         Text(
                             text = stringResource(id = R.string.workout_cancel_workout),
                             style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.onErrorContainer
-
                         )
                     }
                 }

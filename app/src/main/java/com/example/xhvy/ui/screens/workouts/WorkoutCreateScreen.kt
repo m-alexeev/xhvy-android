@@ -42,8 +42,6 @@ fun WorkoutCreateScreen(
             }
     }
 
-
-    // TODO: Split into separate components and pass around data to make sure that the whole screen doesnt recompose
     workout?.let {workout ->
         ActiveWorkout(workout = workout, onWorkoutAction = { action ->
             when (action) {
