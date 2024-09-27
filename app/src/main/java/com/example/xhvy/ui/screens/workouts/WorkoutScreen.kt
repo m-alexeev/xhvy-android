@@ -13,9 +13,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.xhvy.R
@@ -24,7 +27,6 @@ import com.example.xhvy.navigation.WorkoutStack
 import com.example.xhvy.ui.components.general.FaIconButton
 import com.example.xhvy.ui.components.general.StyledButton
 import com.example.xhvy.ui.components.templates.TemplateGridView
-import com.example.xhvy.ui.theme.Blue800
 import com.example.xhvy.view_models.TemplatesViewModel
 import com.example.xhvy.view_models.WorkoutCreateViewModel
 
@@ -38,7 +40,9 @@ fun WorkoutScreen(
 ) {
     val activeWorkout by workoutCreateViewModel.workout.collectAsState()
     val templates by templatesViewModel.templates.collectAsState()
-
+    val workoutIsActive by remember(activeWorkout) {
+        derivedStateOf { activeWorkout != null }
+    }
 
     Scaffold(
         topBar = { TopNavBar(label = "Workouts") },
@@ -57,7 +61,7 @@ fun WorkoutScreen(
             )
             StyledButton(
                 onClick = {
-                    if (activeWorkout == null) {
+                    if (!workoutIsActive) {
                         workoutCreateViewModel.createWorkout()
                     }
                     navController.navigate(WorkoutStack.NewWorkout)
@@ -65,7 +69,7 @@ fun WorkoutScreen(
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text(text = "Create Empty Workout", color = Blue800)
+                Text(text = stringResource(id = if (workoutIsActive) R.string.workout_continue else R.string.workout_empty_create))
             }
             Row(
                 modifier = Modifier

@@ -128,6 +128,7 @@ fun WorkoutCompleteView(
 @Composable
 fun WorkoutCompleteViewPreview() {
     XhvyTheme() {
+
         WorkoutCompleteView(
             onClickReturn = {},
             workoutCount = 256,
